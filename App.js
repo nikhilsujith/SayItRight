@@ -38,15 +38,15 @@ const MyGroupsStackScreen = () => (
   </MyGroupsStack.Navigator>
 );
 
-const EnrolledGroupsStackScreen = () => (
-  <EnrolledGroupsStack.Navigator>
-    <EnrolledGroupsStack.Screen
-      name="EnrolledGroups"
-      component={EnrolledGroups}
-      options={{title: 'Enrolled Groups'}}
-    />
-  </EnrolledGroupsStack.Navigator>
-);
+// const EnrolledGroupsStackScreen = () => (
+//   <EnrolledGroupsStack.Navigator>
+//     <EnrolledGroupsStack.Screen
+//       name="EnrolledGroups"
+//       component={EnrolledGroups}
+//       options={{title: 'Enrolled Groups'}}
+//     />
+//   </EnrolledGroupsStack.Navigator>
+// );
 
 const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
@@ -67,8 +67,8 @@ const TabsScreen = () => (
         let iconName;
         if (route.name === "Home") {
           iconName = focused
-            ? "ios-information-circle"
-            : "ios-information-circle-outline";
+            ? "home"
+            : "home-outline";
         } else if (route.name === "Settings") {
           iconName = focused ? "list-circle" : "list";
         } else if (route.name === "EnrolledGroups") {
@@ -82,8 +82,8 @@ const TabsScreen = () => (
       },
     })}
     tabBarOptions={{
-      activeTintColor: "tomato",
-      inactiveTintColor: "gray",
+      activeTintColor: "black",
+      inactiveTintColor: "black",
     }}
   >
     <Tabs.Screen name="Home" component={HomeStackScreen} />
@@ -92,11 +92,11 @@ const TabsScreen = () => (
       component={MyGroupsStackScreen}
       options={{ title: "My Groups" }}
     />
-    <Tabs.Screen
+    {/* <Tabs.Screen
       name="EnrolledGroups"
       component={EnrolledGroupsStackScreen}
       options={{ title: "Enrolled" }}
-    />
+    /> */}
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
