@@ -5,7 +5,7 @@ import { theme } from "../../constants/theme";
 
 const defaultImage = {uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG"};
 
-function GroupCard({ style, navigation, cardTitle, cardDesc, cardImageLink }) {
+function GroupCard({ style,  cardTitle, cardDesc, cardImageLink }) {
   let link = '';
   if(cardImageLink.length > 0){
     link = {uri: cardImageLink}

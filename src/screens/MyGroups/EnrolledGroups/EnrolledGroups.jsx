@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View } from "native-base";
+import { TouchableOpacity, View, Text, Button } from "react-native";
 import { GroupCard } from "../../../components";
 import { fetchEnrolledGroups } from "../../../service/User/UserService";
 
-const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
+const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
-    <GroupCard
-      key = {id}
-      cardTitle={cardTitle}
-      cardDesc={cardDesc}
-      cardImageLink={cardImageLink}
-    />
+    <TouchableOpacity onPress={() => navigation.navigate("UsersInGroup")}>
+      <GroupCard
+        key={id}
+        cardTitle={cardTitle}
+        cardDesc={cardDesc}
+        cardImageLink={cardImageLink}
+      />
+    </TouchableOpacity>
   );
 };
 const EnrolledGroups = ({ navigation }) => {
@@ -26,13 +28,16 @@ const EnrolledGroups = ({ navigation }) => {
   }, []);
   return (
     <View>
-      {
-        myGroups.map(({groupName, groupDesc, groupImage, id}) => {
-          return(
-            groupCards({ cardTitle: groupName, cardDesc: groupDesc, cardImageLink: groupImage, id: id })
-          );
-        })
-      }
+      {/* <Button title='CLICK' onPress={()=>navigation.navigate('CreateNewGroup')} /> */}
+      {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+        return groupCards({
+          cardTitle: groupName,
+          cardDesc: groupDesc,
+          cardImageLink: groupImage,
+          id: id,
+          navigation: navigation
+        });
+      })}
     </View>
   );
 };

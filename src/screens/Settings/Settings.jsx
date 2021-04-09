@@ -6,9 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 const SettingsScreen = ({ navigation }) => {
   return (
     <View>
-      <StatusBar
-        barStyle="light-content"
-      />
+
 
       <Tabs renderTabBar={() => <ScrollableTab />}>
         <Tab heading="Account">

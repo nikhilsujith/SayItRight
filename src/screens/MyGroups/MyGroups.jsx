@@ -17,6 +17,7 @@ import CreatedGroups from "./CreatedGroups/CreatedGroups";
 import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from '../../constants/theme';
+import { UsersInGroup } from "..";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -33,13 +34,13 @@ const MyGroupsStackScreen = () => {
   );
 }
 
-const MyGroupsScreen = ({navigation}) => {
+export const MyGroupsScreen = ({navigation}) => {
   return (
     <Container>
       <ScrollView>
         <Tabs renderTabBar={() => <ScrollableTab style={{backgroundColor: theme.primary.backgroundColor}}/>}>
           <Tab heading="Enrolled" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
-            <EnrolledGroups />
+            <EnrolledGroups navigation={navigation}/>
           </Tab>
           <Tab heading="Owned" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
             <CreatedGroups />
@@ -75,6 +76,7 @@ const MyGroups = () => {
     //     </Fab>
     //   </View>
     // </Container>
+    // <RootStack.Navigator mode="modal">
     <RootStack.Navigator mode="modal">
       <RootStack.Screen
         name="MyGroupsStack"
@@ -82,6 +84,10 @@ const MyGroups = () => {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} />
+      <RootStack.Screen name="UsersInGroup" component={UsersInGroup} options={{
+        headerTitle: "Users In Group",
+        headerShown: false
+      }}/>
     </RootStack.Navigator>
   );
 };

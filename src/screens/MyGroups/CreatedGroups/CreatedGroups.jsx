@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, Footer, Icon, Fab } from "native-base";
-import { GroupCard } from "../../../components";
+import { FloatingActionButton, GroupCard } from "../../../components";
 import { fetchCreatedGroups } from "../../../service/User/UserService";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -8,12 +8,14 @@ const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
 
 const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
+  console.log(cardImageLink);
+  const x = 'https://say-it-right-bucket.s3.amazonaws.com/testPool/test.jpeg-882943ae-9e92-4458-9f5e-25406adfb02d'
   return (
     <GroupCard
-      // key = {id}
+      key = {id}
       cardTitle={cardTitle}
       cardDesc={cardDesc}
-      cardImageLink={cardImageLink}
+      cardImageLink={x}
     />
   );
 };
