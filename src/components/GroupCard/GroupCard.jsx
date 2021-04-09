@@ -6,6 +6,13 @@ import { theme } from "../../constants/theme";
 const defaultImage = {uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG"};
 
 function GroupCard({ style, navigation, cardTitle, cardDesc, cardImageLink }) {
+  let link = '';
+  if(cardImageLink.length > 0){
+    link = {uri: cardImageLink}
+  }
+  else{
+    link = defaultImage
+  }
   return (
     <View style={[styles.container, style]}>
       <View style={styles.groupCardTextAreaStack}>
@@ -19,7 +26,7 @@ function GroupCard({ style, navigation, cardTitle, cardDesc, cardImageLink }) {
         </View>
         <View style={styles.groupCardImageContainer}>
           <Image
-            source = {{uri: cardImageLink}}
+            source = {link}
             resizeMode="cover"
             style={styles.image3}
           ></Image>
@@ -46,15 +53,15 @@ const styles = StyleSheet.create({
     width: 229,
     height: 36,
     // backgroundColor: "rgba(74,21,75,1)",
-    backgroundColor: theme.primary.backgroundColor,
-    color: theme.primary.color,
+    backgroundColor: theme.secondary.backgroundColor,
+    color: theme.secondary.color,
     borderTopLeftRadius: 15,
     borderWidth: 1,
     borderColor: "rgba(230,230,230,1)"
   },
   cardTitle: {
     // color: "rgba(255,255,255,1)",
-    color: theme.primary.color,
+    color: theme.secondary.color,
     height: 20,
     fontSize: 17,
     width: 211,

@@ -1,11 +1,32 @@
 import React from "react";
-import { Container, Text } from "native-base";
+import { Text, Tabs, Tab, ScrollableTab } from "native-base";
+import { View, StatusBar } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+
+const SettingsScreen = ({ navigation }) => {
+  return (
+    <View>
+      <StatusBar
+        barStyle="light-content"
+      />
+
+      <Tabs renderTabBar={() => <ScrollableTab />}>
+        <Tab heading="Account">
+          <Text>Account Settings</Text>
+        </Tab>
+        <Tab heading="Phone">
+          <Text>Phone Settings</Text>
+        </Tab>
+      </Tabs>
+    </View>
+  );
+};
 
 const Settings = ({ navigation }) => {
   return (
-      <Container>
-          <Text>Settings</Text>
-      </Container>
+    <ScrollView>
+      <SettingsScreen />
+    </ScrollView>
   );
 };
 

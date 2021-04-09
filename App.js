@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Header,
-  Left,
-  Right,
-  Body,
-  Title,
-  Icon,
-} from "native-base";
-import AppLoading from "expo-app-loading";
-import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import { Button, StatusBar } from "react-native";
+import { StatusBar, View, Text, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -129,20 +117,37 @@ const TabsScreen = () => (
 const AppContainer = () => {
   return (
     <NavigationContainer>
-      <StatusBar />
+      <StatusBar barStyle="light-content" />
       <TabsScreen />
     </NavigationContainer>
+  );
+};
+
+const AppLoading = () => {
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+        <Text>Loading</Text>
+      </View>
+    </View>
   );
 };
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
-    Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      ...Ionicons.font,
-    });
+    // Font.loadAsync({
+    //   Roboto: require("native-base/Fonts/Roboto.ttf"),
+    //   Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+    //   ...Ionicons.font,
+    // });
     setIsReady({ isReady: true });
   }, []);
 

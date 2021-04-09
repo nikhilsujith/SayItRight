@@ -12,9 +12,9 @@ import {
   Button,
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
-import EnrolledGroups from "../EnrolledGroups/EnrolledGroups";
-import CreatedGroups from "../CreatedGroups/CreatedGroups";
-import CreateNewGroup from "../CreateNewGroup/CreateNewGroup";
+import EnrolledGroups from "./EnrolledGroups/EnrolledGroups";
+import CreatedGroups from "./CreatedGroups/CreatedGroups";
+import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from '../../constants/theme';
 
@@ -37,18 +37,18 @@ const MyGroupsScreen = ({navigation}) => {
   return (
     <Container>
       <ScrollView>
-        <Tabs renderTabBar={() => <ScrollableTab />}>
-          <Tab heading="Enrolled">
+        <Tabs renderTabBar={() => <ScrollableTab style={{backgroundColor: theme.primary.backgroundColor}}/>}>
+          <Tab heading="Enrolled" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
             <EnrolledGroups />
           </Tab>
-          <Tab heading="Owned">
+          <Tab heading="Owned" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
             <CreatedGroups />
           </Tab>
         </Tabs>
       </ScrollView>
       <View style={{ flex: 1 }}>
-        <Fab style={{ backgroundColor: theme.primary.backgroundColor}} position="bottomRight">
-          <Icon name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
+        <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
+          <Icon style={{color: theme.secondary.color}} name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
         </Fab>
       </View>
     </Container>

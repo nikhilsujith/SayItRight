@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, Footer, Icon, Fab } from "native-base";
-import { FloatingActionButton, GroupCard } from "../../components";
-import { fetchCreatedGroups } from "../../service/User/UserService";
+import { GroupCard } from "../../../components";
+import { fetchCreatedGroups } from "../../../service/User/UserService";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const RootStack = createStackNavigator();
