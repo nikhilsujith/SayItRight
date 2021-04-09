@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { StatusBar, View, Text, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainStackScreen } from "./src/routes";
-import { LoadingIndicator } from './src/components';
+import theme from './src/constants/theme';
+import { LoadingIndicator } from "./src/components";
 
 const AppContainer = () => {
   const [loggedIn, setLoggedIn] = useState(true);

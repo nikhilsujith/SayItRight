@@ -18,6 +18,8 @@ import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from '../../constants/theme';
 import { UsersInGroup } from "..";
+import { SafeAreaView, StatusBar } from "react-native";
+import { SettingsStackScreen } from "../../routes";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -59,24 +61,6 @@ export const MyGroupsScreen = ({navigation}) => {
 
 const MyGroups = () => {
   return (
-    // <Container>
-    //   <ScrollView>
-    //     <Tabs renderTabBar={() => <ScrollableTab />}>
-    //       <Tab heading="Enrolled">
-    //         <EnrolledGroups />
-    //       </Tab>
-    //       <Tab heading="Owned">
-    //         <CreatedGroups />
-    //       </Tab>
-    //     </Tabs>
-    //   </ScrollView>
-    //   <View style={{ flex: 1 }}>
-    //     <Fab style={{ backgroundColor: "#5067FF" }} position="bottomRight">
-    //       <Icon name="add" onPress={() => navigation.navigate("MyModal")} />
-    //     </Fab>
-    //   </View>
-    // </Container>
-    // <RootStack.Navigator mode="modal">
     <RootStack.Navigator mode="modal">
       <RootStack.Screen
         name="MyGroupsStack"

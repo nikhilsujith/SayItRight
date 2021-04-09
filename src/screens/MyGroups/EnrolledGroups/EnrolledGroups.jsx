@@ -5,7 +5,7 @@ import { fetchEnrolledGroups } from "../../../service/User/UserService";
 
 const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("UsersInGroup")}>
+    <TouchableOpacity onPress={() => {navigation.navigate('UsersInGroup', {id:id, groupName: cardTitle})}}>
       <GroupCard
         key={id}
         cardTitle={cardTitle}
