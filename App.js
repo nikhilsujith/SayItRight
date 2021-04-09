@@ -15,10 +15,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Button, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ScreenContainer } from "react-native-screens";
 import { Home, MyGroups, EnrolledGroups, Settings } from "./src/screens";
+import { theme } from "./src/constants/theme";
 
 const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -28,13 +27,33 @@ const SettingsStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
-    <HomeStack.Screen name="Home" component={Home} options={{title: 'Home'}}/>
+    <HomeStack.Screen
+      name="Home"
+      component={Home}
+      options={{
+        title: "Home",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
   </HomeStack.Navigator>
 );
 
 const MyGroupsStackScreen = () => (
   <MyGroupsStack.Navigator>
-    <MyGroupsStack.Screen name="MyGroups" component={MyGroups} options={{title: 'My Groups'}}/>
+    <MyGroupsStack.Screen
+      name="MyGroups"
+      component={MyGroups}
+      options={{
+        title: "My Groups",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
   </MyGroupsStack.Navigator>
 );
 
@@ -53,12 +72,16 @@ const SettingsStackScreen = () => (
     <SettingsStack.Screen
       name="SettingsStack"
       component={Settings}
-      options={{title: 'Settings'}}
+      options={{
+        title: "Settings",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+        },
+        headerTintColor: theme.primary.color,
+      }}
     />
   </SettingsStack.Navigator>
 );
-
-
 
 const TabsScreen = () => (
   <Tabs.Navigator
@@ -66,9 +89,7 @@ const TabsScreen = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         if (route.name === "Home") {
-          iconName = focused
-            ? "home"
-            : "home-outline";
+          iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Settings") {
           iconName = focused ? "list-circle" : "list";
         } else if (route.name === "EnrolledGroups") {

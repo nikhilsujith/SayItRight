@@ -16,6 +16,7 @@ import EnrolledGroups from "../EnrolledGroups/EnrolledGroups";
 import CreatedGroups from "../CreatedGroups/CreatedGroups";
 import CreateNewGroup from "../CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
+import { theme } from '../../constants/theme';
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -46,7 +47,7 @@ const MyGroupsScreen = ({navigation}) => {
         </Tabs>
       </ScrollView>
       <View style={{ flex: 1 }}>
-        <Fab style={{ backgroundColor: "#5067FF" }} position="bottomRight">
+        <Fab style={{ backgroundColor: theme.primary.backgroundColor}} position="bottomRight">
           <Icon name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
         </Fab>
       </View>

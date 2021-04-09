@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Button } from "react-native";
+import { theme } from "../../constants/theme";
 
 
 const defaultImage = {uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG"};
@@ -18,8 +19,8 @@ function GroupCard({ style, navigation, cardTitle, cardDesc, cardImageLink }) {
         </View>
         <View style={styles.groupCardImageContainer}>
           <Image
-            source = {cardImageLink.length > 5 ? cardImageLink : defaultImage}
-            resizeMode="stretch"
+            source = {{uri: cardImageLink}}
+            resizeMode="cover"
             style={styles.image3}
           ></Image>
         </View>
@@ -45,19 +46,20 @@ const styles = StyleSheet.create({
     width: 229,
     height: 36,
     // backgroundColor: "rgba(74,21,75,1)",
-    backgroundColor: "grey",
+    backgroundColor: theme.primary.backgroundColor,
+    color: theme.primary.color,
     borderTopLeftRadius: 15,
     borderWidth: 1,
     borderColor: "rgba(230,230,230,1)"
   },
   cardTitle: {
     // color: "rgba(255,255,255,1)",
-    color: "black",
+    color: theme.primary.color,
     height: 20,
     fontSize: 17,
     width: 211,
     marginTop: 7,
-    marginLeft: 9
+    marginLeft: 9,
   },
   groupCardDesc: {
     width: 229,
@@ -82,22 +84,21 @@ const styles = StyleSheet.create({
     left: 228,
     height: 143,
     position: "absolute",
-    backgroundColor: "rgba(74,21,75,1)",
+    backgroundColor: theme.primary.backgroundColor,
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     // borderRadius: "null",
     borderWidth: 1,
     // borderColor: "rgba(230,230,230,1)",
-    borderColor: "#ECB22E",
+    borderColor: theme.primary.backgroundColor,
     right: 0
   },
   image3: {
-    borderRadius: 15,
-    borderBottomLeftRadius: 15,
-    width: '97%',
     flex: 1,
-    marginBottom: 4,
-    marginTop: 2,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 15,
+    borderTopRightRadius: 15,
   },
   groupCardTextAreaStack: {
     height: 143,
