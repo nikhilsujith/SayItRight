@@ -20,6 +20,7 @@ import { theme } from '../../constants/theme';
 import { UsersInGroup } from "..";
 import { SafeAreaView, StatusBar } from "react-native";
 import { SettingsStackScreen } from "../../routes";
+import { FloatingActionButton } from "../../components";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -50,9 +51,10 @@ export const MyGroupsScreen = ({navigation}) => {
         </Tabs>
       </ScrollView>
       <View style={{ flex: 1 }}>
-        <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
+        {/* <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
           <Icon style={{color: theme.secondary.color}} name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
-        </Fab>
+        </Fab> */}
+        <FloatingActionButton onPress={()=>navigation.navigate('CreateNewGroup')}/>
       </View>
     </Container>
   );

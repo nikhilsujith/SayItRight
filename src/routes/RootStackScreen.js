@@ -52,7 +52,7 @@ export const HomeStackScreen = ({ navigation }) => (
       options={{
         title: "Home",
         headerStyle: {
-          backgroundColor: "black",
+          backgroundColor: theme.primary.backgroundColor,
         },
         headerTintColor: theme.primary.color,
       }}

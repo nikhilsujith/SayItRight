@@ -20,6 +20,7 @@ const custom = {
   white: '#ffffff',
   yellow: '#ECB22E',
   darkBlue: '#18314A',
+  black: '#000000',
   
 };
 export default custom;

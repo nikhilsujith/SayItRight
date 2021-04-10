@@ -24,10 +24,10 @@ function ModalScreen({ navigation }) {
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-      <Button
+      <Text style={{ fontSize: 30 }}>Say It Right</Text>
+      {/* <Button
         onPress={() => navigation.navigate('MyModal')}
-      ><Text>Trigger</Text></Button>
+      ><Text>Trigger</Text></Button> */}
     </View>
   );
 }

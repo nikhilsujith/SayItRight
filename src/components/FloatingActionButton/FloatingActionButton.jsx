@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Fab, Text, Icon } from 'native-base';
+import { View, Fab, Icon } from 'native-base';
+import {theme} from '../../constants/theme';
 
-const FloatingActionButton = () => {
+const FloatingActionButton = ({onPress}) => {
   return (
     <View style={{ flex: 1 }}>
-      <Fab style={{ backgroundColor: "#5067FF" }} position="bottomRight">
-        <Icon name="add" onPress={() => alert("Create Group")} />
+      <Fab style={{ backgroundColor: theme.secondary.backgroundColor }} position="bottomRight">
+        <Icon name="add" onPress={onPress} />
       </Fab>
     </View>
   );

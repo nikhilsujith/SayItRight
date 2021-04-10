@@ -3,7 +3,7 @@ import custom from './custom';
 
 export const theme = StyleSheet.create({
     primary:{
-        backgroundColor: custom.darkBlue,
+        backgroundColor: custom.black,
         color: custom.white
         // color: custom.primary.color
     },
