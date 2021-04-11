@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     left: 228,
     height: 143,
     position: "absolute",
-    backgroundColor: theme.primary.backgroundColor,
+    backgroundColor: theme.secondary.backgroundColor,
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     // borderRadius: "null",

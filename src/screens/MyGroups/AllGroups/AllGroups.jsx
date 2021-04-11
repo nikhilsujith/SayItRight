@@ -18,7 +18,7 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
 const AllGroups = ({ navigation }) => {
   const [allGroups, setAllGroupData] = useState([]);
 
-  console.log(allGroups);
+  // console.log(allGroups);
   useEffect(() => {
     let mounted = true;
     fetchAllGroups().then((group) => {

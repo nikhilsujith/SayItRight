@@ -94,7 +94,7 @@ export const MainStackScreen = () => (
       },
     })}
     tabBarOptions={{
-      activeTintColor: "black",
+      activeTintColor: theme.secondary.backgroundColor,
       inactiveTintColor: "black",
     }}
   >

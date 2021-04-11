@@ -21,6 +21,7 @@ const custom = {
   yellow: '#ECB22E',
   darkBlue: '#18314A',
   black: '#000000',
-  
+  green: '#1dbf73',
+  maroon: '#540e1f',
 };
 export default custom;
