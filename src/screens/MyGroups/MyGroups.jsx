@@ -10,6 +10,7 @@ import {
   Fab,
   Icon,
   Button,
+  Root,
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 import EnrolledGroups from "./EnrolledGroups/EnrolledGroups";
@@ -17,7 +18,7 @@ import CreatedGroups from "./CreatedGroups/CreatedGroups";
 import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from '../../constants/theme';
-import { UsersInGroup } from "..";
+import { AllGroups, UsersInGroup } from "..";
 import { SafeAreaView, StatusBar } from "react-native";
 import { SettingsStackScreen } from "../../routes";
 import { FloatingActionButton } from "../../components";
@@ -39,7 +40,7 @@ const MyGroupsStackScreen = () => {
 
 export const MyGroupsScreen = ({navigation}) => {
   return (
-    <Container>
+    <Root>
       <ScrollView>
         <Tabs renderTabBar={() => <ScrollableTab style={{backgroundColor: theme.primary.backgroundColor}}/>}>
           <Tab heading="Enrolled" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
@@ -47,6 +48,9 @@ export const MyGroupsScreen = ({navigation}) => {
           </Tab>
           <Tab heading="Owned" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
             <CreatedGroups />
+          </Tab>
+          <Tab heading="All" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
+            <AllGroups />
           </Tab>
         </Tabs>
       </ScrollView>
@@ -56,7 +60,7 @@ export const MyGroupsScreen = ({navigation}) => {
         </Fab> */}
         <FloatingActionButton onPress={()=>navigation.navigate('CreateNewGroup')}/>
       </View>
-    </Container>
+    </Root>
   );
 };
 

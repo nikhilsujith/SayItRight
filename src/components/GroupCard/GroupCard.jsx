@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Button } from "react-native";
 import { theme } from "../../constants/theme";
 
+const defaultImage = {
+  uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
+};
 
-const defaultImage = {uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG"};
-
-function GroupCard({ style,  cardTitle, cardDesc, cardImageLink }) {
-  let link = '';
-  if(cardImageLink.length > 0){
-    link = {uri: cardImageLink}
-  }
-  else{
-    link = defaultImage
+function GroupCard({ style, cardTitle, cardDesc, cardImageLink }) {
+  let link = "";
+  if (cardImageLink) {
+    if (cardImageLink.length > 0) {
+      link = { uri: cardImageLink };
+    }
+  } else {
+    link = defaultImage;
   }
   return (
     <View style={[styles.container, style]}>
@@ -25,11 +27,7 @@ function GroupCard({ style,  cardTitle, cardDesc, cardImageLink }) {
           </View>
         </View>
         <View style={styles.groupCardImageContainer}>
-          <Image
-            source = {link}
-            resizeMode="cover"
-            style={styles.image3}
-          ></Image>
+          <Image source={link} resizeMode="cover" style={styles.image3}></Image>
         </View>
       </View>
     </View>
@@ -39,15 +37,15 @@ function GroupCard({ style,  cardTitle, cardDesc, cardImageLink }) {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 15,
-    marginTop: '1%',
-    marginBottom: '1%',
+    marginTop: "1%",
+    marginBottom: "1%",
   },
   groupCardTextArea: {
     top: 0,
     left: 0,
     height: 143,
     position: "absolute",
-    right: 137
+    right: 137,
   },
   groupCardTitle: {
     width: 229,
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     color: theme.secondary.color,
     borderTopLeftRadius: 15,
     borderWidth: 1,
-    borderColor: "rgba(230,230,230,1)"
+    borderColor: "rgba(230,230,230,1)",
   },
   cardTitle: {
     // color: "rgba(255,255,255,1)",
@@ -77,14 +75,14 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: "rgba(74,21,75,1)",
     // borderColor: "#ECB22E",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   cardDesc: {
     color: "rgba(0,0,0,1)",
     fontSize: 14,
     height: 91,
     width: 216,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   groupCardImageContainer: {
     top: 0,
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // borderColor: "rgba(230,230,230,1)",
     borderColor: theme.primary.backgroundColor,
-    right: 0
+    right: 0,
   },
   image3: {
     flex: 1,
@@ -109,8 +107,8 @@ const styles = StyleSheet.create({
   },
   groupCardTextAreaStack: {
     height: 143,
-    marginRight: -1
-  }
+    marginRight: -1,
+  },
 });
 
 export default GroupCard;
