@@ -5,12 +5,10 @@ import { theme } from "../constants/theme";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
-
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
-
 
 export const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
@@ -21,6 +19,9 @@ export const SettingsStackScreen = () => (
         title: "Settings",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
         headerTintColor: theme.primary.color,
       }}
@@ -37,6 +38,9 @@ export const MyGroupsStackScreen = () => (
         title: "My Groups",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
         headerTintColor: theme.primary.color,
       }}
@@ -53,13 +57,15 @@ export const HomeStackScreen = ({ navigation }) => (
         title: "Home",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
         headerTintColor: theme.primary.color,
       }}
     />
   </HomeStack.Navigator>
 );
-
 
 // const MyGroupsStack = createStackNavigator();
 // const MyGroupsStackScreen = () => {
@@ -73,7 +79,6 @@ export const HomeStackScreen = ({ navigation }) => (
 //     </MyGroupsStack.Navigator>
 //   );
 // }
-
 
 export const MainStackScreen = () => (
   <Tabs.Navigator
@@ -99,7 +104,7 @@ export const MainStackScreen = () => (
     }}
   >
     <Tabs.Screen name="Home" component={HomeStackScreen} />
-    
+
     <Tabs.Screen
       name="MyGroups"
       component={MyGroupsStackScreen}
