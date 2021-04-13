@@ -8,9 +8,9 @@ import * as ImagePicker from "expo-image-picker";
 // import uploadImageAsync from '../service/UserDetailssService';
 import Rec from "./Rec";
 
-import { NameCard } from '../../components';
+import { NameCard } from "../../components";
 
-const Username = (props) => {
+const Username = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [nameDesc, setNameDesc] = useState("");
   const [nameMeaning, setNameMeaning] = useState("");
@@ -101,62 +101,62 @@ const Username = (props) => {
           />
         )}
       </TouchableOpacity>
+      <TextInput
+        placeholder="Name"
+        style={styles.input}
+        value={userName}
+        onChangeText={(val) => setUserName(val)}
+      />
+      <Text style={styles.textFooter}>Username</Text>
+      <View style={styles.action}>
         <TextInput
-              placeholder="Name"
-              style={styles.input}
-              value={userName}
-              onChangeText={(val) => setUserName(val)}
-            />
-        <Text style={styles.textFooter}>Username</Text>
-        <View style={styles.action}>
-          <TextInput
-            placeholder="Your Username"
-            style={styles.textInput}
-            autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
-          />
-        </View>
+          placeholder="Your Username"
+          style={styles.textInput}
+          autoCapitalize="none"
+          onChangeText={(val) => textInputChange(val)}
+        />
+      </View>
 
-        <Text style={styles.textFooter}>Username</Text>
-        <View style={styles.action}>
-          <TextInput
-            placeholder="Your Username"
-            style={styles.textInput}
-            autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
-          />
-        </View>
-
-        <Text style={styles.textFooter}>Username</Text>
-        <View style={styles.action}>
-          <TextInput
-            placeholder="Your Username"
-            style={styles.textInput}
-            autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
-          />
-        </View>
-
+      <Text style={styles.textFooter}>Username</Text>
+      <View style={styles.action}>
         <TextInput
-              placeholder="Name Description"
-              style={styles.input}
-              value={nameDesc}
-              onChangeText={(val) => setNameDesc(val)}
-            />
-        {/* <TextInput
+          placeholder="Your Username"
+          style={styles.textInput}
+          autoCapitalize="none"
+          onChangeText={(val) => textInputChange(val)}
+        />
+      </View>
+
+      <Text style={styles.textFooter}>Username</Text>
+      <View style={styles.action}>
+        <TextInput
+          placeholder="Your Username"
+          style={styles.textInput}
+          autoCapitalize="none"
+          onChangeText={(val) => textInputChange(val)}
+        />
+      </View>
+
+      <TextInput
+        placeholder="Name Description"
+        style={styles.input}
+        value={nameDesc}
+        onChangeText={(val) => setNameDesc(val)}
+      />
+      {/* <TextInput
               placeholder="Meaning of the Name"
               style={styles.input}
               value={nameMeaning}
               onChangeText={(val) => setNameMeaning(val)}
             /> */}
-        {/* 
+      {/* 
             <TouchableOpacity
               style={styles.saveButton}
               onPress={handleSaveButton}
             >
               <Text style={styles.saveButtonText}>Audio</Text>
             </TouchableOpacity> */}
-        {/* 
+      {/* 
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
@@ -167,7 +167,7 @@ const Username = (props) => {
               <Text style={styles.saveButtonText}>Video from Camera</Text>
             </TouchableOpacity> */}
 
-        {/* <TouchableOpacity
+      {/* <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
                 pickVideo();
@@ -179,7 +179,7 @@ const Username = (props) => {
                 style={{ width: 200, height: 200 }}
               />
             </TouchableOpacity> */}
-        {/* 
+      {/* 
             <TouchableOpacity
               style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
               onPress={handleSaveButton}
@@ -187,9 +187,13 @@ const Username = (props) => {
             >
               <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity> */}
+      <Button
+        title="GO TO VIDEO SCREEN"
+        onPress={() => navigation.navigate("SettingsVideoStack")}
+      />
     </View>
   );
-  return(
+  return (
     <SafeAreaView>
       <NameCard />
     </SafeAreaView>
@@ -200,7 +204,7 @@ const { width } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   // input: {
   //   borderColor: "black",

@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Home, MyGroups, Settings } from "../screens";
+import { Home, MyGroups, Settings, Video, Camera } from "../screens";
 import { theme } from "../constants/theme";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,6 +15,34 @@ export const SettingsStackScreen = () => (
     <SettingsStack.Screen
       name="SettingsStack"
       component={Settings}
+      options={{
+        title: "Settings",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsVideoStack"
+      component={Video}
+      options={{
+        title: "Settings",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsCameraStack"
+      component={Camera}
       options={{
         title: "Settings",
         headerStyle: {
@@ -101,7 +129,7 @@ export const MainStackScreen = () => (
     tabBarOptions={{
       activeTintColor: theme.primary.backgroundColor,
       inactiveTintColor: "black",
-      showLabel: false
+      showLabel: false,
     }}
   >
     {/* <Tabs.Screen name="Home" component={HomeStackScreen} /> */}
@@ -114,8 +142,7 @@ export const MainStackScreen = () => (
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
-      options={{ title: "Settings"}}
-
+      options={{ title: "Settings" }}
     />
   </Tabs.Navigator>
 );
