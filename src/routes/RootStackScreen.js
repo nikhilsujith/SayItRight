@@ -35,7 +35,7 @@ export const MyGroupsStackScreen = () => (
       name="MyGroupsStackScreen"
       component={MyGroups}
       options={{
-        title: "My Groups",
+        title: "Groups",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -92,28 +92,30 @@ export const MainStackScreen = () => (
         } else if (route.name === "EnrolledGroups") {
           iconName = focused ? "people-circle" : "people-circle-outline";
         } else if (route.name === "MyGroups") {
-          iconName = focused ? "person" : "person-outline";
+          iconName = focused ? "people-circle" : "people-circle-outline";
         }
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
     tabBarOptions={{
-      activeTintColor: theme.secondary.backgroundColor,
+      activeTintColor: theme.primary.backgroundColor,
       inactiveTintColor: "black",
+      showLabel: false
     }}
   >
-    <Tabs.Screen name="Home" component={HomeStackScreen} />
+    {/* <Tabs.Screen name="Home" component={HomeStackScreen} /> */}
 
     <Tabs.Screen
       name="MyGroups"
       component={MyGroupsStackScreen}
-      options={{ title: "My Groups" }}
+      options={{ title: "Groups" }}
     />
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
-      options={{ title: "Settings" }}
+      options={{ title: "Settings"}}
+
     />
   </Tabs.Navigator>
 );
