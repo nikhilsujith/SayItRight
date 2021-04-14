@@ -32,7 +32,7 @@ const EnrolledGroups = ({ navigation }) => {
     return () => (mounted = false);
   }, []);
   return (
-    <ScrollView>
+    <View>
       {/* <Button title='CLICK' onPress={()=>navigation.navigate('CreateNewGroup')} /> */}
       {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
         return groupCards({
@@ -43,7 +43,7 @@ const EnrolledGroups = ({ navigation }) => {
           navigation: navigation,
         });
       })}
-    </ScrollView>
+    </View>
   );
 };
 

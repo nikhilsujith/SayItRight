@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { MainStackScreen } from "./src/routes";
 import theme from './src/constants/theme';
 import { LoadingIndicator } from "./src/components";
+import { BannerAds } from "./src/components";
 
 const AppContainer = () => {
   const [loggedIn, setLoggedIn] = useState(true);
