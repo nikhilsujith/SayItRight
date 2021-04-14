@@ -17,11 +17,11 @@ import EnrolledGroups from "./EnrolledGroups/EnrolledGroups";
 import CreatedGroups from "./CreatedGroups/CreatedGroups";
 import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
-import { theme } from '../../constants/theme';
+import { theme } from "../../constants/theme";
 import { AllGroups, UsersInGroup } from "..";
-import { SafeAreaView, StatusBar } from "react-native";
+import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { SettingsStackScreen } from "../../routes";
-import { FloatingActionButton } from "../../components";
+import { FloatingActionButton, BannerAds } from "../../components";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -36,20 +36,53 @@ const MyGroupsStackScreen = () => {
       />
     </MyGroupsStack.Navigator>
   );
-}
+};
 
-export const MyGroupsScreen = ({navigation}) => {
+export const MyGroupsScreen = ({ navigation }) => {
   return (
     <Root>
       <ScrollView>
-        <Tabs renderTabBar={() => <ScrollableTab style={{backgroundColor: theme.primary.backgroundColor}}/>}>
-          <Tab heading="Enrolled" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: theme.primary.color}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
-            <EnrolledGroups navigation={navigation}/>
+        <Tabs
+          renderTabBar={() => (
+            <ScrollableTab
+              style={{ backgroundColor: theme.primary.backgroundColor }}
+            />
+          )}
+        >
+          <Tab
+            heading="Enrolled"
+            tabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            textStyle={{ color: theme.primary.color }}
+            activeTabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            activeTextStyle={{
+              color: theme.secondary.backgroundColor,
+              fontWeight: "normal",
+            }}
+          >
+            <EnrolledGroups navigation={navigation} />
           </Tab>
-          <Tab heading="Owned" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: theme.primary.color}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
+          <Tab
+            heading="Owned"
+            tabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            textStyle={{ color: theme.primary.color }}
+            activeTabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            activeTextStyle={{
+              color: theme.secondary.backgroundColor,
+              fontWeight: "normal",
+            }}
+          >
             <CreatedGroups />
           </Tab>
-          <Tab heading="All" tabStyle={{backgroundColor: theme.primary.backgroundColor}} textStyle={{color: theme.primary.color}} activeTabStyle={{backgroundColor: theme.primary.backgroundColor}} activeTextStyle={{color: theme.secondary.backgroundColor, fontWeight: 'normal'}}>
+          <Tab
+            heading="All"
+            tabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            textStyle={{ color: theme.primary.color }}
+            activeTabStyle={{ backgroundColor: theme.primary.backgroundColor }}
+            activeTextStyle={{
+              color: theme.secondary.backgroundColor,
+              fontWeight: "normal",
+            }}
+          >
             <AllGroups />
           </Tab>
         </Tabs>
@@ -58,12 +91,15 @@ export const MyGroupsScreen = ({navigation}) => {
         {/* <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
           <Icon style={{color: theme.secondary.color}} name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
         </Fab> */}
-        <FloatingActionButton onPress={()=>navigation.navigate('CreateNewGroup')}/>
+        <FloatingActionButton
+          onPress={() => navigation.navigate("CreateNewGroup")}
+        />
       </View>
+      {/* Ad Banner */}
+      <BannerAds />
     </Root>
   );
 };
-
 
 const MyGroups = () => {
   return (
@@ -74,10 +110,14 @@ const MyGroups = () => {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} />
-      <RootStack.Screen name="UsersInGroup" component={UsersInGroup} options={{
-        headerTitle: "Users In Group",
-        headerShown: false
-      }}/>
+      <RootStack.Screen
+        name="UsersInGroup"
+        component={UsersInGroup}
+        options={{
+          headerTitle: "Users In Group",
+          headerShown: false,
+        }}
+      />
     </RootStack.Navigator>
   );
 };
