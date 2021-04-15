@@ -1,9 +1,16 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Home, MyGroups, Settings, Video, Camera } from "../screens";
-import { theme } from "../constants/theme";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import {
+  Home,
+  MyGroups,
+  UserDetails,
+  VideoScreen,
+  Recording,
+} from '../screens';
+
+import { theme } from '../constants/theme';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -14,9 +21,9 @@ export const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
     <SettingsStack.Screen
       name="SettingsStack"
-      component={Settings}
+      component={UserDetails}
       options={{
-        title: "Settings",
+        title: 'Settings',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -28,9 +35,9 @@ export const SettingsStackScreen = () => (
     />
     <SettingsStack.Screen
       name="SettingsVideoStack"
-      component={Video}
+      component={VideoScreen}
       options={{
-        title: "Settings",
+        title: 'Settings',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -41,10 +48,10 @@ export const SettingsStackScreen = () => (
       }}
     />
     <SettingsStack.Screen
-      name="SettingsCameraStack"
-      component={Camera}
+      name="SettingsRecordingStack"
+      component={Recording}
       options={{
-        title: "Settings",
+        title: 'Settings',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -63,7 +70,7 @@ export const MyGroupsStackScreen = () => (
       name="MyGroupsStackScreen"
       component={MyGroups}
       options={{
-        title: "Groups",
+        title: 'Groups',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -82,7 +89,7 @@ export const HomeStackScreen = ({ navigation }) => (
       name="HomeStackScreen"
       component={Home}
       options={{
-        title: "Home",
+        title: 'Home',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -113,14 +120,14 @@ export const MainStackScreen = () => (
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
-        if (route.name === "Home") {
-          iconName = focused ? "home" : "home-outline";
-        } else if (route.name === "Settings") {
-          iconName = focused ? "list-circle" : "list";
-        } else if (route.name === "EnrolledGroups") {
-          iconName = focused ? "people-circle" : "people-circle-outline";
-        } else if (route.name === "MyGroups") {
-          iconName = focused ? "people-circle" : "people-circle-outline";
+        if (route.name === 'Home') {
+          iconName = focused ? 'home' : 'home-outline';
+        } else if (route.name === 'Settings') {
+          iconName = focused ? 'list-circle' : 'list';
+        } else if (route.name === 'EnrolledGroups') {
+          iconName = focused ? 'people-circle' : 'people-circle-outline';
+        } else if (route.name === 'MyGroups') {
+          iconName = focused ? 'people-circle' : 'people-circle-outline';
         }
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
@@ -128,7 +135,7 @@ export const MainStackScreen = () => (
     })}
     tabBarOptions={{
       activeTintColor: theme.primary.backgroundColor,
-      inactiveTintColor: "black",
+      inactiveTintColor: 'black',
       showLabel: false,
     }}
   >
@@ -137,12 +144,12 @@ export const MainStackScreen = () => (
     <Tabs.Screen
       name="MyGroups"
       component={MyGroupsStackScreen}
-      options={{ title: "Groups" }}
+      options={{ title: 'Groups' }}
     />
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
-      options={{ title: "Settings" }}
+      options={{ title: 'Settings' }}
     />
   </Tabs.Navigator>
 );
