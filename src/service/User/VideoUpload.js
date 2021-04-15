@@ -1,14 +1,14 @@
 import mime from 'mime';
-export const imageUpload = async (uri, image) => {
-  const url = 'https://say-it-right.herokuapp.com/api/v1/user/image/upload/p1';
-  const newImageUri = 'file:///' + uri.split('file:/').join('');
+export const uploadVideoAsync = async (uri, video) => {
+  const url = 'https://say-it-right.herokuapp.com/api/v1/user/file/upload/p1';
+  const newVideoUri = 'file:///' + uri.split('file:/').join('');
 
   try {
     let formData = new FormData();
     formData.append('file', {
-      uri: newImageUri,
-      type: mime.getType(newImageUri),
-      name: newImageUri.split('/').pop(),
+      uri: newVideoUri,
+      type: mime.getType(newVideoUri),
+      name: newVideoUri.split('/').pop(),
     });
 
     return await fetch(url, {
