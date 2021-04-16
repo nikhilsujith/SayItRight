@@ -10,6 +10,6 @@ export { default as AllGroups } from './MyGroups/AllGroups/AllGroups.jsx';
 export { default as UsersInGroup } from './Users/UsersInGroup.jsx';
 
 // Settings
-export { default as Settings } from './Settings/Settings.jsx';
-export { default as Video } from './Settings/Video.jsx';
-export { default as Camera } from './Settings/Camera.jsx';
+export { default as UserDetails } from './Settings/UserDetails.jsx';
+export { default as VideoScreen } from './Settings/VideoScreen.jsx';
+export { default as Recording } from './Settings/Recording.jsx';
