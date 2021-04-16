@@ -3,7 +3,9 @@ import { Platform, View, Image, Text, SafeAreaView } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Audio, Video } from "expo-av";
-import {VideoScreen} from './VideoScreen';
+import { VideoScreen } from "./VideoScreen";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import theme from "../../constants/theme";
 
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/ImageUpload.js";
@@ -24,10 +26,7 @@ const UserDetails = ({ navigation }) => {
   const [videoSource, setVideoSource] = useState(null);
 
   const disableSave =
-    userName === "" ||
-    nameDesc === "" ||
-    nameMeaning === "" ||
-    !imageUri;
+    userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
 
   useEffect(() => {
     (async () => {
@@ -57,8 +56,6 @@ const UserDetails = ({ navigation }) => {
       setBase64Image(result.base64);
     }
   };
-
-  
 
   const handleSaveButton = () => {
     if (userName.length > 0 && nameDesc.length > 0) {
@@ -105,62 +102,98 @@ const UserDetails = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View>
-      <TouchableOpacity onPress={pickImage}>
-        {imageUri ? (
-          <Image
-            source={{ uri: imageUri }}
-            style={{ height: 100, width: 100, borderRadius: 100,  marginRight:270, marginTop:20,}}
-          />
-        ) : (
-          <Image
-            resizeMode="contain"
-            style={{ height: 100, width: 200, borderRadius: 10, marginRight:270, marginTop:20, }}
-            source={require("../../../assets/icon.png")}
-          />
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity onPress={pickImage}>
+          {imageUri ? (
+            <Image
+              source={{ uri: imageUri }}
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 100,
+                marginRight: 270,
+                marginTop: 20,
+              }}
+            />
+          ) : (
+            <Image
+              resizeMode="contain"
+              style={{
+                height: 100,
+                width: 200,
+                borderRadius: 10,
+                marginRight: 270,
+                marginTop: 20,
+              }}
+              source={require("../../../assets/icon.png")}
+            />
+          )}
+        </TouchableOpacity>
       </View>
       <TextInput
-              placeholder="Name"
-              style={styles.input}
-              value={userName}
-              onChangeText={(val) => setUserName(val)}
-            />
-            <TextInput
-              placeholder="Name Description"
-              style={styles.input}
-              value={nameDesc}
-              onChangeText={(val) => setNameDesc(val)}
-            />
-            <TextInput
-              placeholder="Meaning of the Name"
-              style={styles.input}
-              value={nameMeaning}
-              onChangeText={(val) => setNameMeaning(val)}
-            />
-      
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={handleSaveButton}
-            >
-              <Text style={styles.saveButtonText}>Audio</Text>
-            </TouchableOpacity>
-      
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={() => navigation.push("SettingsVideoStack", {onVideoSelected: onVideoSelected})}
-            >
-              <Text style={styles.saveButtonText}>Video</Text>
-            </TouchableOpacity>
-      
-            <TouchableOpacity
-              style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
-              onPress={handleSaveButton}
-              disabled={disableSave}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-      
+        placeholder="Name"
+        style={styles.input}
+        value={userName}
+        onChangeText={(val) => setUserName(val)}
+      />
+      <TextInput
+        placeholder="Name Description"
+        style={styles.input}
+        value={nameDesc}
+        onChangeText={(val) => setNameDesc(val)}
+      />
+      <TextInput
+        placeholder="Meaning of the Name"
+        style={styles.input}
+        value={nameMeaning}
+        onChangeText={(val) => setNameMeaning(val)}
+      />
+
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
+        <Text style={styles.saveButtonText}>Audio</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={() =>
+          navigation.push("SettingsVideoStack", {
+            onVideoSelected: onVideoSelected,
+          })
+        }
+      >
+        <Text style={styles.saveButtonText}>Video</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
+        onPress={handleSaveButton}
+        disabled={disableSave}
+      >
+        <Text style={styles.saveButtonText}>Save</Text>
+      </TouchableOpacity>
+
+      {/* Hey Deeksha, take a look at this */}
+      <TouchableOpacity
+        onPress={() => alert('Split this navigation between 2 buttons :)')}
+        style={[
+          styles.SignInForm,
+          {
+            borderColor: 'black',
+            borderWidth: 1,
+            marginTop: 15,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            styles.textSign,
+            {
+              color: 'black',
+            },
+          ]}
+        >
+          AUDIO ICON | VIDEO ICON
+        </Text>
+      </TouchableOpacity>
     </View>
   );
   return (
@@ -184,24 +217,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     marginTop: 30,
   },
-  textFooter1:{
-   marginTop: 10,
-   
+  textFooter1: {
+    marginTop: 10,
   },
 
-  action:{
-      height:50,
+  action: {
+    height: 50,
   },
-  textInput1:{
-    marginBottom:10,
-    
+  textInput1: {
+    marginBottom: 10,
   },
-    
+
   saveButtonText: {
     color: "#085DAD",
     fontSize: 20,
   },
-  
+
   saveButton: {
     borderRadius: 50,
     paddingHorizontal: 40,
@@ -211,6 +242,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
     borderWidth: 1,
+  },
+  SignInForm: {
+    width: width - 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  textSign: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
