@@ -180,12 +180,6 @@ export const MainStackScreen = () => (
       component={SettingsStackScreen}
       options={{ title: 'Settings' }}
     />
-//    <Tabs.Screen
-//          name="NewProfile"
-//          component={NewProfileStackScreen}
-//          options={{ title: "NewProfile" }}
-//        />
-
   </Tabs.Navigator>
 );
 
