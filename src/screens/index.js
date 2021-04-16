@@ -8,5 +8,8 @@ export { default as AllGroups } from './MyGroups/AllGroups/AllGroups.jsx';
 
 // Users
 export { default as UsersInGroup } from './Users/UsersInGroup.jsx';
-// Others
-export { default as Settings } from './Settings/Settings.jsx';
+
+// Settings
+export { default as UserDetails } from './Settings/UserDetails.jsx';
+export { default as VideoScreen } from './Settings/VideoScreen.jsx';
+export { default as Recording } from './Settings/Recording.jsx';

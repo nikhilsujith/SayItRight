@@ -3,9 +3,13 @@ import { TouchableOpacity, View, Text, Button } from "react-native";
 import { GroupCard } from "../../../components";
 import { fetchAllGroups } from "../../../service/Group/GroupService";
 
+
+
+
+
 const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
-    <TouchableOpacity onLongPress={() => {alert('Make a POST request to join this group')}}>
+    <TouchableOpacity onLongPress={() => {alert('Enroll')}}>
       <GroupCard
         key={id}
         cardTitle={cardTitle}

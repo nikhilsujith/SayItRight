@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet,StatusBar, View, Text, ActivityIndicator } from "react-native";
+import { StatusBar, View, Text, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { MainStackScreen,NewProfileStackScreen,SettingsStackScreen } from "./src/routes";
+import { MainStackScreen } from "./src/routes";
 import theme from './src/constants/theme';
 import { LoadingIndicator } from "./src/components";
 import Amplify, { Auth } from 'aws-amplify';
@@ -9,22 +9,19 @@ import awsconfig from './src/aws-exports';
 Amplify.configure(awsconfig);
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { currentSession } from "./src/util/AmplifyCurrentSession";
+import { BannerAds } from "./src/components";
 
 const AppContainer = () => {
   const [loggedIn, setLoggedIn] = useState(true);
   return (
-
     <NavigationContainer>
-          <StatusBar barStyle="light-content" />
-          {loggedIn == true ? ( <MainStackScreen />) : ( <View> <Text>Login</Text> </View>)}
-        </NavigationContainer>
-
+      <StatusBar barStyle="light-content" />
+      {loggedIn == true ? ( <MainStackScreen />) : ( <View> <Text>Login</Text> </View>)}
+    </NavigationContainer>
   );
 };
 
 const App = () => {
-
-//console.log(currentSession())
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
     // Font.loadAsync({
@@ -36,8 +33,7 @@ const App = () => {
   }, []);
 
   if (isReady) {
-
-    return   <AppContainer />;
+    return <AppContainer />;
   } else {
     return <LoadingIndicator />;
   }

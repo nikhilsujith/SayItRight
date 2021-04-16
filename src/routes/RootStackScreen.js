@@ -1,9 +1,16 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Home, MyGroups, NewProfile, Settings } from "../screens";
-import { theme } from "../constants/theme";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import {
+  Home,
+  MyGroups,
+  UserDetails,
+  VideoScreen,
+  Recording,
+} from '../screens';
+
+import { theme } from '../constants/theme';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -17,9 +24,37 @@ export const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
     <SettingsStack.Screen
       name="SettingsStack"
-      component={Settings}
+      component={UserDetails}
       options={{
-        title: "Settings",
+        title: 'Settings',
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsVideoStack"
+      component={VideoScreen}
+      options={{
+        title: 'Settings',
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsRecordingStack"
+      component={Recording}
+      options={{
+        title: 'Settings',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -38,7 +73,7 @@ export const MyGroupsStackScreen = () => (
       name="MyGroupsStackScreen"
       component={MyGroups}
       options={{
-        title: "My Groups",
+        title: 'Groups',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -60,12 +95,10 @@ export const HomeStackScreen = ({ navigation }) => (
 //        headerShown: (Auth.user)?true:false,
         title: "Home",
         headerStyle: {
-
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
-
         },
         headerTintColor: theme.primary.color,
       }}
@@ -73,24 +106,24 @@ export const HomeStackScreen = ({ navigation }) => (
   </HomeStack.Navigator>
 );
 
-export const NewProfileStackScreen = () => (
-  <NewProfileStack.Navigator>
-    <NewProfileStack.Screen
-      name="NewProfileStack"
-      component={NewProfile}
-      options={{
-        title: "NewProfile",
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-  </NewProfileStack.Navigator>
-);
+//export const NewProfileStackScreen = () => (
+//  <NewProfileStack.Navigator>
+//    <NewProfileStack.Screen
+//      name="NewProfileStack"
+//      component={NewProfile}
+//      options={{
+//        title: "NewProfile",
+//        headerStyle: {
+//          backgroundColor: theme.primary.backgroundColor,
+//          elevation: 0,
+//          shadowOpacity: 0,
+//          borderBottomWidth: 0,
+//        },
+//        headerTintColor: theme.primary.color,
+//      }}
+//    />
+//  </NewProfileStack.Navigator>
+//);
 
 // const MyGroupsStack = createStackNavigator();
 // const MyGroupsStackScreen = () => {
@@ -119,9 +152,9 @@ export const MainStackScreen = () => (
             } else if (route.name === "MyGroups") {
               iconName = focused ? "person" : "person-outline";
             }
-            else if (route.name === "NewProfile") {
-                          iconName = focused ? "list-circle" : "list";
-                        }
+//            else if (route.name === "NewProfile") {
+//                          iconName = focused ? "list-circle" : "list";
+//                        }
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
       },
@@ -132,25 +165,26 @@ export const MainStackScreen = () => (
 //      style: {
 //            bottom:(Auth.user)?0:-200 //hides bottom navigation if Authentication page is viewed
 //         },
+      showLabel: false,
     }}
   >
-    <Tabs.Screen name="Home" component={HomeStackScreen} />
+    {/* <Tabs.Screen name="Home" component={HomeStackScreen} /> */}
 
     <Tabs.Screen
       name="MyGroups"
       component={MyGroupsStackScreen}
-      options={{ title: "My Groups" }}
+      options={{ title: 'Groups' }}
     />
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
-      options={{ title: "Settings" }}
+      options={{ title: 'Settings' }}
     />
-    <Tabs.Screen
-          name="NewProfile"
-          component={NewProfileStackScreen}
-          options={{ title: "NewProfile" }}
-        />
+//    <Tabs.Screen
+//          name="NewProfile"
+//          component={NewProfileStackScreen}
+//          options={{ title: "NewProfile" }}
+//        />
 
   </Tabs.Navigator>
 );
