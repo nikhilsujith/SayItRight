@@ -7,6 +7,8 @@ import { VideoScreen } from "./VideoScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import theme from "../../constants/theme";
 
+import { logout } from "../../util/CustomAmplifyAuth";
+
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/ImageUpload.js";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
@@ -194,6 +196,13 @@ const UserDetails = ({ navigation }) => {
           AUDIO ICON | VIDEO ICON
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => logout()}
+            >
+              <Text style={styles.saveButtonText}>Logout</Text>
+            </TouchableOpacity>
     </View>
   );
   return (
