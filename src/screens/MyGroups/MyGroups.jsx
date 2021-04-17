@@ -23,6 +23,11 @@ import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { SettingsStackScreen } from "../../routes";
 import { FloatingActionButton, BannerAds } from "../../components";
 
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
+import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
 
@@ -120,4 +125,4 @@ const MyGroups = () => {
     </RootStack.Navigator>
   );
 };
-export default MyGroups;
+export default (Auth.user)?MyGroups:withAuthenticator(MyGroups);

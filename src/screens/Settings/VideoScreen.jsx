@@ -5,6 +5,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 // import uploadVideoAsync from '../service/UploadVideoService';
 import { Video } from 'expo-av';
 
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
+import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 
 const VideoScreen = ({ navigation, route}) => {
@@ -50,7 +54,6 @@ const VideoScreen = ({ navigation, route}) => {
   const handleSaveButton = () => {
     route.params.onVideoSelected(videoUri || videoSource);
     navigation.pop()
-
   };
 
 
@@ -79,7 +82,7 @@ const VideoScreen = ({ navigation, route}) => {
   );
 };
 
-export default VideoScreen;
+export default (Auth.user)?VideoScreen:withAuthenticator(VideoScreen);
 
 const styles = StyleSheet.create({
   container: {
