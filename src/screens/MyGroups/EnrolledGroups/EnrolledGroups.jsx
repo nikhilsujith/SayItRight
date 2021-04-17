@@ -4,6 +4,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import { GroupCard } from "../../../components";
 import { fetchEnrolledGroups } from "../../../service/User/UserService";
 
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
+import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+
 const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
     <TouchableOpacity
@@ -47,4 +52,4 @@ const EnrolledGroups = ({ navigation }) => {
   );
 };
 
-export default EnrolledGroups;
+export default (Auth.user)?EnrolledGroups:withAuthenticator(EnrolledGroups);

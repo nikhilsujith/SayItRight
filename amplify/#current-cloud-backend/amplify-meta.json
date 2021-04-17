@@ -1,0 +1,31 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sayitright-dev-215610-authRole",
+      "UnauthRoleArn": "arn:aws:iam::600341942215:role/amplify-sayitright-dev-215610-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::600341942215:role/amplify-sayitright-dev-215610-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-sayitright-dev-215610-deployment",
+      "UnauthRoleName": "amplify-sayitright-dev-215610-unauthRole",
+      "StackName": "amplify-sayitright-dev-215610",
+      "StackId": "arn:aws:cloudformation:us-east-1:600341942215:stack/amplify-sayitright-dev-215610/d1502ea0-9c03-11eb-91b8-0e0d04c7a1a5",
+      "AmplifyAppId": "d3i0xjdh2m0ojj"
+    }
+  },
+  "auth": {
+    "sayitright81f361fe": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "output": {
+        "UserPoolId": "us-east-1_pzYYNhLUN",
+        "UserPoolName": "sayitright4ef07adb_userpool_4ef07adb-dev",
+        "AppClientID": "4eulnnkt1uv15m3dg41hthv1t6",
+        "AppClientIDWeb": "4eulnnkt1uv15m3dg41hthv1t6"
+      },
+      "lastPushTimeStamp": "2021-04-13T20:19:41.847Z"
+    }
+  }
+}

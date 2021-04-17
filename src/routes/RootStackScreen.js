@@ -5,6 +5,8 @@ import {
   MyGroups,
   UserDetails,
   VideoScreen,
+  AudioScreen,
+  NewProfile,
   Recording,
 } from '../screens';
 
@@ -15,10 +17,71 @@ import { Ionicons } from '@expo/vector-icons';
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
-const NewProfileStack = createStackNavigator();
+//const NewProfileStack = createStackNavigator();
 const AuthenticationStack = createStackNavigator();
 
 const Tabs = createBottomTabNavigator();
+
+export const NewProfileStackScreen = () => (
+    <SettingsStack.Navigator>
+        <SettingsStack.Screen
+          name="SettingsNewProfileStack"
+          component={NewProfile}
+          options={{
+            title: 'New Profile',
+            headerStyle: {
+              backgroundColor: theme.primary.backgroundColor,
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTintColor: theme.primary.color,
+          }}
+        />
+        <SettingsStack.Screen
+          name="SettingsVideoStack"
+          component={VideoScreen}
+          options={{
+            title: 'New Profile',
+            headerStyle: {
+              backgroundColor: theme.primary.backgroundColor,
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTintColor: theme.primary.color,
+          }}
+        />
+        <SettingsStack.Screen
+          name="SettingsAudioStack"
+          component={AudioScreen}
+          options={{
+            title: 'New Profile',
+            headerStyle: {
+              backgroundColor: theme.primary.backgroundColor,
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTintColor: theme.primary.color,
+          }}
+        />
+        <SettingsStack.Screen
+          name="SettingsRecordingStack"
+          component={Recording}
+          options={{
+            title: 'New Profile',
+            headerStyle: {
+              backgroundColor: theme.primary.backgroundColor,
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTintColor: theme.primary.color,
+          }}
+        />
+    </SettingsStack.Navigator>
+);
 
 export const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
@@ -39,6 +102,20 @@ export const SettingsStackScreen = () => (
     <SettingsStack.Screen
       name="SettingsVideoStack"
       component={VideoScreen}
+      options={{
+        title: 'Settings',
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsAudioStack"
+      component={AudioScreen}
       options={{
         title: 'Settings',
         headerStyle: {
