@@ -16,23 +16,6 @@ import { currentSession } from "./src/util/AmplifyCurrentSession";
 const AppContainer = (props) => {
   const [loggedIn, setLoggedIn] = useState(true);
 
-  console.log(currentSession())
-//  getUserByPoolId(currentSession())
-//  .then((data) => JSON.parse(data))
-//        .then(data => console.log(data));
-        //var response=JSON.parse(res)
-//        console.log(res[0])
-//        if(res[3]!=500){
-//            setNewUser(false)
-//        }
-//        Object {
-//          "error": "Internal Server Error",
-//          "message": "No value present",
-//          "path": "/api/v1/user/%7Bid%7D",
-//          "status": 500,
-//          "timestamp": "2021-04-17T04:53:33.060+00:00",
-//        }
-      //{newUser ? ( <NewProfileStackScreen />) : ( <MainStackScreen />)}
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" />
@@ -41,23 +24,29 @@ const AppContainer = (props) => {
   );
 };
 
-const App = () => {
+const App =  () => {
   const [isReady, setIsReady] = useState(false);
   const [newUser, setNewUser] = useState(true);
 
-
   useEffect(() => {
-    console.log(currentSession())
-//    async ()=>{
-//              await getUserByPoolId(currentSession())
-//              //.then((data) => JSON.parse(data))
-//                    .then(data => console.log(data));}
+    //console.log(currentSession())
+ (async () => {
+      const fetchedPosts = await getUserByPoolId(currentSession());
+      //var r=JSON.parse(fetchedPosts);
+      console.log(fetchedPosts.body)
+      console.log(fetchedPosts.status)
+      if(fetchedPosts.status!='500'){
+        setNewUser(false);
+        console.log("in")
+      }
+      //setPosts(fetchedPosts);
+    })();
+
     // Font.loadAsync({
     //   Roboto: require("native-base/Fonts/Roboto.ttf"),
     //   Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
     //   ...Ionicons.font,
     // });
-
     setIsReady({ isReady: true });
   }, []);
 
