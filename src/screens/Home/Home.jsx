@@ -52,8 +52,8 @@ const MainStack = createStackNavigator();
       const Home = () => {
           //if(Auth.user){
                     try{
-                    console.log(currentSession())
-                    //console.log(Auth.user)
+                    //console.log(currentSession())
+                    ////console.log(Auth.user)
                               return (
                                   <RootStack.Navigator mode="modal">
                                   <RootStack.Screen

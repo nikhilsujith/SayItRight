@@ -37,7 +37,7 @@ const VideoScreen = ({ navigation, route}) => {
       base64: true,
     });
 
-    // console.log(result);
+    // //console.log(result);
 
     if (!result2.cancelled) {
       setVideoUri(result2.uri);
@@ -47,7 +47,7 @@ const VideoScreen = ({ navigation, route}) => {
 
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
-    console.log(uri);
+    //console.log(uri);
   };
 
 

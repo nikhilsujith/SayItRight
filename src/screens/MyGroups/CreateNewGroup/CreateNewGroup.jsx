@@ -10,7 +10,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const CreateNewGroup = () => {
   return (
-    <ScrollView>
+    <View>
       <View>
         <Text>Image Picker Goes Here</Text>
       </View>
@@ -22,7 +22,7 @@ const CreateNewGroup = () => {
       <Item style={{flex: 1, alignSelf: 'center'}}>
         <Button title="Create Group"/>
       </Item>
-    </ScrollView>
+    </View>
   );
 };
 

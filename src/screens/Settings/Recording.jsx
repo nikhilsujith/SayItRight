@@ -55,7 +55,7 @@ const Recording=({ navigation , route })=>{
       if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
-        console.log('picture source', source);
+        //console.log('picture source', source);
       }
     }
   };
@@ -73,7 +73,7 @@ const Recording=({ navigation , route })=>{
 
           if (source) {
             setIsPreview(true);
-            console.log('video source', source);
+            //console.log('video source', source);
             setVideoSource(source);
           }
         }
@@ -137,7 +137,7 @@ const Recording=({ navigation , route })=>{
         disabled={!isCameraReady}
         onLongPress={recordVideo}
         // onPress={() => {
-        //   console.log('::::::::::', props.navigation);
+        //   //console.log('::::::::::', props.navigation);
         //   props.navigation.push(Play);
         // }}
         onPressOut={stopVideoRecording}
@@ -198,7 +198,7 @@ const Recording=({ navigation , route })=>{
           flashMode={Camera.Constants.FlashMode.on}
           onCameraReady={onCameraReady}
           onMountError={(error) => {
-            console.log('cammera error', error);
+            //console.log('cammera error', error);
           }}
         />
       )}

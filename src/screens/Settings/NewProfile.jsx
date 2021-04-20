@@ -57,7 +57,7 @@ const UserDetails = ({ navigation }) => {
       base64: true,
     });
 
-    // console.log(result);
+    // //console.log(result);
 
     if (!result.cancelled) {
       setImageUri(result.uri);
@@ -99,17 +99,17 @@ const UserDetails = ({ navigation }) => {
 
   const onAudioSelected = (uri) => {
       setVideoUri(uri);
-      console.log(uri);
+      //console.log(uri);
     };
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
-    console.log(uri);
+    //console.log(uri);
   };
 
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
-    console.log(uri);
+    //console.log(uri);
   };
 
   return (

@@ -39,7 +39,7 @@ const CreateNewGroup = (props) => {
       base64: true,
     });
 
-    // console.log(result);
+    // //console.log(result);
 
     if (!result.cancelled) {
       setImageUri(result.uri);
@@ -50,7 +50,7 @@ const CreateNewGroup = (props) => {
   // Get current session ID
   // let cognitoPoolId = Auth.user.attributes.sub;
 
-  // console.log(Auth.user.attributes);
+  // //console.log(Auth.user.attributes);
 
   const handleCreateButton = () => {
     // if (groupName.length > 0 && groupDesc.length > 0 && cognitoPoolId != '') {

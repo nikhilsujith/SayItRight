@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Platform, View, Image, Text, SafeAreaView } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Audio, Video } from "expo-av";
-import { VideoScreen } from "./VideoScreen";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import theme from "../../constants/theme";
 
 import { logout } from "../../util/CustomAmplifyAuth";
 
@@ -57,7 +53,7 @@ const UserDetails = ({ navigation }) => {
       base64: true,
     });
 
-    // console.log(result);
+    // //console.log(result);
 
     if (!result.cancelled) {
       setImageUri(result.uri);
@@ -85,35 +81,26 @@ const UserDetails = ({ navigation }) => {
           );
         }
       });
-      // uploadVideoCamera(videoSource, base64Image).then((result) => {
-      //   if (result.status === 200) {
-      //     alert("Video uploaded successfully");
-      //   } else {
-      //     alert(
-      //       "Oops! There was an error uploading your details. Please try again later."
-      //     );
-      //   }
-      // });
     }
   };
 
   const onAudioSelected = (uri) => {
       setVideoUri(uri);
-      console.log(uri);
+      //console.log(uri);
     };
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
-    console.log(uri);
+    //console.log(uri);
   };
 
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
-    console.log(uri);
+    //console.log(uri);
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
         <TouchableOpacity onPress={pickImage}>
           {imageUri ? (
@@ -210,27 +197,21 @@ const UserDetails = ({ navigation }) => {
           AUDIO ICON | VIDEO ICON
         </Text>
       </TouchableOpacity>
-
       <TouchableOpacity
               style={styles.saveButton}
               onPress={() => logout()}
             >
               <Text style={styles.saveButtonText}>Logout</Text>
             </TouchableOpacity>
-    </View>
-  );
-  return (
-    <SafeAreaView>
-      <NameCard />
-    </SafeAreaView>
-  );
+    </ScrollView>
+  )
 };
 
 const { width } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
   },
   input: {
     borderColor: "black",

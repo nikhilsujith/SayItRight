@@ -93,9 +93,6 @@ export const MyGroupsScreen = ({ navigation }) => {
         </Tabs>
       </ScrollView>
       <View style={{ flex: 1 }}>
-        {/* <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
-          <Icon style={{color: theme.secondary.color}} name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
-        </Fab> */}
         <FloatingActionButton
           onPress={() => navigation.navigate("CreateNewGroup")}
         />

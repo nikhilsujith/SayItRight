@@ -11,7 +11,7 @@ const LoadingIndicator = () => {
             justifyContent: "center",
           }}
         >
-          <ActivityIndicator color='black' size="large" />
+          <ActivityIndicator color='rgba(74,21,75,1)' size="large" />
           <Text>Loading</Text>
         </View>
       </View>

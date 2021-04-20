@@ -6,6 +6,6 @@ export async function logout() {
         alert("Logged Out");
     } catch (error) {
         alert("There was an error while trying to logout. Please try again")
-        console.log('error signing out: ', error);
+        //console.log('error signing out: ', error);
     }
 }

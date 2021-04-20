@@ -18,6 +18,6 @@ export const imageUpload = async (uri, image) => {
       body: formData,
     });
   } catch (error) {
-    console.log('error', error);
+    //console.log('error', error);
   }
 };

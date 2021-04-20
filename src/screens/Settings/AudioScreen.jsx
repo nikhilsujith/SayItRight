@@ -67,12 +67,12 @@ const AudioScreen = ({ navigation, route}) => {
     }
       const uploadS3 = () => {
         RNS3.put(file, options).then(response => {
-             console.log(response)
+             //console.log(response)
              if (response.status !== 201)
                throw new Error("Failed to upload image to S3");
-             console.log(response.body.location);
+             //console.log(response.body.location);
              setAudioUri(response.body.location)
-             console.log(response.body);
+             //console.log(response.body);
              navigation.pop()
              /**
               * {
@@ -90,18 +90,18 @@ const AudioScreen = ({ navigation, route}) => {
   async function startRecording() {
     setIsRecording(true)
     try {
-      console.log('Requesting permissions..');
+      //console.log('Requesting permissions..');
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       });
-      console.log('Starting recording..');
+      //console.log('Starting recording..');
       const recording = new Audio.Recording();
       await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       await recording.startAsync();
       setRecording(recording);
-      console.log('Recording started');
+      //console.log('Recording started');
     } catch (err) {
       console.error('Failed to start recording', err);
     }
@@ -109,7 +109,7 @@ const AudioScreen = ({ navigation, route}) => {
 
   async function stopRecording() {
     setIsRecording(false)
-    console.log('Stopping recording..');
+    //console.log('Stopping recording..');
     setRecording(undefined);
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
@@ -117,28 +117,28 @@ const AudioScreen = ({ navigation, route}) => {
     setAudioDuration(recording.durationMillis)
 //    const { dir_sound } = await this.recording.createNewLoadedSoundAsync
 //    setSound(dir_sound);
-    console.log('Recording stopped and stored at', uri);
+    //console.log('Recording stopped and stored at', uri);
   }
 
   async function playSound() {
-      console.log('Loading Sound');
+      //console.log('Loading Sound');
       const file_path2=audioFile.toString()
               const { sound } = await Audio.Sound.createAsync(
                  { uri: file_path2 }
               );
       setSound(sound);
-      console.log('Playing Sound');
+      //console.log('Playing Sound');
       //setIsPlaying(true);
       await sound.playAsync();
       //setIsPlaying(false);
       }
 
   async function playOnlineSound() {
-        console.log('Loading Online Sound');
+        //console.log('Loading Online Sound');
                 const { sound } = await Audio.Sound.createAsync(
                    { uri: "https://s3.us-east-2.amazonaws.com/amplify-sayitright-dev-141916-deployment/audio/"+poolId+"_audio.caf" }
                 );
-      console.log('Playing Online Sound');
+      //console.log('Playing Online Sound');
       await sound.playAsync(); }
 
   return (

@@ -6,7 +6,7 @@ const defaultImage = {
   uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
 };
 
-function GroupCard({ style, cardTitle, cardDesc, cardImageLink }) {
+function GroupCard({ cardTitle, cardDesc, cardImageLink }) {
   let link = "";
   if (cardImageLink) {
     if (cardImageLink.length > 0) {
@@ -16,7 +16,7 @@ function GroupCard({ style, cardTitle, cardDesc, cardImageLink }) {
     link = defaultImage;
   }
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container]}>
       <View style={styles.groupCardTextAreaStack}>
         <View style={styles.groupCardTextArea}>
           <View style={styles.groupCardTitle}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cardDesc: {
-    color: "rgba(0,0,0,1)",
+    // color: "rgba(0,0,0,1)",
     fontSize: 14,
     height: 91,
     width: 216,
