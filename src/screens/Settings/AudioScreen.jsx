@@ -143,7 +143,7 @@ const AudioScreen = ({ navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.liveText]}>{isRecording ? "LIVE" : ""}
+      <Text style={[styles.liveText]}>{isRecording ? "Recording" : ""}
       </Text>
        <TouchableOpacity
          onPress={recording ? stopRecording : startRecording}>

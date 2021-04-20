@@ -39,7 +39,7 @@ const UserDetails = ({ navigation }) => {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
+          alert("Camera Roll Permission Required");
         }
       }
     })();

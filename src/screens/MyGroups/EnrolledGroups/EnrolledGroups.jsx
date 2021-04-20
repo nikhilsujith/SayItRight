@@ -38,7 +38,6 @@ const EnrolledGroups = ({ navigation }) => {
   }, []);
   return (
     <View>
-      {/* <Button title='CLICK' onPress={()=>navigation.navigate('CreateNewGroup')} /> */}
       {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
         return groupCards({
           cardTitle: groupName,

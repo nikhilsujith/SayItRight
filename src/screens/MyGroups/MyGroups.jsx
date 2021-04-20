@@ -97,7 +97,7 @@ export const MyGroupsScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("CreateNewGroup")}
         />
       </View>
-      <View><BannerAds/></View>
+      {/* <View><BannerAds/></View> */}
     </Root>
   );
 };
