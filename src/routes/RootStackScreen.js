@@ -103,7 +103,7 @@ export const SettingsStackScreen = () => (
       name="SettingsVideoStack"
       component={VideoScreen}
       options={{
-        title: 'Settings',
+        title: 'Upload Video',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -117,7 +117,7 @@ export const SettingsStackScreen = () => (
       name="SettingsAudioStack"
       component={AudioScreen}
       options={{
-        title: 'Settings',
+        title: 'Upload Audio',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,

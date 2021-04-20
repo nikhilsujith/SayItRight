@@ -2,30 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Platform, View, Image, Text, SafeAreaView } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Audio, Video } from "expo-av";
-import { Fab } from 'native-base';
-import {theme} from '../../constants/theme';
-import { VideoScreen } from "./VideoScreen";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { Fab } from "native-base";
+import { theme } from "../../constants/theme";
 
-import { MaterialIcons } from '@expo/vector-icons'; 
-import { Foundation } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
-import { Ionicons } from '@expo/vector-icons'; 
 
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 
-import Rec from "./Rec";
-
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import { withAuthenticator } from "aws-amplify-react-native";
 
-import { NameCard } from "../../components";
-// import { uploadVideoCamera } from "../../service/User/VideoCameraService";
+import { FloatingActionButton, NameCard } from "../../components";
 
 const UserDetails = ({ navigation }) => {
   const [userName, setUserName] = useState("");
@@ -89,23 +82,19 @@ const UserDetails = ({ navigation }) => {
           );
         }
       });
-      
     }
   };
 
-  
-
   const onAudioSelected = (uri) => {
-      setVideoUri(uri);
-      console.log(uri);
-    };
+    setVideoUri(uri);
+    console.log(uri);
+  };
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
     console.log(uri);
   };
 
-  
   return (
     <View style={styles.container}>
       <View>
@@ -114,9 +103,9 @@ const UserDetails = ({ navigation }) => {
             <Image
               source={{ uri: imageUri }}
               style={{
-                height: 100,
-                width: 100,
-                paddingTop:30,
+                height: 150,
+                width: 150,
+                paddingTop: 30,
                 borderRadius: 100,
                 marginRight: 0,
                 marginTop: 30,
@@ -126,8 +115,8 @@ const UserDetails = ({ navigation }) => {
             <Image
               resizeMode="contain"
               style={{
-                height: 100,
-                width: 200,
+                height: 150,
+                width: 150,
                 borderRadius: 10,
                 marginRight: 0,
                 marginTop: 30,
@@ -138,67 +127,64 @@ const UserDetails = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.InputArea}>
-      <TextInput
-        placeholder="Name"
-        style={styles.input}
-        value={userName}
-        onChangeText={(val) => setUserName(val)}
-      />
-      
-      <TextInput
-        placeholder="Name Description"
-        style={styles.input}
-        value={nameDesc}
-        onChangeText={(val) => setNameDesc(val)}
-      />
-      <TextInput
-        placeholder="Meaning of the Name"
-        style={styles.input}
-        value={nameMeaning}
-        onChangeText={(val) => setNameMeaning(val)}
-      />
+        <TextInput
+          placeholder="Name"
+          style={styles.input}
+          value={userName}
+          onChangeText={(val) => setUserName(val)}
+        />
+
+        <TextInput
+          placeholder="Name Description"
+          style={styles.input}
+          value={nameDesc}
+          onChangeText={(val) => setNameDesc(val)}
+        />
+        <TextInput
+          placeholder="Meaning of the Name"
+          style={styles.input}
+          value={nameMeaning}
+          onChangeText={(val) => setNameMeaning(val)}
+        />
       </View>
       <View style={styles.button}>
-      <TouchableOpacity style={styles.audioIcon}
-        onPress={() =>navigation.push("SettingsAudioStack", {
-          onAudioSelected: onAudioSelected,
-        })}>
+        <TouchableOpacity
+          style={styles.audioIcon}
+          onPress={() =>
+            navigation.push("SettingsAudioStack", {
+              onAudioSelected: onAudioSelected,
+            })
+          }
+        >
           <MaterialIcons name="keyboard-voice" size={24} color="black" />
-        
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.videoIcon}
-        onPress={() =>
-          navigation.push("SettingsVideoStack", {
-            onVideoSelected: onVideoSelected,
-          })
-        }
-      >
-        <Foundation name="video" size={24} color="black" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.videoIcon}
+          onPress={() =>
+            navigation.push("SettingsVideoStack", {
+              onVideoSelected: onVideoSelected,
+            })
+          }
+        >
+          <Foundation name="video" size={24} color="black" />
+        </TouchableOpacity>
       </View>
       <View style={styles.SaveArea}>
-      <TouchableOpacity
-        style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
-        onPress={handleSaveButton}
-        disabled={disableSave}
-      >
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
+          onPress={handleSaveButton}
+          disabled={disableSave}
+        >
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-      <TouchableOpacity
-              style={styles.Logout}
-              onPress={logout}
-      >
-             
-        <Fab style={{ backgroundColor: theme.secondary.backgroundColor }} position="bottomRight"> 
-       <TouchableOpacity><MaterialIcons name="logout" size={24} color="black"  /></TouchableOpacity> 
-        </Fab>
-            
-      </TouchableOpacity>
-    </View>
+      <View style={{ flex: 1 }}>
+        <FloatingActionButton
+          onPress={() => logout()}
+          icon={<MaterialIcons name="logout" size={24} color="black" />}
+        />
+      </View>
     </View>
   );
   return (
@@ -226,15 +212,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  SaveArea:{
-    alignContent:'center',
-    marginRight:150,
+  SaveArea: {
+    alignContent: "center",
+    marginRight: 150,
   },
 
-  Logout:{
-    position: 'absolute',
-    top:100,
-    left:130,
+  Logout: {
+    position: "absolute",
+    top: 100,
+    left: 130,
     borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
@@ -242,8 +228,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  InputArea:{
-    marginTop:50,
+  InputArea: {
+    // marginTop: 50,
   },
 
   action: {
@@ -252,14 +238,14 @@ const styles = StyleSheet.create({
   textInput1: {
     marginBottom: 10,
   },
-  button:{
-    flexDirection: 'row',
+  button: {
+    flexDirection: "row",
     marginTop: 100,
   },
 
   saveButton: {
-    position: 'absolute',
-    bottom:50,
+    position: "absolute",
+    bottom: 50,
     borderRadius: 10,
     paddingHorizontal: 70,
     paddingVertical: 5,
@@ -267,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginRight:10,
+    marginRight: 10,
   },
   audioIcon: {
     borderRadius: 10,
@@ -277,8 +263,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: 5,
-    marginBottom:100,
-    
+    marginBottom: 100,
+
     borderWidth: 1,
   },
   videoIcon: {
@@ -304,4 +290,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (Auth.user)?UserDetails:withAuthenticator(UserDetails);
+export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
