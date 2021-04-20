@@ -8,7 +8,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import theme from "../../constants/theme";
 
 import * as ImagePicker from "expo-image-picker";
-import { imageUpload } from "../../service/ImageUpload.js";
+import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 
 import Rec from "./Rec";
@@ -58,6 +58,7 @@ const UserDetails = ({ navigation }) => {
   };
 
   const handleSaveButton = () => {
+    
     if (userName.length > 0 && nameDesc.length > 0) {
       imageUpload(imageUri, base64Image).then((result) => {
         if (result.status === 200) {
@@ -77,16 +78,9 @@ const UserDetails = ({ navigation }) => {
           );
         }
       });
-      // uploadVideoCamera(videoSource, base64Image).then((result) => {
-      //   if (result.status === 200) {
-      //     alert("Video uploaded successfully");
-      //   } else {
-      //     alert(
-      //       "Oops! There was an error uploading your details. Please try again later."
-      //     );
-      //   }
-      // });
+      navigation.push("MyGroupsStackScreen");
     }
+    navigateToGroups();
   };
 
   const onVideoSelected = (uri) => {
@@ -94,6 +88,9 @@ const UserDetails = ({ navigation }) => {
     console.log(uri);
   };
 
+  const navigateToGroups = () =>{
+    navigation.push("MyGroupsStackScreen");
+  }
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
     console.log(uri);
@@ -107,10 +104,9 @@ const UserDetails = ({ navigation }) => {
             <Image
               source={{ uri: imageUri }}
               style={{
-                height: 100,
-                width: 100,
+                height: 200,
+                width: 200,
                 borderRadius: 100,
-                marginRight: 270,
                 marginTop: 20,
               }}
             />
@@ -118,10 +114,9 @@ const UserDetails = ({ navigation }) => {
             <Image
               resizeMode="contain"
               style={{
-                height: 100,
+                height: 200,
                 width: 200,
-                borderRadius: 10,
-                marginRight: 270,
+                borderRadius: 100,
                 marginTop: 20,
               }}
               source={require("../../../assets/icon.png")}
@@ -148,7 +143,7 @@ const UserDetails = ({ navigation }) => {
         onChangeText={(val) => setNameMeaning(val)}
       />
 
-      <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
+      <TouchableOpacity style={styles.saveButton} onPress={(handleSaveButton)}>
         <Text style={styles.saveButtonText}>Audio</Text>
       </TouchableOpacity>
 
@@ -166,12 +161,13 @@ const UserDetails = ({ navigation }) => {
       <TouchableOpacity
         style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
         onPress={handleSaveButton}
+        
         disabled={disableSave}
       >
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
 
-      {/* Hey Deeksha, take a look at this */}
+      {/* Hey Deeksha, take a look at this
       <TouchableOpacity
         onPress={() => alert('Split this navigation between 2 buttons :)')}
         style={[
@@ -193,7 +189,7 @@ const UserDetails = ({ navigation }) => {
         >
           AUDIO ICON | VIDEO ICON
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
   return (
