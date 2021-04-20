@@ -12,4 +12,6 @@ export { default as UsersInGroup } from './Users/UsersInGroup.jsx';
 // Settings
 export { default as UserDetails } from './Settings/UserDetails.jsx';
 export { default as VideoScreen } from './Settings/VideoScreen.jsx';
+export { default as AudioScreen } from './Settings/AudioScreen.jsx';
+export { default as NewProfile } from './Settings/NewProfile.jsx';
 export { default as Recording } from './Settings/Recording.jsx';

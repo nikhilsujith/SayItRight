@@ -1,5 +1,15 @@
 // API
 
+// get user by poolid
+export const getUserByPoolId = async (id) => {
+     //setTimeout(async() => {
+        const response = await fetch('https://say-it-right.herokuapp.com/api/v1/user/'+id);
+                  const body = await response.json();
+                  const status=await response.status
+                  return {'status':status,'body':body};
+    //}, 5000);
+};
+
 // fetch enrolled groups
 export const fetchEnrolledGroups = (id) => {
   const tempId = "p1";

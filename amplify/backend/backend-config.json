@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "sayitright81f361fe": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

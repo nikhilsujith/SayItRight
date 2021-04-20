@@ -1,6 +1,6 @@
 import mime from 'mime';
 export const uploadVideoAsync = async (uri, video) => {
-  const url = 'https://say-it-right.herokuapp.com/api/v1/user/video/upload/p1';
+  const url = 'https://say-it-right.herokuapp.com/api/v1/user/file/upload/p1';
   const newVideoUri = 'file:///' + uri.split('file:/').join('');
 
   try {

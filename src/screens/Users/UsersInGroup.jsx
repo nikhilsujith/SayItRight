@@ -19,6 +19,10 @@ import {
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
 import { LoadingIndicator } from "../../components";
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
+import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 const TempHeader = ({ navigation, title }) => {
   return (
@@ -112,7 +116,7 @@ const UsersInGroup = ({ navigation, route }) => {
   );
 };
 
-export default UsersInGroup;
+export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
 const styles = StyleSheet.create({
   root: {
     borderRadius: 10,
