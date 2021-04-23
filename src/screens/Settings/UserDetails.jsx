@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, SafeAreaView } from "react-native";
+import { Platform, View, Image, Text, SafeAreaView, YellowBox } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Fab } from "native-base";
-import { theme } from "../../constants/theme";
-
 import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
-
+import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
-
+import { uploadAuido } from "../../service/User/Audio";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
@@ -20,15 +17,19 @@ import { withAuthenticator } from "aws-amplify-react-native";
 
 import { FloatingActionButton, NameCard } from "../../components";
 
+  const window = Dimensions.get('window');
+  const screen = Dimensions.get('screen');
+
 const UserDetails = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [nameDesc, setNameDesc] = useState("");
   const [nameMeaning, setNameMeaning] = useState("");
   const [imageUri, setImageUri] = useState(null);
-  const [audioUri, setAudioUri] = useState(null);
   const [videoUri, setVideoUri] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
   const [videoSource, setVideoSource] = useState(null);
+  const [audioUri, setAudioUri] = useState(null);
+  const [dimensions, setDimensions] = useState({ window, screen });
 
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
@@ -44,7 +45,17 @@ const UserDetails = ({ navigation }) => {
         }
       }
     })();
+    Dimensions.addEventListener('change', onChange);
+    return () => {
+      Dimensions.removeEventListener('change', onChange);
+    };
   }, []);
+  
+  const onChange = ({ window, screen }) => {
+    setDimensions({ window, screen });
+  };
+
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -63,13 +74,14 @@ const UserDetails = ({ navigation }) => {
   };
 
   const handleSaveButton = () => {
+    console.log(":::::::::::HANDLE SAVE:::::::::")
     if (userName.length > 0 && nameDesc.length > 0) {
       imageUpload(imageUri, base64Image).then((result) => {
         if (result.status === 200) {
           alert("Image uploaded successfully");
         } else {
           alert(
-            "Oops! There was an error uploading your details. Please try again later."
+            "Oops! There was an error uploading your Image. Please try again later."
           );
         }
       });
@@ -78,7 +90,16 @@ const UserDetails = ({ navigation }) => {
           alert("Video uploaded successfully");
         } else {
           alert(
-            "Oops! There was an error uploading your details. Please try again later."
+            "Oops! There was an error uploading your Video. Please try again later."
+          );
+        }
+      });
+      uploadAuido(audioUri).then((result) => {
+        if (result.status === 200) {
+          alert("Audio uploaded successfully");
+        } else {
+          alert(
+            "Oops! There was an error uploading your Audio. Please try again later."
           );
         }
       });
@@ -86,7 +107,7 @@ const UserDetails = ({ navigation }) => {
   };
 
   const onAudioSelected = (uri) => {
-    setVideoUri(uri);
+    setAudioUri(uri);
     console.log(uri);
   };
 
@@ -147,7 +168,7 @@ const UserDetails = ({ navigation }) => {
           onChangeText={(val) => setNameMeaning(val)}
         />
       </View>
-      <View style={styles.button}>
+      <View style={{...styles.button,}}>
         <TouchableOpacity
           style={styles.audioIcon}
           onPress={() =>
@@ -160,7 +181,7 @@ const UserDetails = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.videoIcon}
+          style={{...styles.videoIcon }}
           onPress={() =>
             navigation.push("SettingsVideoStack", {
               onVideoSelected: onVideoSelected,
@@ -170,19 +191,19 @@ const UserDetails = ({ navigation }) => {
           <Foundation name="video" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.SaveArea}>
+      
+      {/* <View style={{...styles.SaveArea}}> */}
         <TouchableOpacity
-          style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
+          style={{ ...styles.saveButton,  opacity: disableSave ? 0.5 : 1, marginTop: 30}}
           onPress={handleSaveButton}
           disabled={disableSave}
         >
-          <Text style={styles.saveButtonText}>Save</Text>
+         <Entypo name="save" size={24} color="black" />
         </TouchableOpacity>
-      </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, left:180, top:10 }}>
         <FloatingActionButton
           onPress={() => logout()}
-          icon={<MaterialIcons name="logout" size={24} color="black" />}
+          icon={<MaterialIcons name="logout"  color="black" />}
         />
       </View>
     </View>
@@ -214,13 +235,15 @@ const styles = StyleSheet.create({
 
   SaveArea: {
     alignContent: "center",
-    marginRight: 150,
+    marginRight: 100,
+    top: 100,
+    
   },
 
   Logout: {
     position: "absolute",
     top: 100,
-    left: 130,
+    left: 300,
     borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
@@ -240,20 +263,18 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: "row",
-    marginTop: 100,
+    marginTop: 30,
   },
 
   saveButton: {
-    position: "absolute",
-    bottom: 50,
     borderRadius: 10,
-    paddingHorizontal: 70,
+    paddingHorizontal: 40,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginRight: 10,
+    marginRight: 0,
   },
   audioIcon: {
     borderRadius: 10,
@@ -263,8 +284,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: 5,
-    marginBottom: 100,
-
     borderWidth: 1,
   },
   videoIcon: {
