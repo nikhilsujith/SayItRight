@@ -34,11 +34,11 @@ const App = () => {
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
       //var r=JSON.parse(fetchedPosts);
-      console.log(fetchedPosts.body);
-      console.log(fetchedPosts.status);
+      //console.log(fetchedPosts.body);
+      //console.log(fetchedPosts.status);
       if (fetchedPosts.status != '500') {
         setNewUser(false);
-        console.log('in');
+        //console.log('in');
       }
       //setPosts(fetchedPosts);
     })();

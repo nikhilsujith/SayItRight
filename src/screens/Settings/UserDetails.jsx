@@ -7,14 +7,15 @@ import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
 import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
+import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 import { uploadAuido } from "../../service/User/Audio";
+import { currentSession } from '../../util/AmplifyCurrentSession';
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
-
 import { FloatingActionButton, NameCard } from "../../components";
 
   const window = Dimensions.get('window');
@@ -22,6 +23,7 @@ import { FloatingActionButton, NameCard } from "../../components";
 
 const UserDetails = ({ navigation }) => {
   const [userName, setUserName] = useState("");
+  const [userObject, setUserObject] = useState("");
   const [nameDesc, setNameDesc] = useState("");
   const [nameMeaning, setNameMeaning] = useState("");
   const [imageUri, setImageUri] = useState(null);
@@ -45,6 +47,7 @@ const UserDetails = ({ navigation }) => {
         }
       }
     })();
+
     Dimensions.addEventListener('change', onChange);
     return () => {
       Dimensions.removeEventListener('change', onChange);
@@ -73,8 +76,21 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
-  const handleSaveButton = () => {
+  const handleSaveButton = async() => {
     console.log(":::::::::::HANDLE SAVE:::::::::")
+
+//     (async () => {
+          const fetchedPosts = await getUserByPoolId(currentSession());
+          //var r=JSON.parse(fetchedPosts);
+          //console.log(fetchedPosts.body);
+          //console.log(fetchedPosts.status);
+          if (fetchedPosts.status != '500') {
+            setUserObject(fetchedPosts.body);
+            //console.log(userObject);
+            console.log('User details fetch success');
+          }
+//          })();
+
     if (userName.length > 0 && nameDesc.length > 0) {
       imageUpload(imageUri, base64Image).then((result) => {
         if (result.status === 200) {
