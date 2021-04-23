@@ -5,6 +5,7 @@ import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
@@ -24,7 +25,7 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
 };
 const CreatedGroups = ({ navigation, enrolledGroups }) => {
   return (
-    <View>
+    <ScrollView>
       {enrolledGroups &&
         enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
@@ -35,7 +36,7 @@ const CreatedGroups = ({ navigation, enrolledGroups }) => {
             navigation: navigation,
           });
         })}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,36 +1,45 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Button } from "react-native";
+import { GroupCardV2 } from "..";
 import { theme } from "../../constants/theme";
 
-const defaultImage = {
-  uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
-};
+const defaultImage =  "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG";
 
 function GroupCard({ cardTitle, cardDesc, cardImageLink }) {
-  let link = "";
+  let imagelink = "";
   if (cardImageLink) {
     if (cardImageLink.length > 0) {
-      link = { uri: cardImageLink };
+      imagelink = cardImageLink;
     }
   } else {
-    link = defaultImage;
+    imagelink = defaultImage;
   }
   return (
-    <View style={[styles.container]}>
-      <View style={styles.groupCardTextAreaStack}>
-        <View style={styles.groupCardTextArea}>
-          <View style={styles.groupCardTitle}>
-            <Text style={styles.cardTitle}>{cardTitle}</Text>
-          </View>
-          <View style={styles.groupCardDesc}>
-            <Text style={styles.cardDesc}>{cardDesc}</Text>
-          </View>
-        </View>
-        <View style={styles.groupCardImageContainer}>
-          <Image source={link} resizeMode="cover" style={styles.image3}></Image>
-        </View>
-      </View>
-    </View>
+    <GroupCardV2 
+      title = {cardTitle}
+      caption = {cardDesc}
+      image = {imagelink}
+      creatorAvatar = {'https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG'}
+    />
+
+
+    // DO NOT DELETE---------------
+
+    // <View style={[styles.container]}>
+    //   <View style={styles.groupCardTextAreaStack}>
+    //     <View style={styles.groupCardTextArea}>
+    //       <View style={styles.groupCardTitle}>
+    //         <Text style={styles.cardTitle}>{cardTitle}</Text>
+    //       </View>
+    //       <View style={styles.groupCardDesc}>
+    //         <Text style={styles.cardDesc}>{cardDesc}</Text>
+    //       </View>
+    //     </View>
+    //     <View style={styles.groupCardImageContainer}>
+    //       <Image source={link} resizeMode="cover" style={styles.image3}></Image>
+    //     </View>
+    //   </View>
+    // </View>
   );
 }
 

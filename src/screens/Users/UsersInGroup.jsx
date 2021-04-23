@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, StyleSheet } from "react-native";
+import { View, StatusBar, StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import {
   Container,
   Header,
@@ -22,7 +22,6 @@ import { LoadingIndicator } from "../../components";
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
 Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 const TempHeader = ({ navigation, title }) => {
   return (
@@ -31,12 +30,10 @@ const TempHeader = ({ navigation, title }) => {
         <Icon name="arrow-back" onPress={() => navigation.goBack()} />
         <Text
           style={{
-            flex: 3,
-            justifyContent: "space-between",
-            marginLeft: 20,
-            textAlign: "center",
+            textAlign: 'center',
+            flex: '100%',
             fontSize: 17,
-            fontWeight: "700",
+            fontWeight: "500",
           }}
         >
           {title}
@@ -96,7 +93,7 @@ const UsersInGroup = ({ navigation, route }) => {
   }, []);
 
   return (
-    <>
+    <SafeAreaView>
       <TempHeader navigation={navigation} title={groupNameState} />
       <ScrollView>
         {users.length > 0
@@ -112,11 +109,12 @@ const UsersInGroup = ({ navigation, route }) => {
             })
           : (<LoadingIndicator/>)}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
-export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
+export default UsersInGroup;
+
 const styles = StyleSheet.create({
   root: {
     borderRadius: 10,

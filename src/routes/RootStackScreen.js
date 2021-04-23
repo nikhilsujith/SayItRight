@@ -8,6 +8,7 @@ import {
   AudioScreen,
   NewProfile,
   Recording,
+  UsersInGroup,
 } from '../screens';
 
 import { theme } from '../constants/theme';
@@ -160,6 +161,21 @@ export const MyGroupsStackScreen = () => (
         headerTintColor: theme.primary.color,
       }}
     />
+
+    {/* <MyGroupsStack.Screen
+      name="UsersInGroup"
+      component={UsersInGroup}
+      options={{
+        title: 'Groups',
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    /> */}
   </MyGroupsStack.Navigator>
 );
 

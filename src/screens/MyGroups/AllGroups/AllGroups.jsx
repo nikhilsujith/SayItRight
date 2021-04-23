@@ -23,7 +23,7 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
 const AllGroups = ({ navigation, allGroups }) => {
   // console.log(allGroups);
   return (
-    <View>
+    <ScrollView>
       {allGroups &&
         allGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
@@ -34,7 +34,7 @@ const AllGroups = ({ navigation, allGroups }) => {
             navigation: navigation,
           });
         })}
-    </View>
+    </ScrollView>
   );
 };
 
