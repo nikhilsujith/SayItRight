@@ -98,6 +98,7 @@ export const MyGroupsScreen = ({ navigation }) => {
         </Fab> */}
         <FloatingActionButton
           onPress={() => navigation.navigate("CreateNewGroup")}
+          icon={<Icon name="add"/> }
         />
       </View>
       <View><BannerAds/></View>
@@ -125,4 +126,4 @@ const MyGroups = () => {
     </RootStack.Navigator>
   );
 };
-export default (Auth.user)?MyGroups:withAuthenticator(MyGroups);
+export default MyGroups;
