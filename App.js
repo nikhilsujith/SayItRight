@@ -43,7 +43,6 @@ const App = () => {
     return <LoadingIndicator />;
   }
 };
-//
 
 export default Auth.user ? App : withAuthenticator(App);
 
