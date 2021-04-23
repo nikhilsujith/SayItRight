@@ -25,9 +25,9 @@ export const fetchEnrolledGroups = (id) => {
 
 // Fetch created groups
 export const fetchCreatedGroups = (id) => {
-    const tempId = "p1";
+  alert(id);
     try {
-      const url = `https://say-it-right.herokuapp.com/api/v1/user/created?id=${tempId}`;
+      const url = `https://say-it-right.herokuapp.com/api/v1/user/created?id=${id}`;
       return fetch(url).then((data) => data.json());
       // .then(data => console.log(data))
     } catch (error) {

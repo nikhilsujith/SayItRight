@@ -4,6 +4,7 @@ import { FloatingActionButton, GroupCard } from "../../../components";
 import { fetchCreatedGroups } from "../../../service/User/UserService";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { currentSession } from "../../../util/AmplifyCurrentSession";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -24,10 +25,13 @@ const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
   );
 };
 
-const MyGroupsScreen = ({ navigation }) => {
+const CreatedGroups = ({ navigation }) => {
   const [myGroups, setMyGroupData] = useState([]);
-  useEffect(() => {
+  const [currentId, setCurrentId] = useState('');
+
+  useEffect( async () => {
     let mounted = true;
+    await setCurrentId(currentSession());
     fetchCreatedGroups().then((group) => {
       if (mounted) {
         setMyGroupData(group);
@@ -35,71 +39,54 @@ const MyGroupsScreen = ({ navigation }) => {
     });
     return () => (mounted = false);
   }, []);
+
+
   return (
     <View>
-      {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+      <Text>Hi</Text>
+      {/* {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
         return groupCards({
           cardTitle: groupName,
           cardDesc: groupDesc,
           cardImageLink: groupImage,
           id: id,
         });
-      })}
+      })} */}
     </View>
   );
 };
 
-function ModalScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 30 }}>This is a modal!</Text>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
-    </View>
-  );
-}
-function MainStackScreen() {
-  return (
-    <MainStack.Navigator>
-      <MainStack.Screen
-        name="MyGroupsScreen"
-        component={MyGroupsScreen}
-        options={{ headerShown: false }}
-      />
-    </MainStack.Navigator>
-  );
-}
+// const EnrolledGroups = ({ navigation }) => {
+//   const [myGroups, setMyGroupData] = useState([]);
+//   useEffect(() => {
+//     let mounted = true;
+//     fetchCreatedGroups().then((group) => {
+//       if (mounted) {
+//         setMyGroupData(group);
+//       }
+//     });
+//     return () => (mounted = false);
+//   }, []);
+//   return (
+//     <View>
+//       {/* {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+//         return groupCards({
+//           cardTitle: groupName,
+//           cardDesc: groupDesc,
+//           cardImageLink: groupImage,
+//           id: id,
+//         });
+//       })} */}
+//     </View>
+//     // <RootStack.Navigator mode="modal">
+//     //   <RootStack.Screen
+//     //     name="Main"
+//     //     component={MainStackScreen}
+//     //     options={{ headerShown: false }}
+//     //   />
+//     //   <RootStack.Screen name="MyModal" component={ModalScreen} />
+//     // </RootStack.Navigator>
+//   );
+// };
 
-const EnrolledGroups = ({ navigation }) => {
-  const [myGroups, setMyGroupData] = useState([]);
-  useEffect(() => {
-    let mounted = true;
-    fetchCreatedGroups().then((group) => {
-      if (mounted) {
-        setMyGroupData(group);
-      }
-    });
-    return () => (mounted = false);
-  }, []);
-  return (
-    <View>
-      {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
-        return groupCards({
-          cardTitle: groupName,
-          cardDesc: groupDesc,
-          cardImageLink: groupImage,
-          id: id,
-        });
-      })}
-    </View>
-    // <RootStack.Navigator mode="modal">
-    //   <RootStack.Screen
-    //     name="Main"
-    //     component={MainStackScreen}
-    //     options={{ headerShown: false }}
-    //   />
-    //   <RootStack.Screen name="MyModal" component={ModalScreen} />
-    // </RootStack.Navigator>
-  );
-};
-
-export default EnrolledGroups;
+export default CreatedGroups;
