@@ -22,7 +22,6 @@ const AppContainer = (props) => {
       {props.newUser ? <NewProfileStackScreen /> : <MainStackScreen />}
     </NavigationContainer>
   );
-  console.log('>>>>info::::::::::::', Auth.user.attributed.sub);
 };
 
 const App = () => {
@@ -30,17 +29,11 @@ const App = () => {
   const [newUser, setNewUser] = useState(true);
 
   useEffect(() => {
-    //console.log(currentSession())
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
-      //var r=JSON.parse(fetchedPosts);
-      console.log(fetchedPosts.body);
-      console.log(fetchedPosts.status);
       if (fetchedPosts.status != '500') {
         setNewUser(false);
-        console.log('in');
       }
-      //setPosts(fetchedPosts);
     })();
 
     // Font.loadAsync({
@@ -61,4 +54,3 @@ const App = () => {
 
 export default Auth.user ? App : withAuthenticator(App);
 
-//export default App;

@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, SafeAreaView, YellowBox } from "react-native";
+import {
+  Platform,
+  View,
+  Image,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
@@ -13,17 +19,16 @@ import { uploadAuido } from "../../service/User/Audio";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
-import { withAuthenticator } from "aws-amplify-react-native";
 
-import { FloatingActionButton, NameCard } from "../../components";
 
-  const window = Dimensions.get('window');
-  const screen = Dimensions.get('screen');
+import { FloatingActionButton } from "../../components";
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const UserDetails = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [nameDesc, setNameDesc] = useState("");
-  const [nameMeaning, setNameMeaning] = useState("");
   const [imageUri, setImageUri] = useState(null);
   const [videoUri, setVideoUri] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
@@ -31,8 +36,7 @@ const UserDetails = ({ navigation }) => {
   const [audioUri, setAudioUri] = useState(null);
   const [dimensions, setDimensions] = useState({ window, screen });
 
-  const disableSave =
-    userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
+  const disableSave = userName === "" || nameDesc === "" || !imageUri;
 
   useEffect(() => {
     (async () => {
@@ -45,17 +49,15 @@ const UserDetails = ({ navigation }) => {
         }
       }
     })();
-    Dimensions.addEventListener('change', onChange);
+    Dimensions.addEventListener("change", onChange);
     return () => {
-      Dimensions.removeEventListener('change', onChange);
+      Dimensions.removeEventListener("change", onChange);
     };
   }, []);
-  
+
   const onChange = ({ window, screen }) => {
     setDimensions({ window, screen });
   };
-
-
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,7 +76,7 @@ const UserDetails = ({ navigation }) => {
   };
 
   const handleSaveButton = () => {
-    console.log(":::::::::::HANDLE SAVE:::::::::")
+    console.log(":::::::::::HANDLE SAVE:::::::::");
     if (userName.length > 0 && nameDesc.length > 0) {
       imageUpload(imageUri, base64Image).then((result) => {
         if (result.status === 200) {
@@ -117,130 +119,124 @@ const UserDetails = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView style={{ alignSelf: "center" }}>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <TouchableOpacity onPress={pickImage}>
+            {imageUri ? (
+              <Image
+                source={{ uri: imageUri }}
+                // style={{
+                // height: 150,
+                // width: 150,
+                // paddingTop: 30,
+                // borderRadius: 100,
+                // marginRight: 0,
+                // marginTop: 30,
+                // }}
+                style={styles.imagePicker}
+              />
+            ) : (
+              <Image
+                resizeMode="contain"
+                style={styles.imagePicker}
+                source={require("../../../assets/icon.png")}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TextInput
+            placeholder="Name"
+            style={styles.input}
+            value={userName}
+            onChangeText={(val) => setUserName(val)}
+          />
+
+          <TextInput
+            placeholder="Name Description"
+            style={styles.input}
+            value={nameDesc}
+            onChangeText={(val) => setNameDesc(val)}
+          />
+        </View>
+        <View style={styles.avView}>
+          <TouchableOpacity
+            style={styles.audioIcon}
+            onPress={() =>
+              navigation.push("SettingsAudioStack", {
+                onAudioSelected: onAudioSelected,
+              })
+            }
+          >
+            <MaterialIcons name="keyboard-voice" size={24} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.videoIcon}
+            onPress={() =>
+              navigation.push("SettingsVideoStack", {
+                onVideoSelected: onVideoSelected,
+              })
+            }
+          >
+            <Foundation name="video" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={{
+              ...styles.saveButton,
+              opacity: disableSave ? 0.5 : 1,
+            }}
+            onPress={handleSaveButton}
+            disabled={disableSave}
+          >
+            <Entypo name="save" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
       <View>
-        <TouchableOpacity onPress={pickImage}>
-          {imageUri ? (
-            <Image
-              source={{ uri: imageUri }}
-              style={{
-                height: 150,
-                width: 150,
-                paddingTop: 30,
-                borderRadius: 100,
-                marginRight: 0,
-                marginTop: 30,
-              }}
-            />
-          ) : (
-            <Image
-              resizeMode="contain"
-              style={{
-                height: 150,
-                width: 150,
-                borderRadius: 10,
-                marginRight: 0,
-                marginTop: 30,
-              }}
-              source={require("../../../assets/icon.png")}
-            />
-          )}
-        </TouchableOpacity>
-      </View>
-      <View style={styles.InputArea}>
-        <TextInput
-          placeholder="Name"
-          style={styles.input}
-          value={userName}
-          onChangeText={(val) => setUserName(val)}
-        />
-
-        <TextInput
-          placeholder="Name Description"
-          style={styles.input}
-          value={nameDesc}
-          onChangeText={(val) => setNameDesc(val)}
-        />
-        <TextInput
-          placeholder="Meaning of the Name"
-          style={styles.input}
-          value={nameMeaning}
-          onChangeText={(val) => setNameMeaning(val)}
-        />
-      </View>
-      <View style={{...styles.button,}}>
-        <TouchableOpacity
-          style={styles.audioIcon}
-          onPress={() =>
-            navigation.push("SettingsAudioStack", {
-              onAudioSelected: onAudioSelected,
-            })
-          }
-        >
-          <MaterialIcons name="keyboard-voice" size={24} color="black" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{...styles.videoIcon }}
-          onPress={() =>
-            navigation.push("SettingsVideoStack", {
-              onVideoSelected: onVideoSelected,
-            })
-          }
-        >
-          <Foundation name="video" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      
-      {/* <View style={{...styles.SaveArea}}> */}
-        <TouchableOpacity
-          style={{ ...styles.saveButton,  opacity: disableSave ? 0.5 : 1, marginTop: 30}}
-          onPress={handleSaveButton}
-          disabled={disableSave}
-        >
-         <Entypo name="save" size={24} color="black" />
-        </TouchableOpacity>
-      <View style={{ flex: 1, left:180, top:10 }}>
         <FloatingActionButton
           onPress={() => logout()}
-          icon={<MaterialIcons name="logout"  color="black" />}
+          icon={<MaterialIcons name="logout" color="black" />}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
   return (
     <SafeAreaView>
-      <NameCard />
+      <Text>Oops, something went wrong</Text>
     </SafeAreaView>
   );
 };
 
-const { width } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
+const imageHeight = height * 0.2;
+const imageWidth = height * 0.2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
   },
+  imagePicker: {
+    height: imageHeight,
+    margin: height * 0.02,
+    width: imageWidth,
+    paddingTop: 30,
+    borderRadius: 100,
+    marginRight: 0,
+  },
   input: {
     borderColor: "black",
-    borderBottomWidth: 1,
-    width: width / 1.3,
+    borderBottomWidth: 0.5,
     paddingVertical: 10,
-    paddingHorizontal: 0,
+    paddingHorizontal: 10,
     marginTop: 30,
-  },
-  textFooter1: {
-    marginTop: 10,
+    elevation: 10,
   },
 
-  SaveArea: {
-    alignContent: "center",
-    marginRight: 100,
-    top: 100,
-    
-  },
-
-  Logout: {
+  logout: {
     position: "absolute",
     top: 100,
     left: 300,
@@ -251,50 +247,47 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  InputArea: {
-    // marginTop: 50,
-  },
-
-  action: {
-    height: 50,
-  },
-  textInput1: {
-    marginBottom: 10,
-  },
   button: {
     flexDirection: "row",
     marginTop: 30,
   },
-
   saveButton: {
+    backgroundColor: "black",
     borderRadius: 10,
-    paddingHorizontal: 40,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginRight: 0,
+    marginTop: height * 0.06,
+  },
+  avView: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: height * 0.1,
   },
   audioIcon: {
-    borderRadius: 10,
-    paddingHorizontal: 40,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    paddingHorizontal: width * 0.16,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 5,
     borderWidth: 1,
+    elevation: 10,
   },
   videoIcon: {
-    borderRadius: 10,
-    paddingHorizontal: 40,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    paddingHorizontal: width * 0.16,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginLeft: 5,
+    elevation: 10,
   },
   SignInForm: {
     width: width - 50,
@@ -309,4 +302,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
+// export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
+export default UserDetails;
