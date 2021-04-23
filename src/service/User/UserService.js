@@ -26,21 +26,8 @@ export const fetchEnrolledGroups = (id) => {
 
 // Fetch created groups
 export const fetchCreatedGroups = (id) => {
-<<<<<<< HEAD
-  alert(id);
-    try {
-      const url = `https://say-it-right.herokuapp.com/api/v1/user/created?id=${id}`;
-      return fetch(url).then((data) => data.json());
-      // .then(data => console.log(data))
-    } catch (error) {
-      alert("Fetch Group Error");
-      console.log(error);
-    }
-  };
-=======
-  const tempId = "p1";
   try {
-    const url = `https://say-it-right.herokuapp.com/api/v1/user/created?id=${tempId}`;
+    const url = `https://say-it-right.herokuapp.com/api/v1/user/created?id=${id}`;
     return fetch(url).then((data) => data.json());
     // .then(data => console.log(data))
   } catch (error) {
@@ -48,7 +35,6 @@ export const fetchCreatedGroups = (id) => {
     console.log(error);
   }
 };
->>>>>>> Deeksha
 
 export const enrollGroup = (groupId, poolId) => {
   groupIdTemp = "602e1d5e8bb978df6a913a29";

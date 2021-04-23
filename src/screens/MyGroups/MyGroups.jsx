@@ -56,7 +56,7 @@ export const MyGroupsScreen = ({ navigation }) => {
   const [allGroups, setAllGroupData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const currentUser = currentSession();
-  
+
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -86,14 +86,13 @@ export const MyGroupsScreen = ({ navigation }) => {
     return () => (mounted = false);
   }, [refreshing]);
 
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
-      contentContainerStyle={{ flex: 1 }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+        contentContainerStyle={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <Tabs
           renderTabBar={() => (
@@ -127,7 +126,10 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <CreatedGroups createdGroups={createdGroups} />
+            <CreatedGroups
+              navigation={navigation}
+              createdGroups={createdGroups}
+            />
           </Tab>
           <Tab
             heading="All"

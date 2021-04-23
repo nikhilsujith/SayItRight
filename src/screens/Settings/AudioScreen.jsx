@@ -144,12 +144,8 @@ const AudioScreen = ({ navigation, route}) => {
 
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
-      <Text style={[styles.liveText]}>{isRecording ? "Recording" : ""}
-=======
       <View style={{flexDirection:'column' , marginTop:250}}>
       <Text style={[styles.liveText]}>{isRecording ? "LIVE" : ""}
->>>>>>> Deeksha
       </Text>
       
        <TouchableOpacity
