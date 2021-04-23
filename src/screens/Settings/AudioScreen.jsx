@@ -11,6 +11,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
 Amplify.configure(awsconfig);
 import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import { Left } from 'native-base';
 
 const AudioScreen = ({ navigation, route}) => {
     const poolId=currentSession();
@@ -143,8 +144,14 @@ const AudioScreen = ({ navigation, route}) => {
 
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
       <Text style={[styles.liveText]}>{isRecording ? "Recording" : ""}
+=======
+      <View style={{flexDirection:'column' , marginTop:250}}>
+      <Text style={[styles.liveText]}>{isRecording ? "LIVE" : ""}
+>>>>>>> Deeksha
       </Text>
+      
        <TouchableOpacity
          onPress={recording ? stopRecording : startRecording}>
          <Text style={styles.actionText}>{recording ? 'Stop Recording' : 'Start Recording'}
@@ -159,9 +166,10 @@ const AudioScreen = ({ navigation, route}) => {
       <TouchableOpacity style={styles.saveButton} onPress={uploadS3}>
         <Text style={styles.saveButtonText}>Upload S3</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.saveButton} onPress={playOnlineSound}>
+      <TouchableOpacity style={styles.PlayButton} onPress={playOnlineSound}>
               <Text style={styles.saveButtonText}>Play Online Sound</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -174,18 +182,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButtonText: {
-    color: '#085DAD',
+    color: 'black',
     fontSize: 20,
   },
   saveButton: {
-    borderRadius: 50,
+    borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
-    borderColor: '#085DAD',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
+    marginTop:20,
+  },
+  PlayButton: {
+    borderRadius: 10,
+    paddingHorizontal: 40,
+    paddingVertical: 5,
+    borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    marginTop:20,
   },
   liveText: {
      color: 'red',

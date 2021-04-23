@@ -10,7 +10,7 @@ import theme from "../../constants/theme";
 import { logout } from "../../util/CustomAmplifyAuth";
 
 import * as ImagePicker from "expo-image-picker";
-import { imageUpload } from "../../service/ImageUpload.js";
+import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 
 import Rec from "./Rec";

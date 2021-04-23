@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { View, Text, Platform, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -90,24 +90,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButtonText: {
-    color: '#085DAD',
+    color: 'black',
     fontSize: 20,
   },
   saveButton: {
-    borderRadius: 50,
+    borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
-    borderColor: '#085DAD',
+    borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
     borderWidth: 1,
   },
   Gallery: {
-    borderRadius: 50,
+    borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
-    borderColor: '#085DAD',
+    borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 200,

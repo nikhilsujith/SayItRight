@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Container,
   Header,
@@ -12,6 +12,7 @@ import {
   Button,
   Root,
 } from "native-base";
+import { RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import EnrolledGroups from "./EnrolledGroups/EnrolledGroups";
 import CreatedGroups from "./CreatedGroups/CreatedGroups";
@@ -20,13 +21,19 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "../../constants/theme";
 import { AllGroups, UsersInGroup } from "..";
 import { Dimensions, SafeAreaView, StatusBar } from "react-native";
-import { SettingsStackScreen } from "../../routes";
 import { FloatingActionButton, BannerAds } from "../../components";
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import { withAuthenticator } from "aws-amplify-react-native";
+
+import {
+  fetchEnrolledGroups,
+  fetchCreatedGroups,
+} from "../../service/User/UserService";
+import { fetchAllGroups } from "../../service/Group/GroupService";
+import { currentSession } from "../../util/AmplifyCurrentSession";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -44,9 +51,50 @@ const MyGroupsStackScreen = () => {
 };
 
 export const MyGroupsScreen = ({ navigation }) => {
+  const [enrolledGroups, setEnrolledGroups] = useState([]);
+  const [createdGroups, setCreatedGroups] = useState([]);
+  const [allGroups, setAllGroupData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const currentUser = currentSession();
+  
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchEnrolledGroups(currentUser).then((group) => {
+      if (mounted) {
+        setEnrolledGroups(group);
+      }
+    });
+    fetchCreatedGroups(currentUser).then((group) => {
+      if (mounted) {
+        setCreatedGroups(group);
+      }
+    });
+    fetchAllGroups().then((group) => {
+      if (mounted) {
+        setAllGroupData(group);
+      }
+    });
+    return () => (mounted = false);
+  }, [refreshing]);
+
+
   return (
-    <Root>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView
+      contentContainerStyle={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      >
         <Tabs
           renderTabBar={() => (
             <ScrollableTab
@@ -64,7 +112,10 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <EnrolledGroups navigation={navigation} />
+            <EnrolledGroups
+              navigation={navigation}
+              enrolledGroups={enrolledGroups}
+            />
           </Tab>
           <Tab
             heading="Owned"
@@ -76,7 +127,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <CreatedGroups />
+            <CreatedGroups createdGroups={createdGroups} />
           </Tab>
           <Tab
             heading="All"
@@ -88,17 +139,20 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups />
+            <AllGroups allGroups={allGroups} />
           </Tab>
         </Tabs>
       </ScrollView>
-      <View style={{ flex: 1 }}>
-        <FloatingActionButton
-          onPress={() => navigation.navigate("CreateNewGroup")}
-        />
+      <View>
+        <View style={{ flex: 1 }}>
+          <FloatingActionButton
+            onPress={() => navigation.navigate("CreateNewGroup")}
+            icon={<Icon name="add" />}
+          />
+        </View>
+        {/* <BannerAds /> */}
       </View>
-      {/* <View><BannerAds/></View> */}
-    </Root>
+    </SafeAreaView>
   );
 };
 
@@ -122,4 +176,5 @@ const MyGroups = () => {
     </RootStack.Navigator>
   );
 };
-export default (Auth.user)?MyGroups:withAuthenticator(MyGroups);
+// export default Auth.user ? MyGroups : withAuthenticator(MyGroups);
+export default MyGroups;

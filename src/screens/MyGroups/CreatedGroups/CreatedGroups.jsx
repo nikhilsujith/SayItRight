@@ -6,7 +6,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { currentSession } from "../../../util/AmplifyCurrentSession";
 
-const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
 
 const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
@@ -14,7 +13,13 @@ const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
   const x =
     "https://say-it-right-bucket.s3.amazonaws.com/testPool/test.jpeg-882943ae-9e92-4458-9f5e-25406adfb02d";
   return (
-    <TouchableOpacity onLongPress={() => alert('Make a POST request to delete record from DB + immediate refresh to update UI')}>
+    <TouchableOpacity
+      onLongPress={() =>
+        alert(
+          "Make a POST request to delete record from DB + immediate refresh to update UI"
+        )
+      }
+    >
       <GroupCard
         key={id}
         cardTitle={cardTitle}
@@ -25,20 +30,21 @@ const groupCards = ({ cardTitle, cardDesc, cardImageLink, id }) => {
   );
 };
 
-const CreatedGroups = ({ navigation }) => {
-  const [myGroups, setMyGroupData] = useState([]);
-  const [currentId, setCurrentId] = useState('');
-
-  useEffect( async () => {
-    let mounted = true;
-    await setCurrentId(currentSession());
-    fetchCreatedGroups().then((group) => {
-      if (mounted) {
-        setMyGroupData(group);
-      }
-    });
-    return () => (mounted = false);
-  }, []);
+const MyGroupsScreen = ({ navigation, createdGroups }) => {
+  return (
+    <View>
+      {createdGroups &&
+        createdGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+          return groupCards({
+            cardTitle: groupName,
+            cardDesc: groupDesc,
+            cardImageLink: groupImage,
+            id: id,
+          });
+        })}
+    </View>
+  );
+};
 
 
   return (
@@ -53,8 +59,8 @@ const CreatedGroups = ({ navigation }) => {
         });
       })} */}
     </View>
-  );
-};
+  )
+
 
 // const EnrolledGroups = ({ navigation }) => {
 //   const [myGroups, setMyGroupData] = useState([]);
