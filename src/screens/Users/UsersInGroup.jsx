@@ -19,10 +19,7 @@ import {
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
 import { LoadingIndicator } from "../../components";
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import { fetchUser } from "../../service/User/UserService";
 
 const TempHeader = ({ navigation, title }) => {
   return (
@@ -83,7 +80,9 @@ const UsersInGroup = ({ navigation, route }) => {
   const { id, groupName } = route.params;
   const [users, setUsers] = useState("");
   const [groupNameState, setGroupNameState] = useState("My Groups");
-
+  const [userNameData, setUserNameData] = useState("Userss");
+// console.log(userNameData);
+  
   useEffect(() => {
     let mounted = true;
     fetchUsersInGroup(id).then((userData) => {
@@ -94,7 +93,15 @@ const UsersInGroup = ({ navigation, route }) => {
     });
     return () => (mounted = false);
   }, []);
-
+  useEffect(() => {
+    let mounted1 = true;
+    fetchUser().then((group) => {
+      if (mounted1) {
+        setUserNameData(group);
+      }
+    });
+    return () => (mounted1 = false);
+  }, []);
   return (
     <>
       <TempHeader navigation={navigation} title={groupNameState} />
@@ -106,7 +113,7 @@ const UsersInGroup = ({ navigation, route }) => {
                   image={object.profileImage}
                   name={object.fullName}
                   meaning={object.poolId}
-                  press={() => alert("pressed")}
+                  press={() =>navigation.navigate("UserProfile",{profileImage:object.profileImage,title:object.fullName,nameDescription:userNameData.desc,nameMeaning:"",videoLink:userNameData.videoFile,audioLink:userNameData.audioFile})}
                 />
               );
             })
@@ -116,7 +123,7 @@ const UsersInGroup = ({ navigation, route }) => {
   );
 };
 
-export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
+export default UsersInGroup;
 const styles = StyleSheet.create({
   root: {
     borderRadius: 10,

@@ -1,14 +1,10 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Platform, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 // import uploadVideoAsync from '../service/UploadVideoService';
 import { Video } from 'expo-av';
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 
 const VideoScreen = ({ navigation, route}) => {
@@ -54,6 +50,7 @@ const VideoScreen = ({ navigation, route}) => {
   const handleSaveButton = () => {
     route.params.onVideoSelected(videoUri || videoSource);
     navigation.pop()
+
   };
 
 
@@ -82,7 +79,7 @@ const VideoScreen = ({ navigation, route}) => {
   );
 };
 
-export default (Auth.user)?VideoScreen:withAuthenticator(VideoScreen);
+export default VideoScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -90,24 +87,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButtonText: {
-    color: 'black',
+    color: '#085DAD',
     fontSize: 20,
   },
   saveButton: {
-    borderRadius: 10,
+    borderRadius: 50,
     paddingHorizontal: 40,
     paddingVertical: 5,
-    borderColor: 'black',
+    borderColor: '#085DAD',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
     borderWidth: 1,
   },
   Gallery: {
-    borderRadius: 10,
+    borderRadius: 50,
     paddingHorizontal: 40,
     paddingVertical: 5,
-    borderColor: 'black',
+    borderColor: '#085DAD',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 200,

@@ -1,17 +1,12 @@
 import React from "react";
-import { View, Fab, Icon } from "native-base";
-import { theme } from "../../constants/theme";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Fab, Icon } from 'native-base';
+import {theme} from '../../constants/theme';
 
-const FloatingActionButton = ({ onPress, icon }) => {
+const FloatingActionButton = ({onPress}) => {
   return (
     <View style={{ flex: 1 }}>
-      <Fab
-        style={{ backgroundColor: theme.secondary.backgroundColor }}
-        position="bottomRight"
-        onPress={onPress}
-      >
-        {icon}
+      <Fab style={{ backgroundColor: theme.secondary.backgroundColor }} position="bottomRight">
+        <Icon name="add" onPress={onPress} />
       </Fab>
     </View>
   );

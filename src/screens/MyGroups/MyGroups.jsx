@@ -22,18 +22,7 @@ import { AllGroups, UsersInGroup } from "..";
 import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { SettingsStackScreen } from "../../routes";
 import { FloatingActionButton, BannerAds } from "../../components";
-
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-import {
-  withAuthenticator,
-  Authenticator,
-  SignIn,
-  SignUp,
-  ConfirmSignUp,
-  Greetings,
-} from "aws-amplify-react-native";
+import UserProfile from "../Users/UserProfile";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -100,14 +89,14 @@ export const MyGroupsScreen = ({ navigation }) => {
         </Tabs>
       </ScrollView>
       <View style={{ flex: 1 }}>
+        {/* <Fab style={{ backgroundColor: theme.secondary.backgroundColor}} position="bottomRight">
+          <Icon style={{color: theme.secondary.color}} name="add" onPress={() => navigation.navigate("CreateNewGroup")} />
+        </Fab> */}
         <FloatingActionButton
           onPress={() => navigation.navigate("CreateNewGroup")}
-          icon={<Icon name="add"/> }
         />
       </View>
-      <View>
-        <BannerAds />
-      </View>
+      <View><BannerAds/></View>
     </Root>
   );
 };
@@ -129,7 +118,15 @@ const MyGroups = () => {
           headerShown: false,
         }}
       />
+       <RootStack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{
+          headerTitle: "Users In Group",
+          headerShown: false,
+        }}
+      />
     </RootStack.Navigator>
   );
 };
-export default Auth.user ? MyGroups : withAuthenticator(MyGroups);
+export default MyGroups;

@@ -13,16 +13,11 @@ import { Camera } from 'expo-camera';
 import { Video } from 'expo-av';
 // import uploadVideoAsync from '../service/UploadVideoService';
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
-
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-const Recording=({ navigation , route })=>{
+export default function Recording({ navigation , route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [isPreview, setIsPreview] = useState(false);
@@ -224,8 +219,6 @@ const Recording=({ navigation , route })=>{
     </SafeAreaView>
   );
 }
-
-export default (Auth.user)?Recording:withAuthenticator(Recording);
 
 const styles = StyleSheet.create({
   container: {

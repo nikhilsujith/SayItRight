@@ -5,8 +5,6 @@ import {
   MyGroups,
   UserDetails,
   VideoScreen,
-  AudioScreen,
-  NewProfile,
   Recording,
 } from '../screens';
 
@@ -17,71 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
-//const NewProfileStack = createStackNavigator();
-const AuthenticationStack = createStackNavigator();
-
 const Tabs = createBottomTabNavigator();
-
-export const NewProfileStackScreen = () => (
-  <SettingsStack.Navigator>
-    <SettingsStack.Screen
-      name="SettingsNewProfileStack"
-      component={NewProfile}
-      options={{
-        title: 'New Profile',
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-    <SettingsStack.Screen
-      name="SettingsVideoStack"
-      component={VideoScreen}
-      options={{
-        title: 'New Profile',
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-    <SettingsStack.Screen
-      name="SettingsAudioStack"
-      component={AudioScreen}
-      options={{
-        title: 'New Profile',
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-    <SettingsStack.Screen
-      name="SettingsRecordingStack"
-      component={Recording}
-      options={{
-        title: 'New Profile',
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-  </SettingsStack.Navigator>
-);
 
 export const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
@@ -103,21 +37,7 @@ export const SettingsStackScreen = () => (
       name="SettingsVideoStack"
       component={VideoScreen}
       options={{
-        title: 'Upload Video',
-        headerStyle: {
-          backgroundColor: theme.primary.backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerTintColor: theme.primary.color,
-      }}
-    />
-    <SettingsStack.Screen
-      name="SettingsAudioStack"
-      component={AudioScreen}
-      options={{
-        title: 'Upload Audio',
+        title: 'Settings',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -169,7 +89,6 @@ export const HomeStackScreen = ({ navigation }) => (
       name="HomeStackScreen"
       component={Home}
       options={{
-        //        headerShown: (Auth.user)?true:false,
         title: 'Home',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
@@ -182,25 +101,6 @@ export const HomeStackScreen = ({ navigation }) => (
     />
   </HomeStack.Navigator>
 );
-
-//export const NewProfileStackScreen = () => (
-//  <NewProfileStack.Navigator>
-//    <NewProfileStack.Screen
-//      name="NewProfileStack"
-//      component={NewProfile}
-//      options={{
-//        title: "NewProfile",
-//        headerStyle: {
-//          backgroundColor: theme.primary.backgroundColor,
-//          elevation: 0,
-//          shadowOpacity: 0,
-//          borderBottomWidth: 0,
-//        },
-//        headerTintColor: theme.primary.color,
-//      }}
-//    />
-//  </NewProfileStack.Navigator>
-//);
 
 // const MyGroupsStack = createStackNavigator();
 // const MyGroupsStackScreen = () => {
@@ -227,21 +127,15 @@ export const MainStackScreen = () => (
         } else if (route.name === 'EnrolledGroups') {
           iconName = focused ? 'people-circle' : 'people-circle-outline';
         } else if (route.name === 'MyGroups') {
-          iconName = focused ? 'person' : 'person-outline';
+          iconName = focused ? 'people-circle' : 'people-circle-outline';
         }
-        //            else if (route.name === "NewProfile") {
-        //                          iconName = focused ? "list-circle" : "list";
-        //                        }
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
     tabBarOptions={{
-      activeTintColor: theme.secondary.backgroundColor,
+      activeTintColor: theme.primary.backgroundColor,
       inactiveTintColor: 'black',
-      //      style: {
-      //            bottom:(Auth.user)?0:-200 //hides bottom navigation if Authentication page is viewed
-      //         },
       showLabel: false,
     }}
   >
@@ -259,10 +153,3 @@ export const MainStackScreen = () => (
     />
   </Tabs.Navigator>
 );
-
-export const AuthenticationScreen = () => <Authenticator></Authenticator>;
-
-//    <Tabs.Screen
-//          name="Authentication"
-//          component={AuthenticationScreen}
-//        />
