@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { TouchableOpacity, View, Text, RefreshControl } from "react-native";
 import { GroupCard } from "../../../components";
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../../aws-exports";
-Amplify.configure(awsconfig);
-import { withAuthenticator } from "aws-amplify-react-native";
 
 const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
@@ -39,4 +35,5 @@ const CreatedGroups = ({ navigation, enrolledGroups }) => {
   );
 };
 
-export default Auth.user ? CreatedGroups : withAuthenticator(CreatedGroups);
+// export default Auth.user ? CreatedGroups : withAuthenticator(CreatedGroups);
+export default CreatedGroups;

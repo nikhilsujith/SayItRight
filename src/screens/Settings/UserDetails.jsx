@@ -126,14 +126,6 @@ const UserDetails = ({ navigation }) => {
             {imageUri ? (
               <Image
                 source={{ uri: imageUri }}
-                // style={{
-                // height: 150,
-                // width: 150,
-                // paddingTop: 30,
-                // borderRadius: 100,
-                // marginRight: 0,
-                // marginTop: 30,
-                // }}
                 style={styles.imagePicker}
               />
             ) : (
@@ -233,7 +225,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     marginTop: 30,
-    elevation: 10,
   },
 
   logout: {
@@ -270,24 +261,22 @@ const styles = StyleSheet.create({
   audioIcon: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    paddingHorizontal: width * 0.16,
+    paddingHorizontal: width * 0.15,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    elevation: 10,
   },
   videoIcon: {
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-    paddingHorizontal: width * 0.16,
+    paddingHorizontal: width * 0.15,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    elevation: 10,
   },
   SignInForm: {
     width: width - 50,

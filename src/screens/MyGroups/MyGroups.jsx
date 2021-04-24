@@ -166,7 +166,7 @@ const MyGroups = () => {
         component={MyGroupsStackScreen}
         options={{ headerShown: false }}
       />
-      <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} />
+      <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} options={{headerShown: false}}/>
       <RootStack.Screen
         name="UsersInGroup"
         component={UsersInGroup}

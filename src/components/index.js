@@ -3,3 +3,4 @@ export { default as FloatingActionButton } from  './FloatingActionButton/Floatin
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator.jsx';
 export { default as NameCard } from './NameCard/NameCard.jsx';
 export { default as BannerAds } from './BannerAds/BannerAds.jsx';
+export { default as TempHeader } from './TempHeader/TempHeader.jsx';

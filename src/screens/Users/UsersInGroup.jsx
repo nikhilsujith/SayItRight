@@ -19,24 +19,19 @@ import {
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
 import { LoadingIndicator } from "../../components";
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+
 
 const TempHeader = ({ navigation, title }) => {
   return (
     <Card style={styles.root}>
       <CardItem style={styles.root}>
-        <Icon name="arrow-back" onPress={() => navigation.goBack()} />
+        <Icon name="close" onPress={() => navigation.goBack()} />
         <Text
           style={{
-            flex: 3,
-            justifyContent: "space-between",
-            marginLeft: 20,
             textAlign: "center",
+            flex: 100,
             fontSize: 17,
-            fontWeight: "700",
+            fontWeight: "500",
           }}
         >
           {title}
@@ -116,7 +111,8 @@ const UsersInGroup = ({ navigation, route }) => {
   );
 };
 
-export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
+// export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
+export default UsersInGroup;
 const styles = StyleSheet.create({
   root: {
     borderRadius: 10,

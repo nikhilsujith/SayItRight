@@ -6,11 +6,13 @@ import {
   Textarea,
 } from "native-base";
 import { Button, Text } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { TempHeader } from "../../../components";
 
-const CreateNewGroup = () => {
+
+const CreateNewGroup = ({ navigation }) => {
   return (
     <View>
+      <TempHeader title="Create New Group" navigation={navigation}/>
       <View>
         <Text>Image Picker Goes Here</Text>
       </View>
