@@ -227,17 +227,13 @@ export const MainStackScreen = () => (
         } else if (route.name === 'EnrolledGroups') {
           iconName = focused ? 'people-circle' : 'people-circle-outline';
         } else if (route.name === 'MyGroups') {
-          iconName = focused ? 'person' : 'person-outline';
+          iconName = focused ? 'people-circle' : 'people-circle-outline';
         }
-        //            else if (route.name === "NewProfile") {
-        //                          iconName = focused ? "list-circle" : "list";
-        //                        }
-        // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
     tabBarOptions={{
-      activeTintColor: theme.secondary.backgroundColor,
+      activeTintColor: theme.primary.backgroundColor,
       inactiveTintColor: 'black',
       //      style: {
       //            bottom:(Auth.user)?0:-200 //hides bottom navigation if Authentication page is viewed
