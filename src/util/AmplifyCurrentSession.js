@@ -5,3 +5,8 @@ export const currentSession = () => {
   let pId = Auth.user.attributes.sub;
   return pId;
 };
+
+export const currentSessionEmail = () => {
+  let email = Auth.user.attributes.email;
+  return email;
+};

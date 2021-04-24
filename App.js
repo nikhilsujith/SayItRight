@@ -15,7 +15,6 @@ import { currentSession } from "./src/util/AmplifyCurrentSession";
 
 const AppContainer = (props) => {
   const [loggedIn, setLoggedIn] = useState(true);
-
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" />
@@ -29,7 +28,7 @@ const App =  () => {
   const [newUser, setNewUser] = useState(true);
 
   useEffect(() => {
-    //console.log(currentSession())
+   //console.log(Auth.user.attributes)
  (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
       //var r=JSON.parse(fetchedPosts);

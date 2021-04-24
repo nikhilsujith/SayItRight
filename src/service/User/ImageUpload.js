@@ -1,6 +1,6 @@
 import mime from 'mime';
-export const imageUpload = async (uri, image) => {
-  const url = 'https://say-it-right.herokuapp.com/api/v1/user/image/upload/p1';
+export const imageUpload = async (uri, image,poolId) => {
+  const url = 'https://say-it-right.herokuapp.com/api/v1/user/image/upload/'+poolId;
   const newImageUri = 'file:///' + uri.split('file:/').join('');
 
   try {

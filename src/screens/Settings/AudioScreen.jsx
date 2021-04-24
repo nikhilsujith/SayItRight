@@ -66,15 +66,17 @@ const AudioScreen = ({ navigation, route}) => {
       secretKey: "OJoj9U3BvXYhCPLGCMX9KWEJvE71kKiP/xfVqDgs",
       successActionStatus: 201
     }
+
       const uploadS3 = () => {
         RNS3.put(file, options).then(response => {
              console.log(response)
              if (response.status !== 201)
                throw new Error("Failed to upload image to S3");
-             console.log(response.body.location);
-             setAudioUri(response.body.location)
-             console.log(response.body);
-             navigation.pop()
+             //console.log(response.body.location);
+             //route.params.onAudioSelected(response.body.location)
+             //setAudioUri(uri)
+             //console.log(response.body);
+
              /**
               * {
               *   postResponse: {
@@ -87,6 +89,17 @@ const AudioScreen = ({ navigation, route}) => {
               */
            });
       };
+
+  const saveAudio=()=>{
+    route.params.onAudioSelected(audioUri);
+    navigation.pop();
+  }
+
+  const clearLocalAudio=()=>{
+    route.params.onAudioSelected('')
+    setAudioUri('')
+    setAudioFile('')
+  }
 
   async function startRecording() {
     setIsRecording(true)
@@ -119,6 +132,7 @@ const AudioScreen = ({ navigation, route}) => {
 //    const { dir_sound } = await this.recording.createNewLoadedSoundAsync
 //    setSound(dir_sound);
     console.log('Recording stopped and stored at', uri);
+    setAudioUri(uri);
   }
 
   async function playSound() {
@@ -132,7 +146,7 @@ const AudioScreen = ({ navigation, route}) => {
       //setIsPlaying(true);
       await sound.playAsync();
       //setIsPlaying(false);
-      }
+   }
 
   async function playOnlineSound() {
         console.log('Loading Online Sound');
@@ -156,14 +170,14 @@ const AudioScreen = ({ navigation, route}) => {
        <Text style={[styles.liveText]}>{isPlaying ? "PLAYING" : ""}</Text>
         <TouchableOpacity
           onPress={playSound}>
-          <Text style={styles.actionText}>Play Sound
+          <Text style={styles.actionText}>{audioFile==''?'':'Play Sound'}
           </Text>
         </TouchableOpacity>
-      <TouchableOpacity style={styles.saveButton} onPress={uploadS3}>
-        <Text style={styles.saveButtonText}>Upload S3</Text>
+      <TouchableOpacity style={styles.saveButton} onPress={saveAudio}>
+        <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.PlayButton} onPress={playOnlineSound}>
-              <Text style={styles.saveButtonText}>Play Online Sound</Text>
+      <TouchableOpacity style={styles.PlayButton} onPress={clearLocalAudio}>
+              <Text style={styles.saveButtonText}>Cancel</Text>
       </TouchableOpacity>
       </View>
     </View>

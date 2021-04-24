@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, SafeAreaView, YellowBox } from "react-native";
+import { Platform, View, Image, Text, SafeAreaView, YellowBox,StatusBar } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -11,15 +11,19 @@ import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 import { uploadAuido } from "../../service/User/Audio";
-import { currentSession } from '../../util/AmplifyCurrentSession';
+import { currentSession,currentSessionEmail } from '../../util/AmplifyCurrentSession';
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
 import { FloatingActionButton, NameCard } from "../../components";
-
+import { NavigationContainer } from "@react-navigation/native";
+import { MainStackScreen,NewProfileStackScreen } from "../../routes";
+import { RNS3 } from 'react-native-s3-upload';
   const window = Dimensions.get('window');
   const screen = Dimensions.get('screen');
+
+  import * as Updates from 'expo-updates';
 
 const UserDetails = ({ navigation }) => {
   const [userName, setUserName] = useState("");
@@ -31,10 +35,12 @@ const UserDetails = ({ navigation }) => {
   const [base64Image, setBase64Image] = useState(null);
   const [videoSource, setVideoSource] = useState(null);
   const [audioUri, setAudioUri] = useState(null);
+  const [audioS3Loc, setAudioS3Loc] = useState("");
   const [dimensions, setDimensions] = useState({ window, screen });
 
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
+
 
   useEffect(() => {
     (async () => {
@@ -58,7 +64,35 @@ const UserDetails = ({ navigation }) => {
     setDimensions({ window, screen });
   };
 
+  const options = {
+        keyPrefix: "audio/",
+        bucket: "amplify-sayitright-dev-141916-deployment",
+        region: "us-east-2",
+        accessKey: "AKIAYXRZLB7D4SBCJ7OY",
+        secretKey: "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",
+        successActionStatus: 201
+  }
 
+  const uploadS3 = async() => {
+
+    if(audioUri!=null && audioUri!=""){
+        const file = {
+          // `uri` can also be a file system path (i.e. file://)
+          uri: audioUri,
+          name: currentSession()+"_audio.caf",
+          type: "audio/x-caf"
+        }
+
+        try{
+          const res=await RNS3.put(file, options)
+          const loc =await res.body.postResponse.location;
+          //console.log(res.body);
+          return loc;
+          }catch(ex){
+            return "error";
+          }
+    }
+};
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -68,73 +102,86 @@ const UserDetails = ({ navigation }) => {
       base64: true,
     });
 
-    // console.log(result);
-
     if (!result.cancelled) {
       setImageUri(result.uri);
       setBase64Image(result.base64);
     }
   };
 
-  const handleSaveButton = async() => {
-    console.log(":::::::::::HANDLE SAVE:::::::::")
-    console.log(currentSession())
+   const handleSaveButton = async() => {
+   console.log(":::::::::::HANDLE SAVE:::::::::")
+   //console.log(await uploadS3())
+   var audioS3Loc=await uploadS3();
 
-    const content={
-        "poolId":currentSession(),
-        "fullName":userName,
-        "profileImage":"",
-        "email":"",
-        "desc":nameDesc,
-        "nameMeaning":nameMeaning,
-        "audioFile":"",
-        "videoFile":"",
-        "myGroups":[],
-        "enrolledGroups":[],
-        "createdOn":"04/23/21"
-        }
+   console.log(currentSession())
+   console.log(imageUri)
+   console.log(audioS3Loc)
 
-    const url="https://say-it-right.herokuapp.com/api/v1/user/"
-     const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                  },
-          body: JSON.stringify(content),
-        });
+    if(audioS3Loc!=null && audioS3Loc!='' && audioS3Loc!='error'){
+        //console.log("in")
+        const content={
+            "poolId":currentSession(),
+            "fullName":userName,
+            "profileImage":'',
+            "email":currentSessionEmail()==null?'':currentSessionEmail(),
+            "desc":nameDesc,
+            "nameMeaning":nameMeaning,
+            "audioFile":audioS3Loc==null?"":audioS3Loc,
+            "videoFile":'',
+            "myGroups":[],
+            "enrolledGroups":[],
+            "createdOn":Date().toLocaleString()
+            }
 
-        const body = await response.json();
-          const status=await response.status
-          console.log(body);
-    if (userName.length > 0 && nameDesc.length > 0) {
-      imageUpload(imageUri, base64Image).then((result) => {
-        if (result.status === 200) {
-          alert("Image uploaded successfully");
-        } else {
-          alert(
-            "Oops! There was an error uploading your Image. Please try again later."
-          );
+        const url="https://say-it-right.herokuapp.com/api/v1/user/"
+        const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                          Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                      },
+              body: JSON.stringify(content),
+            });
+           // const body = await response.json();
+              const newUserStatus=await response.status
+              console.log(newUserStatus);//201 created
+
+        if (userName.length > 0 && nameDesc.length > 0 && newUserStatus==201) {
+          imageUpload(imageUri, base64Image,currentSession()).then((result) => {
+            if (result.status === 200) {
+              alert("Image uploaded successfully");
+            } else {
+              alert(
+                "Oops! There was an error uploading your Image. Please try again later."
+              );
+            }
+          });
+          uploadVideoAsync(videoUri || videoSource, base64Image,currentSession()).then((result) => {
+            if (result.status === 200) {
+              alert("Video uploaded successfully");
+            } else {
+              alert(
+                "Oops! There was an error uploading your Video. Please try again later."
+              );
+            }
+          });
+    //       uploadAuido(audioUri,currentSession()).then((result) => {
+    //         if (result.status === 200) {
+    //           alert("Audio uploaded successfully");
+    //         } else {
+    //           alert(
+    //             "Oops! There was an error uploading your Audio. Please try again later."
+    //           );
+    //         }
+    //       });
         }
-      });
-      uploadVideoAsync(videoUri || videoSource, base64Image).then((result) => {
-        if (result.status === 200) {
-          alert("Video uploaded successfully");
-        } else {
-          alert(
-            "Oops! There was an error uploading your Video. Please try again later."
-          );
+        if(newUserStatus==201){
+            alert("Success");
+            await Updates.reloadAsync();
         }
-      });
-      uploadAuido(audioUri).then((result) => {
-        if (result.status === 200) {
-          alert("Audio uploaded successfully");
-        } else {
-          alert(
-            "Oops! There was an error uploading your Audio. Please try again later."
-          );
-        }
-      });
+    }
+    else{
+        alert("Upload audio!")
     }
   };
 
@@ -223,7 +270,6 @@ const UserDetails = ({ navigation }) => {
           <Foundation name="video" size={24} color="black" />
         </TouchableOpacity>
       </View>
-
       {/* <View style={{...styles.SaveArea}}> */}
         <TouchableOpacity
           style={{ ...styles.saveButton,  opacity: disableSave ? 0.5 : 1, marginTop: 30}}
