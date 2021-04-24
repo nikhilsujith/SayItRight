@@ -141,7 +141,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups allGroups={allGroups} />
+            <AllGroups allGroups={allGroups} currentUser={currentUser}/>
           </Tab>
         </Tabs>
       </ScrollView>

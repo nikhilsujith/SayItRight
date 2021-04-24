@@ -18,11 +18,11 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
     </TouchableOpacity>
   );
 };
-const CreatedGroups = ({ navigation, enrolledGroups }) => {
+const CreatedGroups = ({ navigation, createdGroups }) => {
   return (
     <View>
-      {enrolledGroups &&
-        enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+      {createdGroups &&
+        createdGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
             cardTitle: groupName,
             cardDesc: groupDesc,

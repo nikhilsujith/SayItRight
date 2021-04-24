@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, Button } from "react-native";
+import { TouchableOpacity, View, Text, Button, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { GroupCard } from "../../../components";
-import { fetchAllGroups } from "../../../service/Group/GroupService";
+import { enrollGroup } from "../../../service/User/UserService";
 
-const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
+
+const createTwoButtonAlert = (creatorName, id, currentUser) =>
+  Alert.alert("Group Info", `Owner: ${creatorName}`,[
+    {
+      text: "Cancel",
+      onPress: () => console.log("Cancel Pressed"),
+      style: "cancel",
+    },
+    { text: "Join", onPress: () => enrollGroup(id, currentUser) },
+  ]);
+
+const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id, creatorName, currentUser }) => {
   return (
     <TouchableOpacity
       onLongPress={() => {
-        alert("Enroll");
+        createTwoButtonAlert(creatorName, id, currentUser);
       }}
     >
       <GroupCard
@@ -20,18 +31,22 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
     </TouchableOpacity>
   );
 };
-const AllGroups = ({ navigation, allGroups }) => {
+
+const AllGroups = ({ navigation, allGroups, currentUser }) => {
   // console.log(allGroups);
+
   return (
     <ScrollView>
       {allGroups &&
-        allGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+        allGroups.map(({ groupName, groupDesc, groupImage, id, creatorName }) => {
           return groupCards({
             cardTitle: groupName,
             cardDesc: groupDesc,
             cardImageLink: groupImage,
             id: id,
             navigation: navigation,
+            creatorName: creatorName,
+            currentUser: currentUser
           });
         })}
     </ScrollView>
