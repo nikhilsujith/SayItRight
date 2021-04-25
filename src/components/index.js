@@ -4,3 +4,4 @@ export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator
 export { default as NameCard } from './NameCard/NameCard.jsx';
 export { default as BannerAds } from './BannerAds/BannerAds.jsx';
 export { default as TempHeader } from './TempHeader/TempHeader.jsx';
+export { default as AccordianPack } from './AccordianPack/AccordianPack.jsx';

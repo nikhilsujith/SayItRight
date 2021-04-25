@@ -1,5 +1,5 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   Home,
   MyGroups,
@@ -8,11 +8,12 @@ import {
   AudioScreen,
   NewProfile,
   Recording,
-} from '../screens';
+  UsersInGroup,
+} from "../screens";
 
-import { theme } from '../constants/theme';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { theme } from "../constants/theme";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 
 const HomeStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -28,7 +29,7 @@ export const NewProfileStackScreen = () => (
       name="SettingsNewProfileStack"
       component={NewProfile}
       options={{
-        title: 'New Profile',
+        title: "New Profile",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -42,7 +43,7 @@ export const NewProfileStackScreen = () => (
       name="SettingsVideoStack"
       component={VideoScreen}
       options={{
-        title: 'New Profile',
+        title: "New Profile",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -56,7 +57,7 @@ export const NewProfileStackScreen = () => (
       name="SettingsAudioStack"
       component={AudioScreen}
       options={{
-        title: 'New Profile',
+        title: "New Profile",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -70,7 +71,7 @@ export const NewProfileStackScreen = () => (
       name="SettingsRecordingStack"
       component={Recording}
       options={{
-        title: 'New Profile',
+        title: "New Profile",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -89,7 +90,7 @@ export const SettingsStackScreen = () => (
       name="SettingsStack"
       component={UserDetails}
       options={{
-        title: 'Settings',
+        title: "Settings",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -103,7 +104,7 @@ export const SettingsStackScreen = () => (
       name="SettingsVideoStack"
       component={VideoScreen}
       options={{
-        title: 'Upload Video',
+        title: "Upload Video",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -117,7 +118,7 @@ export const SettingsStackScreen = () => (
       name="SettingsAudioStack"
       component={AudioScreen}
       options={{
-        title: 'Upload Audio',
+        title: "Upload Audio",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -131,7 +132,7 @@ export const SettingsStackScreen = () => (
       name="SettingsRecordingStack"
       component={Recording}
       options={{
-        title: 'Settings',
+        title: "Settings",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -150,7 +151,21 @@ export const MyGroupsStackScreen = () => (
       name="MyGroupsStackScreen"
       component={MyGroups}
       options={{
-        title: 'Groups',
+        title: "Groups",
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
+    />
+    <MyGroupsStack.Screen
+      name="UsersInGroup"
+      component={UsersInGroup}
+      options={{
+        headerTitle: "Users In Group",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -170,7 +185,7 @@ export const HomeStackScreen = ({ navigation }) => (
       component={Home}
       options={{
         //        headerShown: (Auth.user)?true:false,
-        title: 'Home',
+        title: "Home",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -220,21 +235,21 @@ export const MainStackScreen = () => (
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
-        if (route.name === 'Home') {
-          iconName = focused ? 'home' : 'home-outline';
-        } else if (route.name === 'Settings') {
-          iconName = focused ? 'list-circle' : 'list';
-        } else if (route.name === 'EnrolledGroups') {
-          iconName = focused ? 'people-circle' : 'people-circle-outline';
-        } else if (route.name === 'MyGroups') {
-          iconName = focused ? 'people-circle' : 'people-circle-outline';
+        if (route.name === "Home") {
+          iconName = focused ? "home" : "home-outline";
+        } else if (route.name === "Settings") {
+          iconName = focused ? "list-circle" : "list";
+        } else if (route.name === "EnrolledGroups") {
+          iconName = focused ? "people-circle" : "people-circle-outline";
+        } else if (route.name === "MyGroups") {
+          iconName = focused ? "people-circle" : "people-circle-outline";
         }
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
     tabBarOptions={{
       activeTintColor: theme.primary.backgroundColor,
-      inactiveTintColor: 'black',
+      inactiveTintColor: "black",
       //      style: {
       //            bottom:(Auth.user)?0:-200 //hides bottom navigation if Authentication page is viewed
       //         },
@@ -246,12 +261,12 @@ export const MainStackScreen = () => (
     <Tabs.Screen
       name="MyGroups"
       component={MyGroupsStackScreen}
-      options={{ title: 'Groups' }}
+      options={{ title: "Groups" }}
     />
     <Tabs.Screen
       name="Settings"
       component={SettingsStackScreen}
-      options={{ title: 'Settings' }}
+      options={{ title: "Settings" }}
     />
   </Tabs.Navigator>
 );

@@ -5,7 +5,7 @@ import { GroupCard } from "../../../components";
 import { enrollGroup } from "../../../service/User/UserService";
 
 
-const createTwoButtonAlert = (creatorName, id, currentUser) =>
+const joinAlert = (creatorName, id, currentUser) =>
   Alert.alert("Group Info", `Owner: ${creatorName}`,[
     {
       text: "Cancel",
@@ -19,7 +19,7 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id, creato
   return (
     <TouchableOpacity
       onLongPress={() => {
-        createTwoButtonAlert(creatorName, id, currentUser);
+        joinAlert(creatorName, id, currentUser);
       }}
     >
       <GroupCard

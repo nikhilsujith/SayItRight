@@ -167,14 +167,14 @@ const MyGroups = () => {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} options={{headerShown: false}}/>
-      <RootStack.Screen
+      {/* <RootStack.Screen
         name="UsersInGroup"
         component={UsersInGroup}
         options={{
           headerTitle: "Users In Group",
           headerShown: false,
         }}
-      />
+      /> */}
     </RootStack.Navigator>
   );
 };

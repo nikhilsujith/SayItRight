@@ -10,7 +10,7 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("UsersInGroup", { id: id, groupName: cardTitle });
+        navigation.navigate("UsersInGroup", { id: id, groupName: cardTitle, groupDesc: cardDesc, groupImage: cardImageLink });
       }}
     >
       <GroupCard
