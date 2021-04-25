@@ -41,7 +41,7 @@ export const enrollGroup = (groupId, poolId) => {
   pId = poolId;
   gId = groupId;
   try {
-    const url = `https://say-it-right.herokuapp.com/api/v1/user/enroll?group=${gId}&&pool=${pId}`;
+    const url = `https://say-it-right.herokuapp.com/api/v1/group/enroll?group=${gId}&&pool=${pId}`;
     return fetch(url,{
       method: 'POST'
     })
