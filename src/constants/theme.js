@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import custom from './custom';
 
 
+
+
 export const theme = StyleSheet.create({
     primary:{
         backgroundColor: custom.black,
@@ -14,7 +16,6 @@ export const theme = StyleSheet.create({
         color: custom.purple
         // color: custom.secondary.color        
     },
-
 });
 
 
