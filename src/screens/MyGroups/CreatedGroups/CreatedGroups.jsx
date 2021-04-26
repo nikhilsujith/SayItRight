@@ -6,7 +6,12 @@ import {
   FlatList,
 } from "react-native";
 import { GroupCard } from "../../../components";
+import { deleteGroup } from "../../../service/Group/GroupService";
 
+
+const handleDeleteGroup = (id) => {
+  deleteGroup(id);
+};
 
 const CreatedGroupsCard = ({
   navigation,
@@ -25,6 +30,7 @@ const CreatedGroupsCard = ({
           groupImage: cardImageLink,
         });
       }}
+      onLongPress={() => handleDeleteGroup(id)}
     >
       <GroupCard
         key={id}

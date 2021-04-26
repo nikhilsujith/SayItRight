@@ -39,12 +39,7 @@ const App = () => {
         setNewUser(true);
       }
     })();
-    {
-      wait(3000).then(() => {
-        setIsReady({ isReady: true });
-      });
-    }
-    // setIsReady({isReady: true})
+    setIsReady({isReady: true})
   }, [newUser]);
 
   if (isReady) {
