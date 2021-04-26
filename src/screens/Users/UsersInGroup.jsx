@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StatusBar, StyleSheet, Button, Text, Image } from "react-native";
 import {
-  Container,
-  Content,
   Card,
   CardItem,
-  Icon,
   Right,
   Left,
   Body,
@@ -15,7 +12,8 @@ import {
 } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
-import { AccordianPack, GroupCard, LoadingIndicator } from "../../components";
+import { AccordianPack, LoadingIndicator } from "../../components";
+import { defaultOrImage } from "../../util";
 
 const GroupHeader = ({ navigation, title }) => {
   return (
@@ -37,17 +35,8 @@ const GroupHeader = ({ navigation, title }) => {
   );
 };
 
-const defaultImage = {
-  uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
-};
-
 const NameCard = ({ press, image, name, meaning }) => {
-  let link = "";
-  if (image) {
-    link = { uri: image };
-  } else {
-    link = defaultImage;
-  }
+  let link = defaultOrImage(image);
   return (
     <TouchableOpacity onPress={press} style={{ padding: 10 }}>
       <List>
@@ -107,19 +96,43 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   };
 
-  const accordContent = [{ title: "Group Members", content: <UserList /> }];
-
+  const accordContent = [
+    { title: "Group Members", content: <UserList /> },
+];
+  const image = defaultOrImage(groupImage);
   return (
     <ScrollView>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Image style={styles.imagePicker} source={defaultImage} />
-        <View style={{flex: 1, justifyContent: 'flex-start', marginTop: '5%', marginBottom: '5%'}}>
-          <Text>{groupName}</Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
+        }}
+      >
+        <Image style={styles.imagePicker} source={image} />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-start",
+            marginTop: "5%",
+            marginBottom: "5%",
+          }}
+        >
           <Text>{groupDesc}</Text>
         </View>
       </View>
-      <Button title="Exit Group" />
       <AccordianPack headerTitles={accordContent} />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-start",
+          marginTop: "5%",
+          marginBottom: "5%",
+        }}
+      >
+        <Button color="black" title="Exit Group" onPress={() => alert('Create backend to exit group')}/>
+      </View>
     </ScrollView>
   );
 };
@@ -132,13 +145,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   imagePicker: {
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
     borderRadius: 100,
-    marginTop: 10,
     resizeMode: "cover",
-    backgroundColor: "red",
+    backgroundColor: "#dfdfdf",
     paddingTop: 30,
-    marginRight: 0,
+    margin: 10,
   },
 });

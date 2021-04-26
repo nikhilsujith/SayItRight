@@ -17,8 +17,8 @@ import { Dimensions } from "react-native";
 // });
 
 const { width, height } = Dimensions.get("screen");
-const imageHeight = height * 0.2;
-const imageWidth = height * 0.2;
+const imageHeight = height * 0;
+const imageWidth = height * 0;
 
 const custom = {
   purple: "rgba(74,21,75,1)",
@@ -28,6 +28,10 @@ const custom = {
   black: "#000000",
   green: "#1dbf73",
   maroon: "#540e1f",
+  
+  // image height
+  imageHeight: imageHeight,
+  imageWidth: imageWidth
 };
 
 export default custom;

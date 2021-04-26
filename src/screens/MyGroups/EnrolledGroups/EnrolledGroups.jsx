@@ -1,16 +1,29 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { TouchableOpacity, View, Text, RefreshControl } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  FlatList,
+} from "react-native";
 import { GroupCard } from "../../../components";
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../../aws-exports";
-Amplify.configure(awsconfig);
-import { withAuthenticator } from "aws-amplify-react-native";
 
-const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
+
+const EnrolledGroupsCard = ({
+  navigation,
+  cardTitle,
+  cardDesc,
+  cardImageLink,
+  id,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("UsersInGroup", { id: id, groupName: cardTitle, groupDesc: cardDesc, groupImage: cardImageLink });
+        navigation.navigate("UsersInGroup", {
+          id: id,
+          groupName: cardTitle,
+          groupDesc: cardDesc,
+          groupImage: cardImageLink,
+        });
       }}
     >
       <GroupCard
@@ -23,9 +36,22 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   );
 };
 const EnrolledGroups = ({ navigation, enrolledGroups }) => {
+  const renderItem = ({ item : { groupName, groupDesc, groupImage, creatorName, currentUser, id } }) => (
+    <EnrolledGroupsCard
+      id={id}
+      cardTitle={groupName}
+      cardDesc={groupDesc}
+      cardImageLink={groupImage}
+      creatorName={creatorName}
+      currentUser={currentUser}
+      navigation={navigation}
+    />
+  );
+
   return (
     <View>
-      {enrolledGroups &&
+      <FlatList data={enrolledGroups} renderItem={renderItem} />
+      {/* {enrolledGroups &&
         enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
             cardTitle: groupName,
@@ -34,9 +60,9 @@ const EnrolledGroups = ({ navigation, enrolledGroups }) => {
             id: id,
             navigation: navigation,
           });
-        })}
+        })} */}
     </View>
   );
 };
 
-export default Auth.user ? EnrolledGroups : withAuthenticator(EnrolledGroups);
+export default EnrolledGroups;

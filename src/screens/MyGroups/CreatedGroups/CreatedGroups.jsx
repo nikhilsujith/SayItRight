@@ -1,26 +1,30 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { TouchableOpacity, View, Text, RefreshControl, Alert } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  FlatList,
+} from "react-native";
 import { GroupCard } from "../../../components";
-import { deleteGroup } from "../../../service/Group/GroupService";
 
 
-const deleteAlert = (id) =>
-  Alert.alert("Delete Group", `Are you sure you want to delete this group?`,[
-    {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel",
-    },
-    { text: "Delete", onPress: () => deleteGroup(id) },
-  ]);
-
-const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
+const CreatedGroupsCard = ({
+  navigation,
+  cardTitle,
+  cardDesc,
+  cardImageLink,
+  id,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("UsersInGroup", { id: id, groupName: cardTitle });
+        navigation.navigate("UsersInGroup", {
+          id: id,
+          groupName: cardTitle,
+          groupDesc: cardDesc,
+          groupImage: cardImageLink,
+        });
       }}
-      onLongPress={() => {deleteAlert(id)}}
     >
       <GroupCard
         key={id}
@@ -32,10 +36,23 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
   );
 };
 const CreatedGroups = ({ navigation, createdGroups }) => {
+  const renderItem = ({ item : { groupName, groupDesc, groupImage, creatorName, currentUser, id } }) => (
+    <CreatedGroupsCard
+      id={id}
+      cardTitle={groupName}
+      cardDesc={groupDesc}
+      cardImageLink={groupImage}
+      creatorName={creatorName}
+      currentUser={currentUser}
+      navigation={navigation}
+    />
+  );
+
   return (
     <View>
-      {createdGroups &&
-        createdGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+      <FlatList data={createdGroups} renderItem={renderItem} />
+      {/* {enrolledGroups &&
+        enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
             cardTitle: groupName,
             cardDesc: groupDesc,
@@ -43,10 +60,9 @@ const CreatedGroups = ({ navigation, createdGroups }) => {
             id: id,
             navigation: navigation,
           });
-        })}
+        })} */}
     </View>
   );
 };
 
-// export default Auth.user ? CreatedGroups : withAuthenticator(CreatedGroups);
 export default CreatedGroups;

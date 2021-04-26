@@ -164,8 +164,9 @@ export const MyGroupsStackScreen = () => (
     <MyGroupsStack.Screen
       name="UsersInGroup"
       component={UsersInGroup}
-      options={{
-        headerTitle: "Users In Group",
+      options={({ route }) => ({
+        title: route.params.groupName,
+        headerTitleStyle: {color: theme.secondary.backgroundColor},
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -173,7 +174,7 @@ export const MyGroupsStackScreen = () => (
           borderBottomWidth: 0,
         },
         headerTintColor: theme.primary.color,
-      }}
+      })}
     />
   </MyGroupsStack.Navigator>
 );

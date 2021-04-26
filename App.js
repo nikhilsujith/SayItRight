@@ -30,8 +30,12 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
-      if (fetchedPosts.status != '500') {
+      console.log(fetchedPosts.status);
+      if (fetchedPosts.status == '200') {
         setNewUser(false);
+      }
+      else if (fetchedPosts.status == '500'){
+        setNewUser(true);
       }
     })();
     setIsReady({ isReady: true });
