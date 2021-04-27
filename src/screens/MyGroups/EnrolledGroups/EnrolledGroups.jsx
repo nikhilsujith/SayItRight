@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  FlatList,
-} from "react-native";
+import { TouchableOpacity, View, Text, FlatList } from "react-native";
 import { GroupCard } from "../../../components";
-
 
 const EnrolledGroupsCard = ({
   navigation,
@@ -36,7 +30,9 @@ const EnrolledGroupsCard = ({
   );
 };
 const EnrolledGroups = ({ navigation, enrolledGroups }) => {
-  const renderItem = ({ item : { groupName, groupDesc, groupImage, creatorName, currentUser, id } }) => (
+  const renderItem = ({
+    item: { groupName, groupDesc, groupImage, creatorName, currentUser, id },
+  }) => (
     <EnrolledGroupsCard
       id={id}
       cardTitle={groupName}
@@ -48,21 +44,19 @@ const EnrolledGroups = ({ navigation, enrolledGroups }) => {
     />
   );
 
-  return (
-    <View>
-      <FlatList data={enrolledGroups} renderItem={renderItem} />
-      {/* {enrolledGroups &&
-        enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
-          return groupCards({
-            cardTitle: groupName,
-            cardDesc: groupDesc,
-            cardImageLink: groupImage,
-            id: id,
-            navigation: navigation,
-          });
-        })} */}
-    </View>
-  );
+  return <FlatList data={enrolledGroups} renderItem={renderItem} />;
 };
+{
+  /* {enrolledGroups &&
+      enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+        return groupCards({
+          cardTitle: groupName,
+          cardDesc: groupDesc,
+          cardImageLink: groupImage,
+          id: id,
+          navigation: navigation,
+        });
+      })} */
+}
 
 export default EnrolledGroups;

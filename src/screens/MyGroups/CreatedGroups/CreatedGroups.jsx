@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  FlatList,
-} from "react-native";
+import { TouchableOpacity, View, Text, FlatList } from "react-native";
 import { GroupCard } from "../../../components";
 import { deleteGroup } from "../../../service/Group/GroupService";
-
 
 const handleDeleteGroup = (id) => {
   deleteGroup(id);
@@ -42,7 +36,9 @@ const CreatedGroupsCard = ({
   );
 };
 const CreatedGroups = ({ navigation, createdGroups }) => {
-  const renderItem = ({ item : { groupName, groupDesc, groupImage, creatorName, currentUser, id } }) => (
+  const renderItem = ({
+    item: { groupName, groupDesc, groupImage, creatorName, currentUser, id },
+  }) => (
     <CreatedGroupsCard
       id={id}
       cardTitle={groupName}
@@ -54,10 +50,9 @@ const CreatedGroups = ({ navigation, createdGroups }) => {
     />
   );
 
-  return (
-    <View>
-      <FlatList data={createdGroups} renderItem={renderItem} />
-      {/* {enrolledGroups &&
+  return <FlatList data={createdGroups} renderItem={renderItem} />;
+  {
+    /* {enrolledGroups &&
         enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
           return groupCards({
             cardTitle: groupName,
@@ -66,9 +61,8 @@ const CreatedGroups = ({ navigation, createdGroups }) => {
             id: id,
             navigation: navigation,
           });
-        })} */}
-    </View>
-  );
+        })} */
+  }
 };
 
 export default CreatedGroups;

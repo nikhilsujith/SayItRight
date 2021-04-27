@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, Button, Alert, FlatList, SafeAreaView } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Button,
+  Alert,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { GroupCard } from "../../../components";
 import { enrollGroup } from "../../../service/User/UserService";
 
-
 const joinAlert = (creatorName, id, currentUser) =>
-  Alert.alert("Group Info", `Owner: ${creatorName}`,[
+  Alert.alert("Group Info", `Owner: ${creatorName}`, [
     {
       text: "Cancel",
       onPress: () => console.log("Cancel Pressed"),
@@ -15,7 +22,15 @@ const joinAlert = (creatorName, id, currentUser) =>
     { text: "Join", onPress: () => enrollGroup(id, currentUser) },
   ]);
 
-const AllGroupsCard = ({ navigation, cardTitle, cardDesc, cardImageLink, id, creatorName, currentUser }) => {
+const AllGroupsCard = ({
+  navigation,
+  cardTitle,
+  cardDesc,
+  cardImageLink,
+  id,
+  creatorName,
+  currentUser,
+}) => {
   return (
     <TouchableOpacity
       onLongPress={() => {
@@ -33,7 +48,16 @@ const AllGroupsCard = ({ navigation, cardTitle, cardDesc, cardImageLink, id, cre
 };
 
 const AllGroups = ({ navigation, allGroups, currentUser }) => {
-  const renderItem = ({ item : { groupName, groupDesc, groupImage, creatorName, currentUser, navigation } }) => (
+  const renderItem = ({
+    item: {
+      groupName,
+      groupDesc,
+      groupImage,
+      creatorName,
+      currentUser,
+      navigation,
+    },
+  }) => (
     <AllGroupsCard
       cardTitle={groupName}
       cardDesc={groupDesc}
@@ -44,13 +68,9 @@ const AllGroups = ({ navigation, allGroups, currentUser }) => {
     />
   );
 
-  return (
-    <SafeAreaView>
-      <FlatList
-        data = {allGroups}
-        renderItem = {renderItem}
-      />
-      {/* {allGroups &&
+  return <FlatList data={allGroups} renderItem={renderItem} />;
+  {
+    /* {allGroups &&
         allGroups.map(({ groupName, groupDesc, groupImage, id, creatorName }) => {
           return groupCards({
             cardTitle: groupName,
@@ -61,9 +81,8 @@ const AllGroups = ({ navigation, allGroups, currentUser }) => {
             creatorName: creatorName,
             currentUser: currentUser
           });
-        })} */}
-    </SafeAreaView>
-  );
+        })} */
+  }
 };
 
 export default AllGroups;

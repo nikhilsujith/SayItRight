@@ -17,18 +17,18 @@ const AppContainer = (props) => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" />
-      {props.newUser ? <NewProfileStackScreen /> : <MainStackScreen />}
+      {
+      props.newUser === true ? <NewProfileStackScreen /> 
+      : props.newUser === false ? <MainStackScreen /> 
+      : <LoadingImage />
+      }
     </NavigationContainer>
   );
 };
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
-  const [newUser, setNewUser] = useState(true);
-
-  const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-  };
+  const [newUser, setNewUser] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -39,13 +39,16 @@ const App = () => {
         setNewUser(true);
       }
     })();
+  }, []);
+
+  useEffect(() => {
     setIsReady({isReady: true})
-  }, [newUser]);
+  }, [setNewUser])
 
   if (isReady) {
     return <AppContainer newUser={newUser} />;
   } else {
-    return <LoadingImage />;
+    return <LoadingIndicator />;
   }
 };
 

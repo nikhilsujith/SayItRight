@@ -57,6 +57,9 @@ export const MyGroupsScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const currentUser = currentSession();
 
+
+  console.log(enrolledGroups);
+
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -84,7 +87,7 @@ export const MyGroupsScreen = ({ navigation }) => {
       }
     });
     return () => (mounted = false);
-  }, [refreshing]);
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
