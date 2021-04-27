@@ -6,14 +6,20 @@ import {
   TextInput,
   Image,
   Thumbnail,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated,
+  PanResponder,
+  Easing
 } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import {  Button } from 'react-native';
 import { Video, Audio } from 'expo-av';
 const defaultImage = {
     uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
   };
 
+  const TRACK_SIZE = 4;
+  const THUMB_SIZE = 20;  
 //export default class Profile extends Component {
 function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink,videoLink,title}) {
     let link = "";
@@ -27,7 +33,8 @@ function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
     const [sound, setSound] = React.useState();
-    const [soundtitle,setSoundTitle] = React.useState("Play Sound")
+    const [soundtitle,setSoundTitle] = React.useState("Play Sound");
+    const [play,setPlay] =React.useState(false);
     console.log(audioLink);
     async function playSound() {
       if(sound === null)
@@ -37,12 +44,14 @@ function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink
          {uri:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'}
       );
       setSound(sound);
+      setPlay(true);
       setSoundTitle("Pause Sound");
       // console.log('Playing Sound');
       await sound.playAsync(); }
       else{
         setSound(null);
         setSoundTitle("Play Sound");
+        setPlay(false);
       }
     }
 
@@ -56,18 +65,12 @@ function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink
   return (
      
     <View style={[styles.container]}>
-        {/* <Thumbnail square source={link} /> */}
         <Text style={styles.title}>{title}</Text>
         <Image source={link} resizeMode="cover" style={styles.userImage}></Image>
-        {/* <Image style={styles.userImage} source={link}/> */}
               <Text style={styles.nameMeaning}>{nameMeaning}</Text>
               <Text style={styles.nameDescription}>{nameDescription}</Text> 
-              {/* <View style={styles.container}> */}
-              {/* <View style={styles.Audio} >
-                   <Button title={soundtitle}onPress={playSound} />
-              </View> */}
-              <TouchableOpacity style={styles.saveButton} onPress={playSound}>
-                   <Text style={styles.saveButtonText}>{soundtitle}</Text>
+              <TouchableOpacity style={styles.audioButton} onPress={playSound} >
+                   <Entypo name={play? "controller-paus" : "controller-play"} color='lightblue' size={50} />
               </TouchableOpacity>
               <Video
                 ref={video}
@@ -80,13 +83,9 @@ function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink
                 isLooping
                 onPlaybackStatusUpdate={status => setStatus(() => status)}
               />
-    {/* </View> */}
     </View>
     );
   }
-
-//http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4
-  //const { width } = Dimensions.get("screen");
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -105,29 +104,24 @@ function UserProfileCard({ audioLink, nameDescription, nameMeaning,cardImageLink
       flex: 1,
       justifyContent: 'center',
     },
-    saveButtonText: {
-      color: "black",
-      fontSize: 30,
-    },
-  
-    saveButton: {
+    audioButton: {
       borderRadius: 50,
-      width: 300,
-      height: 60,
+      width: 285,
+      height: 50,
       // paddingHorizontal: 40,
       // paddingVertical: 5,
       borderColor: "#085DAD",
       alignItems: "center",
       justifyContent: "center",
-      marginTop: 380,
+      marginTop: 370,
       borderWidth: 1,
     },
     video: {
       alignSelf: 'center',
       width: 300,
-      height: 180,
+      height: 160,
       position:'absolute',
-      marginTop:475,
+      marginTop:448,
       backgroundColor:'white'
     },
     userImage: {

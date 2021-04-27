@@ -113,7 +113,7 @@ const UsersInGroup = ({ navigation, route }) => {
                   image={object.profileImage}
                   name={object.fullName}
                   meaning={object.poolId}
-                  press={() =>navigation.navigate("UserProfile",{profileImage:object.profileImage,title:object.fullName,nameDescription:userNameData.desc,nameMeaning:"",videoLink:userNameData.videoFile,audioLink:userNameData.audioFile})}
+                  press={() =>navigation.navigate("UserProfile",{profileImage:object.profileImage,title:object.fullName,nameDescription:userNameData.desc,nameMeaning:object.fullName,videoLink:userNameData.videoFile,audioLink:userNameData.audioFile})}
                 />
               );
             })
