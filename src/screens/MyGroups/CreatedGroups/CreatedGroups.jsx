@@ -22,6 +22,7 @@ const CreatedGroupsCard = ({
           groupName: cardTitle,
           groupDesc: cardDesc,
           groupImage: cardImageLink,
+          fromScreen: 'owned'
         });
       }}
       onLongPress={() => handleDeleteGroup(id)}

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, StyleSheet, Button, Text, Image } from "react-native";
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Button,
+  Text,
+  Image,
+  SafeAreaView,
+} from "react-native";
 import {
   Card,
   CardItem,
@@ -14,26 +22,6 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
 import { AccordianPack, LoadingIndicator } from "../../components";
 import { defaultOrImage } from "../../util";
-
-const GroupHeader = ({ navigation, title }) => {
-  return (
-    <Card style={styles.root}>
-      <CardItem style={styles.root}>
-        {/* <Left>
-          <Icon name="close" onPress={() => navigation.goBack()} />
-        </Left> */}
-        <Body
-          style={{ flex: 5, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text>{title}</Text>
-        </Body>
-        {/* <Right style={{ flex: 1 }}>
-          <Icon name="close" onPress={() => navigation.goBack()} />
-        </Right> */}
-      </CardItem>
-    </Card>
-  );
-};
 
 const NameCard = ({ press, image, name, meaning }) => {
   let link = defaultOrImage(image);
@@ -58,7 +46,7 @@ const NameCard = ({ press, image, name, meaning }) => {
 };
 
 const UsersInGroup = ({ navigation, route }) => {
-  const { id, groupName, groupDesc, groupImage } = route.params;
+  const { id, groupName, groupDesc, groupImage, fromScreen } = route.params;
   const [users, setUsers] = useState("");
   const [groupNameState, setGroupNameState] = useState("My Groups");
 
@@ -96,13 +84,11 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   };
 
-  const accordContent = [
-    { title: "Group Members", content: <UserList /> },
-];
+  const accordContent = [{ title: "Group Members", content: <UserList /> }];
   const image = defaultOrImage(groupImage);
   return (
     <ScrollView>
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
           flexDirection: "row",
@@ -121,7 +107,7 @@ const UsersInGroup = ({ navigation, route }) => {
         >
           <Text>{groupDesc}</Text>
         </View>
-      </View>
+      </SafeAreaView>
       <AccordianPack headerTitles={accordContent} />
       <View
         style={{
@@ -131,7 +117,19 @@ const UsersInGroup = ({ navigation, route }) => {
           marginBottom: "5%",
         }}
       >
-        <Button color="black" title="Exit Group" onPress={() => alert('Create backend to exit group')}/>
+        {fromScreen == "enrolled" ? (
+          <Button
+            color="black"
+            title="Exit Group"
+            onPress={() => alert("Create backend to exit group")}
+          />
+        ) : (
+          <Button
+            color="black"
+            title="Edit Group"
+            onPress={() => navigation.navigate("CreateNewGroup")}
+          />
+        )}
       </View>
     </ScrollView>
   );

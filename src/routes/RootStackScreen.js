@@ -9,6 +9,7 @@ import {
   NewProfile,
   Recording,
   UsersInGroup,
+  CreateNewGroup,
 } from "../screens";
 
 import { theme } from "../constants/theme";
@@ -166,7 +167,7 @@ export const MyGroupsStackScreen = () => (
       component={UsersInGroup}
       options={({ route }) => ({
         title: route.params.groupName,
-        headerTitleStyle: {color: theme.secondary.backgroundColor},
+        headerTitleStyle: { color: theme.secondary.backgroundColor },
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
@@ -175,6 +176,21 @@ export const MyGroupsStackScreen = () => (
         },
         headerTintColor: theme.primary.color,
       })}
+    />
+    <MyGroupsStack.Screen
+      name="CreateNewGroup"
+      component={CreateNewGroup}
+      options={{ 
+        title: "Create New Group",
+        headerTitleStyle: { color: theme.secondary.backgroundColor },
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      }}
     />
   </MyGroupsStack.Navigator>
 );

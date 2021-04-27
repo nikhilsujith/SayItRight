@@ -12,21 +12,15 @@ import {
   Button,
   Root,
 } from "native-base";
-import { RefreshControl } from "react-native";
+import { RefreshControl, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import EnrolledGroups from "./EnrolledGroups/EnrolledGroups";
 import CreatedGroups from "./CreatedGroups/CreatedGroups";
-import CreateNewGroup from "./CreateNewGroup/CreateNewGroup";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "../../constants/theme";
-import { AllGroups, UsersInGroup } from "..";
+import { AllGroups } from "..";
 import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { FloatingActionButton, BannerAds } from "../../components";
-
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-import { withAuthenticator } from "aws-amplify-react-native";
 
 import {
   fetchEnrolledGroups,
@@ -56,9 +50,6 @@ export const MyGroupsScreen = ({ navigation }) => {
   const [allGroups, setAllGroupData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const currentUser = currentSession();
-
-
-  console.log(enrolledGroups);
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -144,7 +135,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups allGroups={allGroups} currentUser={currentUser}/>
+            <AllGroups allGroups={allGroups} currentUser={currentUser} />
           </Tab>
         </Tabs>
       </ScrollView>
@@ -155,7 +146,6 @@ export const MyGroupsScreen = ({ navigation }) => {
             icon={<Icon name="add" />}
           />
         </View>
-        {/* <BannerAds /> */}
       </View>
     </SafeAreaView>
   );
@@ -169,7 +159,7 @@ const MyGroups = () => {
         component={MyGroupsStackScreen}
         options={{ headerShown: false }}
       />
-      <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} options={{headerShown: false}}/>
+      {/* <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} options={{headerShown: false}}/> */}
       {/* <RootStack.Screen
         name="UsersInGroup"
         component={UsersInGroup}
@@ -183,3 +173,15 @@ const MyGroups = () => {
 };
 // export default Auth.user ? MyGroups : withAuthenticator(MyGroups);
 export default MyGroups;
+
+// Later on in your styles..
+const styles = StyleSheet.create({
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+});
+

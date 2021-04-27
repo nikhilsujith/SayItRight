@@ -46,7 +46,7 @@ export const enrollGroup = (groupId, poolId) => {
       method: 'POST'
     })
       .then((data) => data.json())
-      .then((data) => console.log(data));
+      // .then((data) => console.log(data));
   } catch (error) {
     alert("Fetch Group Error");
     console.log(error);

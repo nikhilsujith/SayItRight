@@ -5,14 +5,14 @@ import {
   Item,
   Textarea,
 } from "native-base";
-import { Button, Text } from "react-native";
+import { Button, SafeAreaView, Text } from "react-native";
 import { TempHeader } from "../../../components";
 
 
 const CreateNewGroup = ({ navigation }) => {
   return (
-    <View>
-      <TempHeader title="Create New Group" navigation={navigation}/>
+    <SafeAreaView>
+      {/* <TempHeader title="Create New Group" navigation={navigation}/> */}
       <View>
         <Text>Image Picker Goes Here</Text>
       </View>
@@ -24,7 +24,7 @@ const CreateNewGroup = ({ navigation }) => {
       <Item style={{flex: 1, alignSelf: 'center'}}>
         <Button title="Create Group"/>
       </Item>
-    </View>
+    </SafeAreaView>
   );
 };
 

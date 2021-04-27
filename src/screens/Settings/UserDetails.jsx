@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Platform,
-  View,
-  Image,
-  Text,
-  SafeAreaView,
-} from "react-native";
+import { Platform, View, Image, Text, SafeAreaView } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,10 +10,7 @@ import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 import { uploadAuido } from "../../service/User/Audio";
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-
+import { Video, AVPlaybackStatus } from "expo-av";
 
 import { FloatingActionButton } from "../../components";
 
@@ -35,6 +26,8 @@ const UserDetails = ({ navigation }) => {
   const [videoSource, setVideoSource] = useState(null);
   const [audioUri, setAudioUri] = useState(null);
   const [dimensions, setDimensions] = useState({ window, screen });
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
 
   const disableSave = userName === "" || nameDesc === "" || !imageUri;
 
@@ -120,23 +113,42 @@ const UserDetails = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ alignSelf: "center" }}>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <TouchableOpacity onPress={pickImage}>
-            {imageUri ? (
-              <Image
-                source={{ uri: imageUri }}
-                style={styles.imagePicker}
-              />
-            ) : (
-              <Image
-                resizeMode="contain"
-                style={styles.imagePicker}
-                source={require("../../../assets/icon.png")}
-              />
-            )}
-          </TouchableOpacity>
+      <ScrollView>
+        <TouchableOpacity onPress={pickImage}>
+          {imageUri ? (
+            <Image source={{ uri: imageUri }} style={styles.imagePicker} />
+          ) : (
+            <Image
+              resizeMode="contain"
+              style={styles.imagePicker}
+              source={require("../../../assets/icon.png")}
+            />
+          )}
+        </TouchableOpacity>
+        <View>
+          <Video
+            ref={video}
+            style={{ height: 150 }}
+            source={{
+              uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+            }}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+          <View>
+            <Button
+              title={status.isPlaying ? "Pause" : "Play"}
+              onPress={() =>
+                status.isPlaying
+                  ? video.current.pauseAsync()
+                  : video.current.playAsync()
+              }
+            />
+          </View>
         </View>
+
         <View>
           <TextInput
             placeholder="Name"
@@ -215,9 +227,6 @@ const styles = StyleSheet.create({
     height: imageHeight,
     margin: height * 0.02,
     width: imageWidth,
-    paddingTop: 30,
-    borderRadius: 100,
-    marginRight: 0,
   },
   input: {
     borderColor: "black",
