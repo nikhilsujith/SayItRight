@@ -185,7 +185,6 @@ export const HomeStackScreen = ({ navigation }) => (
       name="HomeStackScreen"
       component={Home}
       options={{
-        //        headerShown: (Auth.user)?true:false,
         title: "Home",
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
