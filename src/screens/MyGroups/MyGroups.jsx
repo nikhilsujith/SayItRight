@@ -23,10 +23,6 @@ import { AllGroups, UsersInGroup } from "..";
 import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { FloatingActionButton, BannerAds } from "../../components";
 
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-import { withAuthenticator } from "aws-amplify-react-native";
 
 import {
   fetchEnrolledGroups,
@@ -50,15 +46,13 @@ const MyGroupsStackScreen = () => {
   );
 };
 
+
 export const MyGroupsScreen = ({ navigation }) => {
   const [enrolledGroups, setEnrolledGroups] = useState([]);
   const [createdGroups, setCreatedGroups] = useState([]);
   const [allGroups, setAllGroupData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const currentUser = currentSession();
-
-
-  console.log(enrolledGroups);
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
