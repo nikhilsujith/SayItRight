@@ -1,86 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, StyleSheet } from "react-native";
+import { View, StatusBar, StyleSheet, Button, Text, Image } from "react-native";
 import {
-  Container,
-  Header,
-  Content,
   Card,
   CardItem,
-  Icon,
   Right,
   Left,
   Body,
   List,
   ListItem,
   Thumbnail,
-  Button,
-  Text,
 } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { fetchUsersInGroup } from "../../service/Group/GroupService";
-import { LoadingIndicator } from "../../components";
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import { AccordianPack, LoadingIndicator } from "../../components";
+import { defaultOrImage } from "../../util";
 
-const TempHeader = ({ navigation, title }) => {
+const GroupHeader = ({ navigation, title }) => {
   return (
     <Card style={styles.root}>
       <CardItem style={styles.root}>
-        <Icon name="arrow-back" onPress={() => navigation.goBack()} />
-        <Text
-          style={{
-            flex: 3,
-            justifyContent: "space-between",
-            marginLeft: 20,
-            textAlign: "center",
-            fontSize: 17,
-            fontWeight: "700",
-          }}
+        {/* <Left>
+          <Icon name="close" onPress={() => navigation.goBack()} />
+        </Left> */}
+        <Body
+          style={{ flex: 5, alignItems: "center", justifyContent: "center" }}
         >
-          {title}
-        </Text>
-        <Right style={{ flex: 1, justifyContent: "flex-end" }}></Right>
+          <Text>{title}</Text>
+        </Body>
+        {/* <Right style={{ flex: 1 }}>
+          <Icon name="close" onPress={() => navigation.goBack()} />
+        </Right> */}
       </CardItem>
     </Card>
   );
 };
 
-const defaultImage = {
-  uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
-};
 const NameCard = ({ press, image, name, meaning }) => {
-  let link = "";
-  if (image) {
-    link = { uri: image };
-  } else {
-    link = defaultImage;
-  }
+  let link = defaultOrImage(image);
   return (
-    <ScrollView>
-      <TouchableOpacity onPress={press}>
-        <List>
-          <ListItem thumbnail>
-            <Left>
-              <Thumbnail square source={link} />
-            </Left>
-            <Body>
-              <Text>{name}</Text>
-              {/* <Text note numberOfLines={1}>
+    <TouchableOpacity onPress={press} style={{ padding: 10 }}>
+      <List>
+        <ListItem thumbnail>
+          <Left>
+            <Thumbnail circular source={link} />
+          </Left>
+          <Body>
+            <Text>{name}</Text>
+            {/* <Text note numberOfLines={1}>
                 {''}
               </Text> */}
-            </Body>
-            <Right></Right>
-          </ListItem>
-        </List>
-      </TouchableOpacity>
-    </ScrollView>
+          </Body>
+          <Right></Right>
+        </ListItem>
+      </List>
+    </TouchableOpacity>
   );
 };
 
 const UsersInGroup = ({ navigation, route }) => {
-  const { id, groupName } = route.params;
+  const { id, groupName, groupDesc, groupImage } = route.params;
   const [users, setUsers] = useState("");
   const [groupNameState, setGroupNameState] = useState("My Groups");
 
@@ -95,12 +73,12 @@ const UsersInGroup = ({ navigation, route }) => {
     return () => (mounted = false);
   }, []);
 
-  return (
-    <>
-      <TempHeader navigation={navigation} title={groupNameState} />
+  const UserList = () => {
+    return (
       <ScrollView>
-        {users.length > 0
-          ? users.map((object) => {
+        <View>
+          {users.length > 0 ? (
+            users.map((object) => {
               return (
                 <NameCard
                   image={object.profileImage}
@@ -110,16 +88,69 @@ const UsersInGroup = ({ navigation, route }) => {
                 />
               );
             })
-          : (<LoadingIndicator/>)}
+          ) : (
+            <LoadingIndicator />
+          )}
+        </View>
       </ScrollView>
-    </>
+    );
+  };
+
+  const accordContent = [
+    { title: "Group Members", content: <UserList /> },
+];
+  const image = defaultOrImage(groupImage);
+  return (
+    <ScrollView>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
+        }}
+      >
+        <Image style={styles.imagePicker} source={image} />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-start",
+            marginTop: "5%",
+            marginBottom: "5%",
+          }}
+        >
+          <Text>{groupDesc}</Text>
+        </View>
+      </View>
+      <AccordianPack headerTitles={accordContent} />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-start",
+          marginTop: "5%",
+          marginBottom: "5%",
+        }}
+      >
+        <Button color="black" title="Exit Group" onPress={() => alert('Create backend to exit group')}/>
+      </View>
+    </ScrollView>
   );
 };
 
-export default (Auth.user)?UsersInGroup:withAuthenticator(UsersInGroup);
+export default UsersInGroup;
+
 const styles = StyleSheet.create({
   root: {
     borderRadius: 10,
     paddingLeft: 10,
+  },
+  imagePicker: {
+    height: 100,
+    width: 100,
+    borderRadius: 100,
+    resizeMode: "cover",
+    backgroundColor: "#dfdfdf",
+    paddingTop: 30,
+    margin: 10,
   },
 });

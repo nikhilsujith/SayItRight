@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
 // export default StyleSheet.create({
 //   primary: {
@@ -15,13 +16,18 @@ import { StyleSheet } from 'react-native';
 // },
 // });
 
+const { width, height } = Dimensions.get("screen");
+const imageHeight = height * 0.2;
+const imageWidth = height * 0.2;
+
 const custom = {
-  purple: 'rgba(74,21,75,1)',
-  white: '#ffffff',
-  yellow: '#ECB22E',
-  darkBlue: '#18314A',
-  black: '#000000',
-  green: '#1dbf73',
-  maroon: '#540e1f',
+  purple: "rgba(74,21,75,1)",
+  white: "#ffffff",
+  yellow: "#ECB22E",
+  darkBlue: "#18314A",
+  black: "#000000",
+  green: "#1dbf73",
+  maroon: "#540e1f",
 };
+
 export default custom;

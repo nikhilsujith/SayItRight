@@ -3,16 +3,16 @@ import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
 
 const LoadingIndicator = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View
         style={{
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: 'black' 
         }}
       >
-        <ActivityIndicator color="black" size="large" />
-        <Text>Loading</Text>
+        <Image style={styles.imagePicker} source={{uri: 'https://media.tenor.com/images/3f50d15e08bc96c7b1e97e8a1ec3836d/tenor.gif'}} />
       </View>
     </View>
   );
@@ -21,11 +21,10 @@ export default LoadingIndicator;
 
 const styles = StyleSheet.create({
   imagePicker: {
-    height: 200,
-    width: 200,
-    borderRadius: 100,
-    resizeMode: "cover",
-    backgroundColor: "#dfdfdf",
+    height: '70%',
+    width: '70%',
+    resizeMode: "contain",
+    backgroundColor: "black",
     paddingTop: 30,
     margin: 10,
   },

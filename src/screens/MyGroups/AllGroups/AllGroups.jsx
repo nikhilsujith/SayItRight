@@ -1,15 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, Button } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Button,
+  Alert,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { GroupCard } from "../../../components";
-import { fetchAllGroups } from "../../../service/Group/GroupService";
+import { enrollGroup } from "../../../service/User/UserService";
 
+const joinAlert = (creatorName, id, currentUser) =>
+  Alert.alert("Group Info", `Owner: ${creatorName}`, [
+    {
+      text: "Cancel",
+      onPress: () => console.log("Cancel Pressed"),
+      style: "cancel",
+    },
+    { text: "Join", onPress: () => enrollGroup(id, currentUser) },
+  ]);
 
-
-
-
-const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
+const AllGroupsCard = ({
+  navigation,
+  cardTitle,
+  cardDesc,
+  cardImageLink,
+  id,
+  creatorName,
+  currentUser,
+}) => {
   return (
-    <TouchableOpacity onLongPress={() => {alert('Enroll')}}>
+    <TouchableOpacity
+      onLongPress={() => {
+        joinAlert(creatorName, id, currentUser);
+      }}
+    >
       <GroupCard
         key={id}
         cardTitle={cardTitle}
@@ -19,33 +46,43 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
     </TouchableOpacity>
   );
 };
-const AllGroups = ({ navigation }) => {
-  const [allGroups, setAllGroupData] = useState([]);
 
-  // console.log(allGroups);
-  useEffect(() => {
-    let mounted = true;
-    fetchAllGroups().then((group) => {
-      if (mounted) {
-        setAllGroupData(group);
-      }
-    });
-    return () => (mounted = false);
-  }, []);
-  return (
-    <View>
-      {/* <Button title='CLICK' onPress={()=>navigation.navigate('CreateNewGroup')} /> */}
-      {allGroups.map(({ groupName, groupDesc, groupImage, id , card}) => {
-        return groupCards({
-          cardTitle: groupName,
-          cardDesc: groupDesc,
-          cardImageLink: groupImage,
-          id: id,
-          navigation: navigation
-        });
-      })}
-    </View>
+const AllGroups = ({ navigation, allGroups, currentUser }) => {
+  const renderItem = ({
+    item: {
+      groupName,
+      groupDesc,
+      groupImage,
+      creatorName,
+      currentUser,
+      navigation,
+    },
+  }) => (
+    <AllGroupsCard
+      cardTitle={groupName}
+      cardDesc={groupDesc}
+      cardImageLink={groupImage}
+      creatorName={creatorName}
+      currentUser={currentUser}
+      navigation={navigation}
+    />
   );
+
+  return <FlatList data={allGroups} renderItem={renderItem} />;
+  {
+    /* {allGroups &&
+        allGroups.map(({ groupName, groupDesc, groupImage, id, creatorName }) => {
+          return groupCards({
+            cardTitle: groupName,
+            cardDesc: groupDesc,
+            cardImageLink: groupImage,
+            id: id,
+            navigation: navigation,
+            creatorName: creatorName,
+            currentUser: currentUser
+          });
+        })} */
+  }
 };
 
 export default AllGroups;

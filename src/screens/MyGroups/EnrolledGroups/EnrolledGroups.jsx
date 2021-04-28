@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, Button, RefreshControl } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useState, useEffect, useCallback } from "react";
+import { TouchableOpacity, View, Text, FlatList } from "react-native";
 import { GroupCard } from "../../../components";
-import { fetchEnrolledGroups } from "../../../service/User/UserService";
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
-
-const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
+const EnrolledGroupsCard = ({
+  navigation,
+  cardTitle,
+  cardDesc,
+  cardImageLink,
+  id,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("UsersInGroup", { id: id, groupName: cardTitle });
+        navigation.navigate("UsersInGroup", {
+          id: id,
+          groupName: cardTitle,
+          groupDesc: cardDesc,
+          groupImage: cardImageLink,
+        });
       }}
     >
       <GroupCard
@@ -25,21 +29,26 @@ const groupCards = ({ navigation, cardTitle, cardDesc, cardImageLink, id }) => {
     </TouchableOpacity>
   );
 };
-const EnrolledGroups = ({ navigation }) => {
-  const [myGroups, setMyGroupData] = useState([]);
-  useEffect(() => {
-    let mounted = true;
-    fetchEnrolledGroups().then((group) => {
-      if (mounted) {
-        setMyGroupData(group);
-      }
-    });
-    return () => (mounted = false);
-  }, []);
-  return (
-    <View>
-      {/* <Button title='CLICK' onPress={()=>navigation.navigate('CreateNewGroup')} /> */}
-      {myGroups.map(({ groupName, groupDesc, groupImage, id }) => {
+const EnrolledGroups = ({ navigation, enrolledGroups }) => {
+  const renderItem = ({
+    item: { groupName, groupDesc, groupImage, creatorName, currentUser, id },
+  }) => (
+    <EnrolledGroupsCard
+      id={id}
+      cardTitle={groupName}
+      cardDesc={groupDesc}
+      cardImageLink={groupImage}
+      creatorName={creatorName}
+      currentUser={currentUser}
+      navigation={navigation}
+    />
+  );
+
+  return <FlatList data={enrolledGroups} renderItem={renderItem} />;
+};
+{
+  /* {enrolledGroups &&
+      enrolledGroups.map(({ groupName, groupDesc, groupImage, id }) => {
         return groupCards({
           cardTitle: groupName,
           cardDesc: groupDesc,
@@ -47,9 +56,7 @@ const EnrolledGroups = ({ navigation }) => {
           id: id,
           navigation: navigation,
         });
-      })}
-    </View>
-  );
-};
+      })} */
+}
 
-export default (Auth.user)?EnrolledGroups:withAuthenticator(EnrolledGroups);
+export default EnrolledGroups;

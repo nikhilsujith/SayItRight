@@ -90,7 +90,7 @@ const UserDetails = ({ navigation }) => {
       Dimensions.removeEventListener('change', onChange);
     };
   }, []);
-
+  
   const onChange = ({ window, screen }) => {
     setDimensions({ window, screen });
   };
@@ -132,6 +132,8 @@ const UserDetails = ({ navigation }) => {
       aspect: [4, 3],
       base64: true,
     });
+
+    // console.log(result);
 
     if (!result.cancelled) {
       setImageUri(result.uri);
@@ -354,7 +356,7 @@ const styles = StyleSheet.create({
 
   },
 
-  Logout: {
+  logout: {
     position: "absolute",
     top: 100,
     left: 300,
@@ -381,6 +383,7 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
+    backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
@@ -424,6 +427,3 @@ const styles = StyleSheet.create({
 });
 
 export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
-
-
-

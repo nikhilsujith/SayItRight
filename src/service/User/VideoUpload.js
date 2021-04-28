@@ -18,6 +18,6 @@ export const uploadVideoAsync = async (uri, video,poolId) => {
       body: formData,
     });
   } catch (error) {
-    console.log('error', error);
+    //console.log('error', error);
   }
 };

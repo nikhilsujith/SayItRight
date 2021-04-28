@@ -48,7 +48,7 @@ export default function AccountSettings({ navigation }) {
       if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
-        console.log('picture source', source);
+        //console.log('picture source', source);
       }
     }
   };
@@ -62,7 +62,7 @@ export default function AccountSettings({ navigation }) {
           const source = data.uri;
           if (source) {
             setIsPreview(true);
-            console.log('video source', source);
+            //console.log('video source', source);
             setVideoSource(source);
           }
         }
@@ -126,7 +126,7 @@ export default function AccountSettings({ navigation }) {
         disabled={!isCameraReady}
         onLongPress={recordVideo}
         // onPress={() => {
-        //   console.log('::::::::::', props.navigation);
+        //   //console.log('::::::::::', props.navigation);
         //   props.navigation.push(Play);
         // }}
         onPressOut={stopVideoRecording}
@@ -193,7 +193,7 @@ export default function AccountSettings({ navigation }) {
           flashMode={Camera.Constants.FlashMode.on}
           onCameraReady={onCameraReady}
           onMountError={(error) => {
-            console.log('cammera error', error);
+            //console.log('cammera error', error);
           }}
         />
       )}
