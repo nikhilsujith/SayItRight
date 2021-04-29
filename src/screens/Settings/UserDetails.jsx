@@ -171,7 +171,7 @@ const UserDetails = ({ navigation }) => {
             "updatedOn":Date().toLocaleString()
             }
 
-        const url="https://say-it-right.herokuapp.com/api/v1/user"
+        const url="https://say-it-right.herokuapp.com/api/v1/user/addUser"
         const response = await fetch(url, {
               method: 'POST',
               headers: {
