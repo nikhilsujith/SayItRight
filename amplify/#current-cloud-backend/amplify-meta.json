@@ -1,38 +1,31 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-sir2-dev-111409-authRole",
-      "UnauthRoleArn": "arn:aws:iam::899127810552:role/amplify-sir2-dev-111409-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::899127810552:role/amplify-sir2-dev-111409-authRole",
+      "AuthRoleName": "amplify-sayitright-dev-215610-authRole",
+      "UnauthRoleArn": "arn:aws:iam::600341942215:role/amplify-sayitright-dev-215610-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::600341942215:role/amplify-sayitright-dev-215610-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-sir2-dev-111409-deployment",
-      "UnauthRoleName": "amplify-sir2-dev-111409-unauthRole",
-      "StackName": "amplify-sir2-dev-111409",
-      "StackId": "arn:aws:cloudformation:us-east-1:899127810552:stack/amplify-sir2-dev-111409/915fb380-9f8f-11eb-92e6-0acfa743837d",
-      "AmplifyAppId": "dmrslvr6uvfsr"
+      "DeploymentBucketName": "amplify-sayitright-dev-215610-deployment",
+      "UnauthRoleName": "amplify-sayitright-dev-215610-unauthRole",
+      "StackName": "amplify-sayitright-dev-215610",
+      "StackId": "arn:aws:cloudformation:us-east-1:600341942215:stack/amplify-sayitright-dev-215610/d1502ea0-9c03-11eb-91b8-0e0d04c7a1a5",
+      "AmplifyAppId": "d3i0xjdh2m0ojj"
     }
   },
   "auth": {
-    "sir235483b2c": {
+    "sayitright81f361fe": {
       "service": "Cognito",
+      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-sir2-dev-111409-deployment/amplify-cfn-templates/auth/sir235483b2c-cloudformation-template.yml",
-        "logicalId": "authsir235483b2c"
-      },
-      "lastPushTimeStamp": "2021-04-17T15:19:16.517Z",
       "output": {
-        "AppClientSecret": "1f74fhsv4efqap1oqs763v250tn9imvgp04m81g8r3d498rn1f0h",
-        "UserPoolId": "us-east-1_4F7EKRBwy",
-        "AppClientIDWeb": "75aouhs1aavhhglbili3c31vam",
-        "AppClientID": "79ik5aigd81ahkfjo0rsvmq1q4",
-        "IdentityPoolId": "us-east-1:21790db4-147c-4a39-9eca-01ae2cc0178d",
-        "IdentityPoolName": "sir235483b2c_identitypool_35483b2c__dev",
-        "UserPoolName": "sir235483b2c_userpool_35483b2c"
+        "UserPoolId": "us-east-1_pzYYNhLUN",
+        "UserPoolName": "sayitright4ef07adb_userpool_4ef07adb-dev",
+        "AppClientID": "4eulnnkt1uv15m3dg41hthv1t6",
+        "AppClientIDWeb": "4eulnnkt1uv15m3dg41hthv1t6"
       },
-      "lastPushDirHash": "A9xEM8tn9Dbm7oO4DgDDzy/j8GE="
+      "lastPushTimeStamp": "2021-04-13T20:19:41.847Z"
     }
   }
 }

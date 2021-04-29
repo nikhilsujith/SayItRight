@@ -3,10 +3,9 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_cognito_identity_pool_id": "us-east-1:21790db4-147c-4a39-9eca-01ae2cc0178d",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_4F7EKRBwy",
-    "aws_user_pools_web_client_id": "75aouhs1aavhhglbili3c31vam",
+    "aws_user_pools_id": "us-east-1_pzYYNhLUN",
+    "aws_user_pools_web_client_id": "4eulnnkt1uv15m3dg41hthv1t6",
     "oauth": {}
 };
 
