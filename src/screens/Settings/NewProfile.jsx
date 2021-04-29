@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, SafeAreaView, YellowBox,StatusBar } from "react-native";
+import { Platform, View, Image, Text, SafeAreaView } from "react-native";
 import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -7,38 +7,17 @@ import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
 import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
-import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
-<<<<<<< HEAD
-
-import Rec from "./Rec";
-
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-import {
-  withAuthenticator,
-  Authenticator,
-  SignIn,
-  SignUp,
-  ConfirmSignUp,
-  Greetings,
-} from "aws-amplify-react-native";
-=======
-import { uploadAuido } from "../../service/User/Audio";
 import { currentSession,currentSessionEmail } from '../../util/AmplifyCurrentSession';
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
 import { FloatingActionButton, NameCard } from "../../components";
-import { NavigationContainer } from "@react-navigation/native";
-import { MainStackScreen,NewProfileStackScreen } from "../../routes";
 import { RNS3 } from 'react-native-s3-upload';
   const window = Dimensions.get('window');
   const screen = Dimensions.get('screen');
->>>>>>> master-branch-copy-1
 
   import * as Updates from 'expo-updates';
 
@@ -204,13 +183,8 @@ const UserDetails = ({ navigation }) => {
   };
 
   const onAudioSelected = (uri) => {
-<<<<<<< HEAD
-    setVideoUri(uri);
-    //console.log(uri);
-=======
     setAudioUri(uri);
     console.log(uri);
->>>>>>> master-branch-copy-1
   };
 
   const onVideoSelected = (uri) => {
@@ -249,76 +223,6 @@ const UserDetails = ({ navigation }) => {
           )}
         </TouchableOpacity>
       </View>
-<<<<<<< HEAD
-      <TextInput
-        placeholder="Name"
-        style={styles.input}
-        value={userName}
-        onChangeText={(val) => setUserName(val)}
-      />
-      <TextInput
-        placeholder="Name Description"
-        style={styles.input}
-        value={nameDesc}
-        onChangeText={(val) => setNameDesc(val)}
-      />
-      <TextInput
-        placeholder="Meaning of the Name"
-        style={styles.input}
-        value={nameMeaning}
-        onChangeText={(val) => setNameMeaning(val)}
-      />
-
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={() =>
-          navigation.push("SettingsAudioStack", {
-            onAudioSelected: onAudioSelected,
-          })
-        }
-      >
-        <Text style={styles.saveButtonText}>Audio</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={() =>
-          navigation.push("SettingsVideoStack", {
-            onVideoSelected: onVideoSelected,
-          })
-        }
-      >
-        <Text style={styles.saveButtonText}>Video</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={{ ...styles.saveButton, opacity: disableSave ? 0.5 : 1 }}
-        onPress={handleSaveButton}
-        disabled={disableSave}
-      >
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
-
-      {/* Hey Deeksha, take a look at this */}
-      <TouchableOpacity
-        onPress={() => alert("Split this navigation between 2 buttons :)")}
-        style={[
-          styles.SignInForm,
-          {
-            borderColor: "black",
-            borderWidth: 1,
-            marginTop: 15,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles.textSign,
-            {
-              color: "black",
-            },
-          ]}
-=======
       <View style={styles.InputArea}>
         <TextInput
           placeholder="Name"
@@ -348,16 +252,10 @@ const UserDetails = ({ navigation }) => {
               onAudioSelected: onAudioSelected,
             })
           }
->>>>>>> master-branch-copy-1
         >
           <MaterialIcons name="keyboard-voice" size={24} color="black" />
         </TouchableOpacity>
 
-<<<<<<< HEAD
-      <TouchableOpacity style={styles.saveButton} onPress={() => logout()}>
-        <Text style={styles.saveButtonText}>Logout</Text>
-      </TouchableOpacity>
-=======
         <TouchableOpacity
           style={{...styles.videoIcon }}
           onPress={() =>
@@ -383,7 +281,6 @@ const UserDetails = ({ navigation }) => {
           icon={<MaterialIcons name="logout"  color="black" />}
         />
       </View>
->>>>>>> master-branch-copy-1
     </View>
   );
   return (

@@ -23,7 +23,6 @@ import { AllGroups, UsersInGroup } from "..";
 import { Dimensions, SafeAreaView, StatusBar } from "react-native";
 import { FloatingActionButton, BannerAds } from "../../components";
 
-
 import {
   fetchEnrolledGroups,
   fetchCreatedGroups,
@@ -46,7 +45,6 @@ const MyGroupsStackScreen = () => {
   );
 };
 
-
 export const MyGroupsScreen = ({ navigation }) => {
   const [enrolledGroups, setEnrolledGroups] = useState([]);
   const [createdGroups, setCreatedGroups] = useState([]);
@@ -62,6 +60,8 @@ export const MyGroupsScreen = ({ navigation }) => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  console.log(refreshing)
 
   useEffect(() => {
     let mounted = true;
@@ -81,7 +81,7 @@ export const MyGroupsScreen = ({ navigation }) => {
       }
     });
     return () => (mounted = false);
-  }, []);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -138,7 +138,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups allGroups={allGroups} currentUser={currentUser}/>
+            <AllGroups allGroups={allGroups} currentUser={currentUser} />
           </Tab>
         </Tabs>
       </ScrollView>
@@ -163,7 +163,11 @@ const MyGroups = () => {
         component={MyGroupsStackScreen}
         options={{ headerShown: false }}
       />
-      <RootStack.Screen name="CreateNewGroup" component={CreateNewGroup} options={{headerShown: false}}/>
+      <RootStack.Screen
+        name="CreateNewGroup"
+        component={CreateNewGroup}
+        options={{ headerShown: false }}
+      />
       {/* <RootStack.Screen
         name="UsersInGroup"
         component={UsersInGroup}
