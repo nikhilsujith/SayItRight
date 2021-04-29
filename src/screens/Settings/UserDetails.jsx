@@ -71,6 +71,7 @@ const UserDetails = ({ navigation }) => {
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
         setUserName(fetchedPosts.body.fullName);
+        setImageUri(fetchedPosts.body.profileImage);
         setOnlineImage(fetchedPosts.body.profileImage);
         setId(fetchedPosts.body.id);
         setMyGroups(fetchedPosts.body.myGroups);
@@ -203,15 +204,6 @@ const UserDetails = ({ navigation }) => {
               );
             }
           });
-    //       uploadAuido(audioUri,currentSession()).then((result) => {
-    //         if (result.status === 200) {
-    //           alert("Audio uploaded successfully");
-    //         } else {
-    //           alert(
-    //             "Oops! There was an error uploading your Audio. Please try again later."
-    //           );
-    //         }
-    //       });
         }
         if(newUserStatus==201){
             alert("Success");
