@@ -15,10 +15,17 @@ import { uploadVideoAsync } from "../../service/User/VideoUpload";
 
 import Rec from "./Rec";
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
+import {
+  withAuthenticator,
+  Authenticator,
+  SignIn,
+  SignUp,
+  ConfirmSignUp,
+  Greetings,
+} from "aws-amplify-react-native";
 
 import { NameCard } from "../../components";
 // import { uploadVideoCamera } from "../../service/User/VideoCameraService";
@@ -98,9 +105,9 @@ const UserDetails = ({ navigation }) => {
   };
 
   const onAudioSelected = (uri) => {
-      setVideoUri(uri);
-      //console.log(uri);
-    };
+    setVideoUri(uri);
+    //console.log(uri);
+  };
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
@@ -161,10 +168,14 @@ const UserDetails = ({ navigation }) => {
         onChangeText={(val) => setNameMeaning(val)}
       />
 
-      <TouchableOpacity style={styles.saveButton}
-        onPress={() =>navigation.push("SettingsAudioStack", {
-          onAudioSelected: onAudioSelected,
-        })}>
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={() =>
+          navigation.push("SettingsAudioStack", {
+            onAudioSelected: onAudioSelected,
+          })
+        }
+      >
         <Text style={styles.saveButtonText}>Audio</Text>
       </TouchableOpacity>
 
@@ -189,11 +200,11 @@ const UserDetails = ({ navigation }) => {
 
       {/* Hey Deeksha, take a look at this */}
       <TouchableOpacity
-        onPress={() => alert('Split this navigation between 2 buttons :)')}
+        onPress={() => alert("Split this navigation between 2 buttons :)")}
         style={[
           styles.SignInForm,
           {
-            borderColor: 'black',
+            borderColor: "black",
             borderWidth: 1,
             marginTop: 15,
           },
@@ -203,7 +214,7 @@ const UserDetails = ({ navigation }) => {
           style={[
             styles.textSign,
             {
-              color: 'black',
+              color: "black",
             },
           ]}
         >
@@ -211,12 +222,9 @@ const UserDetails = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-              style={styles.saveButton}
-              onPress={() => logout()}
-            >
-              <Text style={styles.saveButtonText}>Logout</Text>
-            </TouchableOpacity>
+      <TouchableOpacity style={styles.saveButton} onPress={() => logout()}>
+        <Text style={styles.saveButtonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
   return (
@@ -279,4 +287,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (Auth.user)?UserDetails:withAuthenticator(UserDetails);
+export default Auth.user ? UserDetails : withAuthenticator(UserDetails);

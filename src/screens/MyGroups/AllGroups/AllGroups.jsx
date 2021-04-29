@@ -50,15 +50,16 @@ const AllGroupsCard = ({
 const AllGroups = ({ navigation, allGroups, currentUser }) => {
   const renderItem = ({
     item: {
+      id,
       groupName,
       groupDesc,
       groupImage,
       creatorName,
-      currentUser,
       navigation,
     },
   }) => (
     <AllGroupsCard
+      id={id}
       cardTitle={groupName}
       cardDesc={groupDesc}
       cardImageLink={groupImage}

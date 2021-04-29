@@ -38,15 +38,14 @@ export const fetchCreatedGroups = (id) => {
 };
 
 export const enrollGroup = (groupId, poolId) => {
-  pId = poolId;
-  gId = groupId;
   try {
-    const url = `https://say-it-right.herokuapp.com/api/v1/group/enroll?group=${gId}&&pool=${pId}`;
+    const url = `https://say-it-right.herokuapp.com/api/v1/group/enroll?group=${groupId}&&pool=${poolId}`;
     return fetch(url,{
       method: 'POST'
     })
-      .then((data) => data.json())
-      .then((data) => console.log(data));
+    .then(alert("You have successfully enrolled into the group!"))
+      // .then((data) => data.json())
+      // .then((data) => console.log(data));
   } catch (error) {
     alert("Fetch Group Error");
     console.log(error);
