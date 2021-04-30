@@ -29,6 +29,7 @@ const CreateNewGroup = (props) => {
   const [dimensions, setDimensions] = useState({ window, screen });
   // Gives current cognito pool id
   const currentUser = currentSession();
+  console.log(currentUser);
 
   useEffect(() => {
     (async () => {
@@ -59,7 +60,7 @@ const CreateNewGroup = (props) => {
     }
   };
 
-  const handleCreateButton = (groupName, groupDesc, currentUser) => {
+  const handleCreateButton = (groupName, groupDesc, currentUser ) => {
     console.log(":::::::::::Create:::::::::::::::");
 
       createGroup(groupName, groupDesc,  currentUser).then((result) => {
@@ -129,12 +130,15 @@ const CreateNewGroup = (props) => {
         />
       </View>
       <View style={styles.SaveArea}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ ...styles.createButton,}}
           onPress={handleCreateButton}
         >
           <MaterialIcons name="group-add" size={20} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={styles.saveButton} onPress={handleCreateButton}>
+        <Text style={styles.saveButtonText}>Create</Text>
+      </TouchableOpacity> 
       </View>
     </ScrollView>
   );
@@ -184,11 +188,11 @@ const styles = StyleSheet.create({
     marginRight: 150,
   },
 
-  createButton: {
-    position: "absolute",
+  saveButton: {
+    
     top: 60,
     borderRadius: 10,
-    paddingHorizontal: 30,
+    // paddingHorizontal: 25,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",

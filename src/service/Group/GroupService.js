@@ -6,7 +6,7 @@ export async function fetchUsersInGroup(id) {
     return await fetch(url).then((data) => data.json());
     // .then(data => console.log(data))
   } catch (error) {
-    alert("Fetch Group Error");
+    alert('Fetch Group Error');
     //console.log(error);
   }
 }
@@ -18,7 +18,7 @@ export async function fetchAllGroups() {
     return await fetch(url).then((data) => data.json());
     // .then(data => //console.log(data))
   } catch (error) {
-    alert("Fetch Group Error");
+    alert('Fetch Group Error');
     console.log(error);
   }
 }
@@ -31,34 +31,59 @@ export async function deleteGroup(id) {
     const url = `https://say-it-right.herokuapp.com/api/v1/group/delete/${groupId}`;
     return (
       await fetch(url, {
-        method: "DELETE",
+        method: 'DELETE',
       }).then((data) => data.json())
-    ).then(alert("Group Successfully Deleted"));
+    ).then(alert('Group Successfully Deleted'));
     // .then(data => //console.log(data))
   } catch (error) {
-    alert("Delete Group Error");
+    alert('Delete Group Error');
     console.log(error);
   }
 }
 
 // Create Group
-export const createGroup = async (groupName, groupDesc, cognitoPoolId) => {
+export const createGroup = async (groupName, groupDesc, currentUser) => {
   try {
-    await fetch("https://say-it-right.herokuapp.com/api/v1/group", {
-      method: "POST",
+    await fetch('https://say-it-right.herokuapp.com/api/v1/group', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        creatorId: "string",
-        creatorName: "string",
-        createrPoolId: "string",
+        groupName: groupName,
+        groupDesc: groupDesc,
+        creatorName: currentUser,
+        createrPoolId: currentUser,
+        // groupImage: imageUri,
       }),
     });
-    alert("Group Created");
+    alert('Group Created');
   } catch (error) {
     console.log(error);
-    alert("POST has an error");
+    alert('POST has an error');
   }
+  const imageUploadGroup = async (uri, image, poolId) => {
+    const newImageUri = 'file:///' + uri.split('file:/').join('');
+    try {
+      let formData = new FormData();
+      formData.append('file', {
+        uri: newImageUri,
+        type: mime.getType(newImageUri),
+        name: newImageUri.split('/').pop(),
+      });
+
+      return await fetch(
+        'https://say-it-right.herokuapp.com/api/v1/group' + poolId,
+        {
+          method: 'POST',
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          body: formData,
+        }
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 };

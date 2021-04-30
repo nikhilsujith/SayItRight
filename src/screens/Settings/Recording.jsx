@@ -155,7 +155,7 @@ const Recording=({ navigation , route })=>{
 
   const handleSaveButton = () => {
     route.params.onCameraVideo(videoSource);
-    navigation.pop()
+    navigation.pop();
     
   };
 

@@ -224,6 +224,21 @@ const UserDetails = ({ navigation }) => {
       alert("Upload audio!");
     }
   };
+  const pickVideo = async () => {
+    let result2 = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+    });
+
+    // //console.log(result);
+
+    if (!result2.cancelled) {
+      setVideoUri(result2.uri);
+      setBase64Image(result2.base64);
+    }
+  };
 
   const onAudioSelected = (uri) => {
     setAudioUri(uri);
@@ -232,7 +247,7 @@ const UserDetails = ({ navigation }) => {
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
-    console.log(uri);
+    console.log("::::::::::::videoURI:::::::::" ,uri);
   };
 
   const BUTTONS = ["Gallery", "Camera", "Cancel"];
@@ -242,7 +257,7 @@ const UserDetails = ({ navigation }) => {
   
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
-    //console.log(uri);
+    console.log(uri);
   };
 
   return (
@@ -290,14 +305,8 @@ const UserDetails = ({ navigation }) => {
           value={nameDesc}
           onChangeText={(val) => setNameDesc(val)}
         />
-        <TextInput
-          placeholder="Meaning of the Name"
-          style={styles.input}
-          value={nameMeaning}
-          onChangeText={(val) => setNameMeaning(val)}
-        />
       </View>
-      <Root style={{ ...styles.button }}>
+      <Root style={{ ...styles.button, flexDirection: 'row' }}>
         <TouchableOpacity
           style={styles.audioIcon}
           onPress={() =>
@@ -316,6 +325,7 @@ const UserDetails = ({ navigation }) => {
             // })
             ActionSheet.show(
               {
+                
                 options: BUTTONS,
                 cancelButtonIndex: CANCEL_INDEX,
                 destructiveButtonIndex: DESTRUCTIVE_INDEX,
@@ -323,9 +333,9 @@ const UserDetails = ({ navigation }) => {
               },
               (buttonIndex) => {
                 if (buttonIndex == 0) {
-                  navigation.push("SettingsVideoStack", {
-                    onVideoSelected: onVideoSelected,
-                  });
+                  pickVideo();
+                  onVideoSelected(videoUri);
+                  
                 } else if (buttonIndex == 1) {
                   navigation.push("SettingsRecordingStack", {
                     onCameraVideo: onCameraVideo,
@@ -339,7 +349,7 @@ const UserDetails = ({ navigation }) => {
         </TouchableOpacity>
       </Root>
       {/* <View style={{...styles.SaveArea}}> */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           ...styles.saveButton,
           opacity: disableSave ? 0.5 : 1,
@@ -349,7 +359,10 @@ const UserDetails = ({ navigation }) => {
         disabled={disableSave}
       >
         <Entypo name="save" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
+        <Text style={styles.saveButtonText}>Save</Text>
+      </TouchableOpacity> 
       <View style={{ flex: 1, left: 180, top: 10 }}>
         <FloatingActionButton
           onPress={() => logout()}
@@ -448,7 +461,6 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
@@ -460,23 +472,23 @@ const styles = StyleSheet.create({
   },
   audioIcon: {
     borderRadius: 10,
-    paddingHorizontal: 40,
-    paddingVertical: 5,
+    // paddingHorizontal: 40,
+    // paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 5,
+    // marginRight: 5,
     borderWidth: 1,
   },
   videoIcon: {
     borderRadius: 10,
-    paddingHorizontal: 40,
-    paddingVertical: 5,
+    // paddingHorizontal: 40,
+    // paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginLeft: 5,
+    // marginLeft: 5,
   },
   SignInForm: {
     width: width - 50,

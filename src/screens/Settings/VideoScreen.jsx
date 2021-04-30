@@ -29,21 +29,7 @@ const VideoScreen = ({ navigation, route}) => {
     })();
   }, []);
 
-  const pickVideo = async () => {
-    let result2 = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true,
-      aspect: [4, 3],
-      base64: true,
-    });
-
-    // //console.log(result);
-
-    if (!result2.cancelled) {
-      setVideoUri(result2.uri);
-      setBase64Image(result2.base64);
-    }
-  };
+  
 
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
@@ -69,7 +55,7 @@ const VideoScreen = ({ navigation, route}) => {
         <Video source={{ uri: videoUri }} style={{ width: 200, height: 200 }} />
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.saveButton}
         onPress={() => navigation.push("SettingsRecordingStack", {onCameraVideo: onCameraVideo})}
       >
@@ -77,7 +63,7 @@ const VideoScreen = ({ navigation, route}) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
         <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
