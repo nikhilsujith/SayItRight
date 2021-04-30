@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, SafeAreaView, YellowBox,StatusBar } from "react-native";
-import { StyleSheet, Dimensions, Button, ScrollView } from "react-native";
+import {
+  Platform,
+  View,
+  Image,
+  Text,
+  SafeAreaView,
+  YellowBox,
+  StatusBar,
+} from "react-native";
+import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 import { uploadAuido } from "../../service/User/Audio";
-import { currentSession,currentSessionEmail } from '../../util/AmplifyCurrentSession';
+import {
+  currentSession,
+  currentSessionEmail,
+} from "../../util/AmplifyCurrentSession";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
 import { FloatingActionButton, NameCard } from "../../components";
 import { NavigationContainer } from "@react-navigation/native";
-import { MainStackScreen,NewProfileStackScreen } from "../../routes";
-import { RNS3 } from 'react-native-s3-upload';
-  const window = Dimensions.get('window');
-  const screen = Dimensions.get('screen');
+import { MainStackScreen, NewProfileStackScreen } from "../../routes";
+import { RNS3 } from "react-native-s3-upload";
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
-  import * as Updates from 'expo-updates';
+import * as Updates from "expo-updates";
+import { Container, Content, Root, Button, ActionSheet } from "native-base";
 
 const UserDetails = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -47,7 +59,6 @@ const UserDetails = ({ navigation }) => {
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
 
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -63,10 +74,10 @@ const UserDetails = ({ navigation }) => {
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
       //var r=JSON.parse(fetchedPosts);
-      console.log(fetchedPosts.body)
-      console.log(fetchedPosts.status)
-      if(fetchedPosts.status!='500'){
-        console.log("in")
+      console.log(fetchedPosts.body);
+      console.log(fetchedPosts.status);
+      if (fetchedPosts.status != "500") {
+        console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
@@ -79,52 +90,49 @@ const UserDetails = ({ navigation }) => {
         setCreatedOn(fetchedPosts.body.createdOn);
         setOnlineVideo(fetchedPosts.body.videoFile);
         //         console.log(userName);
-//                 console.log(fetchedPosts.body.audioFile)
-          }
-          //setPosts(fetchedPosts);
-     })();
+        //                 console.log(fetchedPosts.body.audioFile)
+      }
+      //setPosts(fetchedPosts);
+    })();
 
-
-
-    Dimensions.addEventListener('change', onChange);
+    Dimensions.addEventListener("change", onChange);
     return () => {
-      Dimensions.removeEventListener('change', onChange);
+      Dimensions.removeEventListener("change", onChange);
     };
   }, []);
-  
+
   const onChange = ({ window, screen }) => {
     setDimensions({ window, screen });
   };
 
   const options = {
-        keyPrefix: "audio/",
-        bucket: "amplify-sayitright-dev-141916-deployment",
-        region: "us-east-2",
-        accessKey: "AKIAYXRZLB7D4SBCJ7OY",
-        secretKey: "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",
-        successActionStatus: 201
-  }
+    keyPrefix: "audio/",
+    bucket: "amplify-sayitright-dev-141916-deployment",
+    region: "us-east-2",
+    accessKey: "AKIAYXRZLB7D4SBCJ7OY",
+    secretKey: "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",
+    successActionStatus: 201,
+  };
 
-  const uploadS3 = async() => {
+  const uploadS3 = async () => {
+    if (audioUri != null && audioUri != "") {
+      const file = {
+        // `uri` can also be a file system path (i.e. file://)
+        uri: audioUri,
+        name: currentSession() + "_audio.caf",
+        type: "audio/x-caf",
+      };
 
-    if(audioUri!=null && audioUri!=""){
-        const file = {
-          // `uri` can also be a file system path (i.e. file://)
-          uri: audioUri,
-          name: currentSession()+"_audio.caf",
-          type: "audio/x-caf"
-        }
-
-        try{
-          const res=await RNS3.put(file, options)
-          const loc =await res.body.postResponse.location;
-          //console.log(res.body);
-          return loc;
-          }catch(ex){
-            return "error";
-          }
+      try {
+        const res = await RNS3.put(file, options);
+        const loc = await res.body.postResponse.location;
+        //console.log(res.body);
+        return loc;
+      } catch (ex) {
+        return "error";
+      }
     }
-};
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -142,76 +150,78 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
-   const handleSaveButton = async() => {
-
-   console.log(":::::::::::HANDLE Update:::::::::")
-   //console.log(await uploadS3())
-   if(audioS3Loc!=null && audioS3Loc!='' && audioS3Loc!='error'){
-       setAudioS3Loc(await uploadS3());
-   }
-
-   console.log(currentSession())
-   console.log(imageUri)
-   console.log(audioS3Loc)
-
-    if(audioS3Loc!=null && audioS3Loc!='' && audioS3Loc!='error'){
-        //console.log("in")
-        const content={
-            "id":id,
-            "poolId":currentSession(),
-            "fullName":userName,
-            "profileImage":onlineImage,
-            "email":currentSessionEmail()==null?'':currentSessionEmail(),
-            "desc":nameDesc,
-            "nameMeaning":nameMeaning,
-            "audioFile":audioS3Loc==null?"":audioS3Loc,
-            "videoFile":onlineVideo,
-            "myGroups":myGroups,
-            "enrolledGroups":enrolledGroups,
-            "createdOn":createdOn,
-            "updatedOn":Date().toLocaleString()
-            }
-
-        const url="https://say-it-right.herokuapp.com/api/v1/user/addUser"
-        const response = await fetch(url, {
-              method: 'POST',
-              headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'application/json',
-                      },
-              body: JSON.stringify(content),
-            });
-           // const body = await response.json();
-          const newUserStatus=await response.status
-          console.log(newUserStatus);//201 created
-
-        if (userName.length > 0 && nameDesc.length > 0 && newUserStatus==201) {
-          imageUpload(imageUri, base64Image,currentSession()).then((result) => {
-            if (result.status === 200) {
-              alert("Image uploaded successfully");
-            } else {
-              alert(
-                "Oops! There was an error uploading your Image. Please try again later."
-              );
-            }
-          });
-          uploadVideoAsync(videoUri || videoSource, base64Image,currentSession()).then((result) => {
-            if (result.status === 200) {
-              alert("Video uploaded successfully");
-            } else {
-              alert(
-                "Oops! There was an error uploading your Video. Please try again later."
-              );
-            }
-          });
-        }
-        if(newUserStatus==201){
-            alert("Success");
-            //await Updates.reloadAsync();
-        }
+  const handleSaveButton = async () => {
+    console.log(":::::::::::HANDLE Update:::::::::");
+    //console.log(await uploadS3())
+    if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
+      setAudioS3Loc(await uploadS3());
     }
-    else{
-        alert("Upload audio!")
+
+    console.log(currentSession());
+    console.log(imageUri);
+    console.log(audioS3Loc);
+
+    if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
+      //console.log("in")
+      const content = {
+        id: id,
+        poolId: currentSession(),
+        fullName: userName,
+        profileImage: onlineImage,
+        email: currentSessionEmail() == null ? "" : currentSessionEmail(),
+        desc: nameDesc,
+        nameMeaning: nameMeaning,
+        audioFile: audioS3Loc == null ? "" : audioS3Loc,
+        videoFile: onlineVideo,
+        myGroups: myGroups,
+        enrolledGroups: enrolledGroups,
+        createdOn: createdOn,
+        updatedOn: Date().toLocaleString(),
+      };
+
+      const url = "https://say-it-right.herokuapp.com/api/v1/user/addUser";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(content),
+      });
+      // const body = await response.json();
+      const newUserStatus = await response.status;
+      console.log(newUserStatus); //201 created
+
+      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201) {
+        imageUpload(imageUri, base64Image, currentSession()).then((result) => {
+          if (result.status === 200) {
+            alert("Image uploaded successfully");
+          } else {
+            alert(
+              "Oops! There was an error uploading your Image. Please try again later."
+            );
+          }
+        });
+        uploadVideoAsync(
+          videoUri || videoSource,
+          base64Image,
+          currentSession()
+        ).then((result) => {
+          if (result.status === 200) {
+            alert("Video uploaded successfully");
+          } else {
+            alert(
+              "Oops! There was an error uploading your Video. Please try again later."
+            );
+          }
+        });
+      }
+      if (newUserStatus == 201) {
+        alert("Success");
+        //await Updates.reloadAsync();
+      }
+    } else {
+      alert("Upload audio!");
     }
   };
 
@@ -223,6 +233,16 @@ const UserDetails = ({ navigation }) => {
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
     console.log(uri);
+  };
+
+  const BUTTONS = ["Gallery", "Camera", "Cancel"];
+  const DESTRUCTIVE_INDEX = null;
+  const CANCEL_INDEX = 2;
+  const [btn, setBtn] = React.useState();
+  
+  const onCameraVideo = (uri) => {
+    setVideoSource(uri);
+    //console.log(uri);
   };
 
   return (
@@ -277,7 +297,7 @@ const UserDetails = ({ navigation }) => {
           onChangeText={(val) => setNameMeaning(val)}
         />
       </View>
-      <View style={{...styles.button,}}>
+      <Root style={{ ...styles.button }}>
         <TouchableOpacity
           style={styles.audioIcon}
           onPress={() =>
@@ -288,33 +308,87 @@ const UserDetails = ({ navigation }) => {
         >
           <MaterialIcons name="keyboard-voice" size={24} color="black" />
         </TouchableOpacity>
-
         <TouchableOpacity
-          style={{...styles.videoIcon }}
+          style={{ ...styles.videoIcon }}
           onPress={() =>
-            navigation.push("SettingsVideoStack", {
-              onVideoSelected: onVideoSelected,
-            })
+            // navigation.push("SettingsVideoStack", {
+            //   onVideoSelected: onVideoSelected,
+            // })
+            ActionSheet.show(
+              {
+                options: BUTTONS,
+                cancelButtonIndex: CANCEL_INDEX,
+                destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                title: "Select Video Source",
+              },
+              (buttonIndex) => {
+                if (buttonIndex == 0) {
+                  navigation.push("SettingsVideoStack", {
+                    onVideoSelected: onVideoSelected,
+                  });
+                } else if (buttonIndex == 1) {
+                  navigation.push("SettingsRecordingStack", {
+                    onCameraVideo: onCameraVideo,
+                  });
+                }
+              }
+            )
           }
         >
           <Foundation name="video" size={24} color="black" />
         </TouchableOpacity>
-      </View>
+      </Root>
       {/* <View style={{...styles.SaveArea}}> */}
-        <TouchableOpacity
-          style={{ ...styles.saveButton,  opacity: disableSave ? 0.5 : 1, marginTop: 30}}
-          onPress={handleSaveButton}
-          disabled={disableSave}
-        >
-         <Entypo name="save" size={24} color="black" />
-        </TouchableOpacity>
-      <View style={{ flex: 1, left:180, top:10 }}>
+      <TouchableOpacity
+        style={{
+          ...styles.saveButton,
+          opacity: disableSave ? 0.5 : 1,
+          marginTop: 30,
+        }}
+        onPress={handleSaveButton}
+        disabled={disableSave}
+      >
+        <Entypo name="save" size={24} color="black" />
+      </TouchableOpacity>
+      <View style={{ flex: 1, left: 180, top: 10 }}>
         <FloatingActionButton
           onPress={() => logout()}
-          icon={<MaterialIcons name="logout"  color="black" />}
+          icon={<MaterialIcons name="logout" color="black" />}
         />
       </View>
     </View>
+
+    // <Root>
+    //   <Container>
+    //     <Content padder>
+    //       <Button
+    //         onPress={() =>
+    //           ActionSheet.show(
+    //             {
+    //               options: BUTTONS,
+    //               cancelButtonIndex: CANCEL_INDEX,
+    //               destructiveButtonIndex: DESTRUCTIVE_INDEX,
+    //               title: "Select Video Source",
+    //             },
+    //             (buttonIndex) => {
+    //               if (buttonIndex == 0) {
+    //                 navigation.push("SettingsVideoStack", {
+    //                   onVideoSelected: onVideoSelected,
+    //                 });
+    //               } else if (buttonIndex == 1) {
+    //                 alert("Go To Camera");
+    //               } else {
+    //                 alert("I don't know what the heck happened");
+    //               }
+    //             }
+    //           )
+    //         }
+    //       >
+    //         <Text>Actionsheet</Text>
+    //       </Button>
+    //     </Content>
+    //   </Container>
+    // </Root>
   );
   return (
     <SafeAreaView>
@@ -345,7 +419,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginRight: 100,
     top: 100,
-
   },
 
   logout: {
