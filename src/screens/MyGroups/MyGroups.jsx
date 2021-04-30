@@ -181,3 +181,4 @@ const MyGroups = () => {
 };
 // export default Auth.user ? MyGroups : withAuthenticator(MyGroups);
 export default MyGroups;
+
