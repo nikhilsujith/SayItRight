@@ -19,7 +19,7 @@ const AppContainer = (props) => {
       <StatusBar barStyle="light-content" />
       {
       props.newUser === true ? <NewProfileStackScreen /> 
-      : props.newUser === false ? <MainStackScreen /> 
+      : props.newUser === false ? <LoadingImage />
       : <LoadingImage />
       }
     </NavigationContainer>
