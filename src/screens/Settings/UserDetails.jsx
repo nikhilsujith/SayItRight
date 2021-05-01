@@ -36,6 +36,7 @@ const screen = Dimensions.get("screen");
 
 import * as Updates from "expo-updates";
 import { Container, Content, Root, Button, ActionSheet } from "native-base";
+import { Video } from "expo-av";
 
 const UserDetails = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -55,6 +56,8 @@ const UserDetails = ({ navigation }) => {
   const [audioUri, setAudioUri] = useState(null);
   const [audioS3Loc, setAudioS3Loc] = useState("");
   const [dimensions, setDimensions] = useState({ window, screen });
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
 
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
@@ -73,9 +76,6 @@ const UserDetails = ({ navigation }) => {
 
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
-      //var r=JSON.parse(fetchedPosts);
-      console.log(fetchedPosts.body);
-      console.log(fetchedPosts.status);
       if (fetchedPosts.status != "500") {
         console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
@@ -249,11 +249,13 @@ const UserDetails = ({ navigation }) => {
     <View style={styles.container}>
       <View>
         <TouchableOpacity onPress={pickImage}>
-            <Image
-              // source={{ uri: imageUri }}
-              source = {imageUri ? { uri: imageUri } : (require("../../../assets/icon.png"))}
-              style={styles.imagePicker}
-            />
+          <Image
+            // source={{ uri: imageUri }}
+            source={
+              imageUri ? { uri: imageUri } : require("../../../assets/icon.png")
+            }
+            style={styles.imagePicker}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.InputArea}>
@@ -270,12 +272,32 @@ const UserDetails = ({ navigation }) => {
           value={nameDesc}
           onChangeText={(val) => setNameDesc(val)}
         />
-        <TextInput
-          placeholder="Meaning of the Name"
-          style={styles.input}
-          value={nameMeaning}
-          onChangeText={(val) => setNameMeaning(val)}
-        />
+        {onlineVideo ? (
+          <Video
+            ref={video}
+            style={{ width: null, height: 200 }}
+            source={{ uri: onlineVideo }}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        ) : (
+          <View>
+            <Text>Deeksha, make a component to allow user to select video. This component will replace the video icon. Just like image picker</Text>
+          </View>
+        )}
+
+        <View>
+          <Button
+            title={status.isPlaying ? "Pause" : "Play"}
+            onPress={() =>
+              status.isPlaying
+                ? video.current.pauseAsync()
+                : video.current.playAsync()
+            }
+          />
+        </View>
       </View>
       <Root style={{ ...styles.button }}>
         <TouchableOpacity
@@ -337,38 +359,6 @@ const UserDetails = ({ navigation }) => {
         />
       </View>
     </View>
-
-    // <Root>
-    //   <Container>
-    //     <Content padder>
-    //       <Button
-    //         onPress={() =>
-    //           ActionSheet.show(
-    //             {
-    //               options: BUTTONS,
-    //               cancelButtonIndex: CANCEL_INDEX,
-    //               destructiveButtonIndex: DESTRUCTIVE_INDEX,
-    //               title: "Select Video Source",
-    //             },
-    //             (buttonIndex) => {
-    //               if (buttonIndex == 0) {
-    //                 navigation.push("SettingsVideoStack", {
-    //                   onVideoSelected: onVideoSelected,
-    //                 });
-    //               } else if (buttonIndex == 1) {
-    //                 alert("Go To Camera");
-    //               } else {
-    //                 alert("I don't know what the heck happened");
-    //               }
-    //             }
-    //           )
-    //         }
-    //       >
-    //         <Text>Actionsheet</Text>
-    //       </Button>
-    //     </Content>
-    //   </Container>
-    // </Root>
   );
   return (
     <SafeAreaView>
@@ -401,8 +391,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginRight: 0,
     marginTop: 30,
-    shadowColor: '#470000',
-    shadowOffset: {width: 0, height: 1},
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     elevation: 1,
   },
