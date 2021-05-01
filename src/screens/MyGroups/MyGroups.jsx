@@ -61,8 +61,6 @@ export const MyGroupsScreen = ({ navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  console.log(refreshing)
-
   useEffect(() => {
     let mounted = true;
     fetchEnrolledGroups(currentUser).then((group) => {
