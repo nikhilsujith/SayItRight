@@ -19,6 +19,7 @@ import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
 import { uploadAuido } from "../../service/User/Audio";
+import { Player} from '../../components/Player';
 import {
   currentSession,
   currentSessionEmail,
@@ -134,6 +135,8 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
+  
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -240,6 +243,11 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
+  const onPlaySelected =(videoUri) =>{
+    console.log("::::::::::::::::::" , videoUri || videoSource);
+
+  }
+
   const onAudioSelected = (uri) => {
     setAudioUri(uri);
     console.log(uri);
@@ -259,8 +267,10 @@ const UserDetails = ({ navigation }) => {
     setVideoSource(uri);
     console.log(uri);
   };
-
+  
+  
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.container}>
       <View>
         <TouchableOpacity onPress={pickImage}>
@@ -306,8 +316,14 @@ const UserDetails = ({ navigation }) => {
           onChangeText={(val) => setNameDesc(val)}
         />
       </View>
-      <Root style={{ ...styles.button, flexDirection: 'row' }}>
-        <TouchableOpacity
+
+     <View style={{}}>
+    
+     </View>
+
+      <Root>
+        <View style={{flexDirection:'row', alignSelf:'center', marginTop: 150}}>
+        <TouchableOpacity 
           style={styles.audioIcon}
           onPress={() =>
             navigation.push("SettingsAudioStack", {
@@ -317,12 +333,10 @@ const UserDetails = ({ navigation }) => {
         >
           <MaterialIcons name="keyboard-voice" size={24} color="black" />
         </TouchableOpacity>
+        
         <TouchableOpacity
           style={{ ...styles.videoIcon }}
           onPress={() =>
-            // navigation.push("SettingsVideoStack", {
-            //   onVideoSelected: onVideoSelected,
-            // })
             ActionSheet.show(
               {
                 
@@ -347,22 +361,12 @@ const UserDetails = ({ navigation }) => {
         >
           <Foundation name="video" size={24} color="black" />
         </TouchableOpacity>
+        </View>
       </Root>
-      {/* <View style={{...styles.SaveArea}}> */}
-      {/* <TouchableOpacity
-        style={{
-          ...styles.saveButton,
-          opacity: disableSave ? 0.5 : 1,
-          marginTop: 30,
-        }}
-        onPress={handleSaveButton}
-        disabled={disableSave}
-      >
-        <Entypo name="save" size={24} color="black" />
-      </TouchableOpacity> */}
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity> 
+      
       <View style={{ flex: 1, left: 180, top: 10 }}>
         <FloatingActionButton
           onPress={() => logout()}
@@ -370,38 +374,9 @@ const UserDetails = ({ navigation }) => {
         />
       </View>
     </View>
+    </SafeAreaView>
 
-    // <Root>
-    //   <Container>
-    //     <Content padder>
-    //       <Button
-    //         onPress={() =>
-    //           ActionSheet.show(
-    //             {
-    //               options: BUTTONS,
-    //               cancelButtonIndex: CANCEL_INDEX,
-    //               destructiveButtonIndex: DESTRUCTIVE_INDEX,
-    //               title: "Select Video Source",
-    //             },
-    //             (buttonIndex) => {
-    //               if (buttonIndex == 0) {
-    //                 navigation.push("SettingsVideoStack", {
-    //                   onVideoSelected: onVideoSelected,
-    //                 });
-    //               } else if (buttonIndex == 1) {
-    //                 alert("Go To Camera");
-    //               } else {
-    //                 alert("I don't know what the heck happened");
-    //               }
-    //             }
-    //           )
-    //         }
-    //       >
-    //         <Text>Actionsheet</Text>
-    //       </Button>
-    //     </Content>
-    //   </Container>
-    // </Root>
+
   );
   return (
     <SafeAreaView>
@@ -434,6 +409,13 @@ const styles = StyleSheet.create({
     top: 100,
   },
 
+  buttonView:{
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    // marginTop: height * 0.1,
+  },
+
   logout: {
     position: "absolute",
     top: 100,
@@ -447,6 +429,17 @@ const styles = StyleSheet.create({
   },
   InputArea: {
     // marginTop: 50,
+  },
+  controlBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 45,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 
   action: {
@@ -468,27 +461,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
+    marginTop: 30,
     marginRight: 0,
   },
   audioIcon: {
     borderRadius: 10,
-    // paddingHorizontal: 40,
-    // paddingVertical: 5,
+    paddingHorizontal: 40,
+    paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
-    // marginRight: 5,
+    marginRight: 5,
     borderWidth: 1,
   },
   videoIcon: {
     borderRadius: 10,
-    // paddingHorizontal: 40,
-    // paddingVertical: 5,
+    paddingHorizontal: 40,
+    paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    // marginLeft: 5,
+    marginLeft: 5,
   },
   SignInForm: {
     width: width - 50,

@@ -258,19 +258,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   saveButton: {
-    borderRadius: 50,
+    borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 5,
     marginLeft: 150,
     marginRight: 150,
-    borderColor: '#085DAD',
+    borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
     borderWidth: 1,
   },
   saveButtonText: {
-    color: '#085DAD',
+    color: 'black',
     fontSize: 20,
   },
 
