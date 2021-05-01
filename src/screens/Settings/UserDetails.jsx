@@ -239,7 +239,7 @@ const UserDetails = ({ navigation }) => {
   const DESTRUCTIVE_INDEX = null;
   const CANCEL_INDEX = 2;
   const [btn, setBtn] = React.useState();
-  
+
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
     //console.log(uri);
@@ -249,31 +249,11 @@ const UserDetails = ({ navigation }) => {
     <View style={styles.container}>
       <View>
         <TouchableOpacity onPress={pickImage}>
-          {imageUri ? (
             <Image
-              source={{ uri: imageUri }}
-              style={{
-                height: 150,
-                width: 150,
-                paddingTop: 30,
-                borderRadius: 100,
-                marginRight: 0,
-                marginTop: 30,
-              }}
+              // source={{ uri: imageUri }}
+              source = {imageUri ? { uri: imageUri } : (require("../../../assets/icon.png"))}
+              style={styles.imagePicker}
             />
-          ) : (
-            <Image
-              resizeMode="contain"
-              style={{
-                height: 150,
-                width: 150,
-                borderRadius: 10,
-                marginRight: 0,
-                marginTop: 30,
-              }}
-              source={require("../../../assets/icon.png")}
-            />
-          )}
         </TouchableOpacity>
       </View>
       <View style={styles.InputArea}>
@@ -414,7 +394,18 @@ const styles = StyleSheet.create({
   textFooter1: {
     marginTop: 10,
   },
-
+  imagePicker: {
+    height: 150,
+    width: 150,
+    paddingTop: 30,
+    borderRadius: 100,
+    marginRight: 0,
+    marginTop: 30,
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 1,
+  },
   SaveArea: {
     alignContent: "center",
     marginRight: 100,
