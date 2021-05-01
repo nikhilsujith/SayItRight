@@ -1,3 +1,6 @@
+import mime from 'mime';
+
+
 // Fetch created groups
 export async function fetchUsersInGroup(id) {
   const groupId = id;
@@ -26,7 +29,7 @@ export async function fetchAllGroups() {
 // Delete Group
 export async function deleteGroup(id) {
   const groupId = id;
-  console.log(groupId);
+  // console.log(groupId);
   try {
     const url = `https://say-it-right.herokuapp.com/api/v1/group/delete/${groupId}`;
     return (

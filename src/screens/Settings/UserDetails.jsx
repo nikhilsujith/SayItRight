@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Platform,
-  View,
-  Image,
-  Text,
-  SafeAreaView,
-  YellowBox,
-  StatusBar,
-} from "react-native";
+import { Platform, View, Image, Text, Button } from "react-native";
 import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -35,7 +27,17 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 import * as Updates from "expo-updates";
-import { Container, Content, Root, Button, ActionSheet } from "native-base";
+import {
+  Container,
+  Content,
+  Root,
+  ActionSheet,
+  Form,
+  Item,
+  Input,
+  Textarea,
+  Icon,
+} from "native-base";
 import { Video } from "expo-av";
 
 const UserDetails = ({ navigation }) => {
@@ -83,6 +85,7 @@ const UserDetails = ({ navigation }) => {
         setNameMeaning(fetchedPosts.body.nameMeaning);
         setUserName(fetchedPosts.body.fullName);
         setImageUri(fetchedPosts.body.profileImage);
+        setVideoUri(fetchedPosts.body.videoFile);
         setOnlineImage(fetchedPosts.body.profileImage);
         setId(fetchedPosts.body.id);
         setMyGroups(fetchedPosts.body.myGroups);
@@ -150,16 +153,27 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
+  const pickVideo = async () => {
+    let videoPick = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+    });
+
+    // console.log(result2)
+
+    if (!videoPick.cancelled) {
+      setVideoUri(videoPick.uri);
+    }
+  };
+
   const handleSaveButton = async () => {
     console.log(":::::::::::HANDLE Update:::::::::");
     //console.log(await uploadS3())
     if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
       setAudioS3Loc(await uploadS3());
     }
-
-    console.log(currentSession());
-    console.log(imageUri);
-    console.log(audioS3Loc);
 
     if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
       //console.log("in")
@@ -232,7 +246,6 @@ const UserDetails = ({ navigation }) => {
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
-    console.log(uri);
   };
 
   const BUTTONS = ["Gallery", "Camera", "Cancel"];
@@ -242,166 +255,228 @@ const UserDetails = ({ navigation }) => {
 
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
-    //console.log(uri);
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity onPress={pickImage}>
-          <Image
-            // source={{ uri: imageUri }}
-            source={
-              imageUri ? { uri: imageUri } : require("../../../assets/icon.png")
-            }
-            style={styles.imagePicker}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.InputArea}>
-        <TextInput
-          placeholder="Name"
-          style={styles.input}
-          value={userName}
-          onChangeText={(val) => setUserName(val)}
-        />
-
-        <TextInput
-          placeholder="Name Description"
-          style={styles.input}
-          value={nameDesc}
-          onChangeText={(val) => setNameDesc(val)}
-        />
-        {onlineVideo ? (
-          <Video
-            ref={video}
-            style={{ width: null, height: 200 }}
-            source={{ uri: onlineVideo }}
-            useNativeControls
-            resizeMode="contain"
-            isLooping
-            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-          />
-        ) : (
-          <View>
-            <Text>Deeksha, make a component to allow user to select video. This component will replace the video icon. Just like image picker</Text>
+    <Root>
+      <ScrollView>
+        <View style={styles.containCard}>
+          <TouchableOpacity onPress={pickImage}>
+            <Image
+              source={
+                imageUri
+                  ? { uri: imageUri }
+                  : require("../../../assets/icon.png")
+              }
+              style={styles.imagePicker}
+            />
+          </TouchableOpacity>
+          <View style={{ flex: 1, margin: 1 }}>
+            <Item>
+              <Input
+                placeholder="Name"
+                value={userName}
+                onChangeText={(name) => setUserName(name)}
+                style={{ fontWeight: "bold" }}
+              />
+            </Item>
+            <Item regular>
+              <Textarea
+                style={{ margin: 1, overflow: "scroll" }}
+                rowSpan={3}
+                placeholder="Description"
+                value={nameDesc}
+                onChangeText={(desc) => setNameDesc(desc)}
+              />
+            </Item>
           </View>
-        )}
-
+        </View>
         <View>
+          <View
+            style={{
+              ...styles.containCard,
+              flexDirection: "column",
+              justifyContent: "center",
+              height: 200,
+              margin: 10,
+              alignItems: "center",
+              borderRadius: 15,
+            }}
+          >
+            {onlineVideo ? (
+              <Video
+                ref={video}
+                style={styles.videoPlayer}
+                source={
+                  videoUri
+                    ? { uri: videoUri }
+                    : require("../../../assets/icon.png")
+                }
+                useNativeControls
+                onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+              />
+            ) : (
+              <Image
+                // source={{ uri: imageUri }}
+                source={require("../../../assets/icon.png")}
+                style={{
+                  alignSelf: "center",
+                  height: 190,
+                  width: 345,
+                }}
+              />
+            )}
+          </View>
           <Button
-            title={status.isPlaying ? "Pause" : "Play"}
+            title="Edit Video"
             onPress={() =>
-              status.isPlaying
-                ? video.current.pauseAsync()
-                : video.current.playAsync()
+              ActionSheet.show(
+                {
+                  options: BUTTONS,
+                  cancelButtonIndex: CANCEL_INDEX,
+                  destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                  title: "Select Video Source",
+                },
+                (buttonIndex) => {
+                  if (buttonIndex == 0) {
+                    pickVideo();
+                  } else if (buttonIndex == 1) {
+                    navigation.push("SettingsRecordingStack", {
+                      onCameraVideo: onCameraVideo,
+                    });
+                  }
+                }
+              )
             }
           />
         </View>
-      </View>
-      <Root style={{ ...styles.button }}>
-        <TouchableOpacity
-          style={styles.audioIcon}
-          onPress={() =>
-            navigation.push("SettingsAudioStack", {
-              onAudioSelected: onAudioSelected,
-            })
-          }
+        <View style={styles.containCard}>
+          <Text>Audio Goes Here</Text>
+        </View>
+
+        {/* Button */}
+        <View
+          style={[
+            styles.containCard,
+            { alignSelf: "center", backgroundColor: "transparent" },
+          ]}
         >
-          <MaterialIcons name="keyboard-voice" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ ...styles.videoIcon }}
-          onPress={() =>
-            // navigation.push("SettingsVideoStack", {
-            //   onVideoSelected: onVideoSelected,
-            // })
-            ActionSheet.show(
-              {
-                options: BUTTONS,
-                cancelButtonIndex: CANCEL_INDEX,
-                destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                title: "Select Video Source",
-              },
-              (buttonIndex) => {
-                if (buttonIndex == 0) {
-                  navigation.push("SettingsVideoStack", {
-                    onVideoSelected: onVideoSelected,
-                  });
-                } else if (buttonIndex == 1) {
-                  navigation.push("SettingsRecordingStack", {
-                    onCameraVideo: onCameraVideo,
-                  });
+          {/* Audio Button */}
+          {/* <TouchableOpacity
+            style={styles.editIcons}
+            onPress={() =>
+              navigation.push("SettingsAudioStack", {
+                onAudioSelected: onAudioSelected,
+              })
+            }
+          >
+            <MaterialIcons name="keyboard-voice" size={24} color="black" />
+          </TouchableOpacity> */}
+
+          {/* Video Button */}
+          {/* <TouchableOpacity
+            style={styles.editIcons}
+            onPress={() =>
+              ActionSheet.show(
+                {
+                  options: BUTTONS,
+                  cancelButtonIndex: CANCEL_INDEX,
+                  destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                  title: "Select Video Source",
+                },
+                (buttonIndex) => {
+                  if (buttonIndex == 0) {
+                    pickVideo();
+                  } else if (buttonIndex == 1) {
+                    navigation.push("SettingsRecordingStack", {
+                      onCameraVideo: onCameraVideo,
+                    });
+                  }
                 }
-              }
-            )
-          }
+              )
+            }
+          >
+            <Foundation name="video" size={24} color="black" />
+          </TouchableOpacity> */}
+        </View>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            alignItems: "center",
+            borderWidth: 1,
+            backgroundColor: "black",
+            padding: 10,
+            borderRadius: 15,
+            margin: 10,
+          }}
+          onPress={handleSaveButton}
+          disabled={disableSave}
         >
-          <Foundation name="video" size={24} color="black" />
+          <Entypo name="save" size={24} color="white" />
         </TouchableOpacity>
-      </Root>
-      {/* <View style={{...styles.SaveArea}}> */}
-      <TouchableOpacity
-        style={{
-          ...styles.saveButton,
-          opacity: disableSave ? 0.5 : 1,
-          marginTop: 30,
-        }}
-        onPress={handleSaveButton}
-        disabled={disableSave}
-      >
-        <Entypo name="save" size={24} color="black" />
-      </TouchableOpacity>
-      <View style={{ flex: 1, left: 180, top: 10 }}>
-        <FloatingActionButton
-          onPress={() => logout()}
-          icon={<MaterialIcons name="logout" color="black" />}
-        />
-      </View>
-    </View>
-  );
-  return (
-    <SafeAreaView>
-      <NameCard />
-    </SafeAreaView>
+      </ScrollView>
+      <FloatingActionButton
+        onPress={() => logout()}
+        icon={<Icon name="exit" />}
+      />
+    </Root>
   );
 };
 
 const { width } = Dimensions.get("screen");
+const imageSize = 120;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
   },
   input: {
-    borderColor: "black",
-    borderBottomWidth: 1,
-    width: width / 1.3,
-    paddingVertical: 10,
-    paddingHorizontal: 0,
-    marginTop: 30,
+    // borderColor: "black",
+    // backgroundColor: 'white',
+    // borderBottomWidth: 1,
+    // width: width / 1.3,
+    // paddingVertical: 10,
+    // paddingHorizontal: 0,
+    // marginTop: 30,
   },
   textFooter1: {
     marginTop: 10,
   },
   imagePicker: {
-    height: 150,
-    width: 150,
-    paddingTop: 30,
+    // height: 120,
+    // width: 120,
+    height: imageSize,
+    width: imageSize,
     borderRadius: 100,
-    marginRight: 0,
-    marginTop: 30,
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    elevation: 1,
+    // marginTop: 30,
+    borderWidth: 1,
+  },
+  videoPlayer: {
+    height: "100%",
+    width: "100%",
+    borderRadius: 15,
+    overflow: "hidden",
   },
   SaveArea: {
     alignContent: "center",
     marginRight: 100,
     top: 100,
   },
-
+  containCard: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 5,
+    borderColor: "white",
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 1,
+  },
   logout: {
     position: "absolute",
     top: 100,
@@ -429,7 +504,6 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 40,
     paddingVertical: 5,
@@ -439,15 +513,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginRight: 0,
   },
-  audioIcon: {
-    borderRadius: 10,
-    paddingHorizontal: 40,
-    paddingVertical: 5,
-    borderColor: "black",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 5,
+  editIcons: {
+    flex: 1,
     borderWidth: 1,
+    borderRadius: 15,
+    alignItems: "center",
+    padding: 10,
+    margin: 2,
+    width: 100,
+    // borderRadius: 10,
+    // paddingVertical: 5,
+    // borderColor: "black",
+    // justifyContent: "center",
+    // borderWidth: 1,
+    // marginRight: 10,
+    // marginLeft: 10,
   },
   videoIcon: {
     borderRadius: 10,
@@ -472,4 +552,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
+// export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
+export default UserDetails;
