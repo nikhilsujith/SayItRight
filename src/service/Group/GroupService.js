@@ -90,7 +90,6 @@ export const imageUploadGroup = async (uri, image, groupId, poolId) => {
       });
 
       //console.log(formData)
-
       return await fetch(
         'https://say-it-right.herokuapp.com/api/v1/group/image/upload/?groupId='+groupId+'&poolId='+poolId,
         {
