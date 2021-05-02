@@ -58,7 +58,7 @@ const UserDetails = ({ navigation }) => {
   const [dimensions, setDimensions] = useState({ window, screen });
 
   const disableSave =
-    userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
+    userName === "" || nameDesc === "" || nameMeaning === "" || (!imageUri||!onlineImage);
 
   useEffect(() => {
     (async () => {
@@ -156,7 +156,7 @@ const UserDetails = ({ navigation }) => {
   const handleSaveButton = async () => {
     console.log(":::::::::::HANDLE Update:::::::::");
     //console.log(await uploadS3())
-    if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
+    if (audioUri != null && audioUri != "") {
       setAudioS3Loc(await uploadS3());
     }
 
@@ -182,7 +182,7 @@ const UserDetails = ({ navigation }) => {
         updatedOn: Date().toLocaleString(),
       };
 
-      const url = "https://say-it-right.herokuapp.com/api/v1/user/addUser";
+      const url = "https://say-it-right.herokuapp.com/api/v1/user/updateUser";
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -195,7 +195,8 @@ const UserDetails = ({ navigation }) => {
       const newUserStatus = await response.status;
       console.log(newUserStatus); //201 created
 
-      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201) {
+
+      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201 && imageUri!=onlineImage) {
         imageUpload(imageUri, base64Image, currentSession()).then((result) => {
           if (result.status === 200) {
             alert("Image uploaded successfully");

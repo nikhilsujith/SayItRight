@@ -1,4 +1,6 @@
 // Fetch created groups
+import mime from 'mime';
+
 export async function fetchUsersInGroup(id) {
   const groupId = id;
   try {
@@ -42,9 +44,9 @@ export async function deleteGroup(id) {
 }
 
 // Create Group
-export const createGroup = async (groupName, groupDesc, currentUser) => {
+export const createGroup = async (groupName, groupDesc, poolId, creatorName, creatorObjId) => {
   try {
-    await fetch('https://say-it-right.herokuapp.com/api/v1/group', {
+    const res= await fetch('https://say-it-right.herokuapp.com/api/v1/group', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -53,17 +55,31 @@ export const createGroup = async (groupName, groupDesc, currentUser) => {
       body: JSON.stringify({
         groupName: groupName,
         groupDesc: groupDesc,
-        creatorName: currentUser,
-        createrPoolId: currentUser,
-        // groupImage: imageUri,
+        groupImage:"",
+        creatorId:creatorObjId,
+        creatorName: creatorName,
+        createrPoolId: poolId,
+        users: [],
+        createdOn:Date().toLocaleString(),
+        updatedOn:""
       }),
-    });
-    alert('Group Created');
+    })
+    if (res.ok) { // if HTTP-status is 200-299
+      // get the response body (the method explained below)
+      let grpId = await res.text();
+      return { status: res.status, body: grpId };
+    }
+        //const body = await response;
+        //console.log(response)
+       // return { status: status, body: body };
+    //alert('Group Created');
   } catch (error) {
     console.log(error);
-    alert('POST has an error');
+    return { status: '500', body: error };
   }
-  const imageUploadGroup = async (uri, image, poolId) => {
+};
+
+export const imageUploadGroup = async (uri, image, groupId, poolId) => {
     const newImageUri = 'file:///' + uri.split('file:/').join('');
     try {
       let formData = new FormData();
@@ -73,8 +89,10 @@ export const createGroup = async (groupName, groupDesc, currentUser) => {
         name: newImageUri.split('/').pop(),
       });
 
+      //console.log(formData)
+
       return await fetch(
-        'https://say-it-right.herokuapp.com/api/v1/group' + poolId,
+        'https://say-it-right.herokuapp.com/api/v1/group/image/upload/?groupId='+groupId+'&poolId='+poolId,
         {
           method: 'POST',
           Accept: 'application/json',
@@ -86,4 +104,3 @@ export const createGroup = async (groupName, groupDesc, currentUser) => {
       console.log('error', error);
     }
   };
-};
