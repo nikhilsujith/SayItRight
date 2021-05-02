@@ -29,6 +29,7 @@ import {
 } from "../../service/User/UserService";
 import { fetchAllGroups } from "../../service/Group/GroupService";
 import { currentSession } from "../../util/AmplifyCurrentSession";
+import UserProfile from "../Users/UserProfile";
 
 const RootStack = createStackNavigator();
 const MyGroupsStack = createStackNavigator();
@@ -44,8 +45,6 @@ const MyGroupsStackScreen = () => {
     </MyGroupsStack.Navigator>
   );
 };
-
-
 
 export const MyGroupsScreen = ({ navigation }) => {
   const [enrolledGroups, setEnrolledGroups] = useState([]);
@@ -63,59 +62,27 @@ export const MyGroupsScreen = ({ navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-
-  const fetchData = () => {
-    useEffect(() => {
-      let mounted = true;
-      fetchEnrolledGroups(currentUser).then((group) => {
-        if (mounted) {
-          setEnrolledGroups(group);
-        }
-      });
-      fetchCreatedGroups(currentUser).then((group) => {
-        if (mounted) {
-          setCreatedGroups(group);
-        }
-      });
-      fetchAllGroups().then((group) => {
-        if (mounted) {
-          setAllGroupData(group);
-        }
-      });
-      return () => (mounted = false);
-    }, [refreshing]);
-  };
+  console.log(refreshing)
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      onRefresh();
+    let mounted = true;
+    fetchEnrolledGroups(currentUser).then((group) => {
+      if (mounted) {
+        setEnrolledGroups(group);
+      }
     });
-    return unsubscribe;
-  }, [navigation]);
-
-  fetchData();
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   fetchEnrolledGroups(currentUser).then((group) => {
-  //     if (mounted) {
-  //       setEnrolledGroups(group);
-  //     }
-  //   });
-  //   fetchCreatedGroups(currentUser).then((group) => {
-  //     if (mounted) {
-  //       setCreatedGroups(group);
-  //     }
-  //   });
-  //   fetchAllGroups().then((group) => {
-  //     if (mounted) {
-  //       setAllGroupData(group);
-  //     }
-  //   });
-  //   return () => (mounted = false);
-  // }, [refreshing]);
-
- 
+    fetchCreatedGroups(currentUser).then((group) => {
+      if (mounted) {
+        setCreatedGroups(group);
+      }
+    });
+    fetchAllGroups().then((group) => {
+      if (mounted) {
+        setAllGroupData(group);
+      }
+    });
+    return () => (mounted = false);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -172,7 +139,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups allGroups={allGroups} currentUser={currentUser} navigation={navigation}/>
+            <AllGroups allGroups={allGroups} currentUser={currentUser} />
           </Tab>
         </Tabs>
       </ScrollView>
@@ -202,14 +169,14 @@ const MyGroups = () => {
         component={CreateNewGroup}
         options={{ headerShown: false }}
       />
-      {/* <RootStack.Screen
-        name="UsersInGroup"
-        component={UsersInGroup}
+      <RootStack.Screen
+        name="UserProfile"
+        component={UserProfile}
         options={{
           headerTitle: "Users In Group",
           headerShown: false,
         }}
-      /> */}
+      />
     </RootStack.Navigator>
   );
 };

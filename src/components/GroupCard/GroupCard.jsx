@@ -2,11 +2,20 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { theme } from "../../constants/theme";
-import { defaultOrImage } from "../../util";
 
+const defaultImage = {
+  uri: "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
+};
 
 function GroupCard({ cardTitle, cardDesc, cardImageLink }) {
-  const link = defaultOrImage(cardImageLink);
+  let link = "";
+  if (cardImageLink) {
+    if (cardImageLink.length > 0) {
+      link = { uri: cardImageLink };
+    }
+  } else {
+    link = defaultImage;
+  }
   return (
     <View style={styles.groupCardTextAreaStack}>
       <View style={styles.groupCardTextArea}>
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
   },
   groupCardImageContainer: {
     top: 0,
-    left: 225,
+    left: 228,
     height: 143,
     position: "absolute",
     backgroundColor: theme.secondary.backgroundColor,
@@ -89,10 +98,8 @@ const styles = StyleSheet.create({
     // borderColor: "rgba(230,230,230,1)",
     // borderColor: theme.primary.backgroundColor,
     right: 0,
-    overflow: 'hidden',
   },
   image3: {
-    backgroundColor: "rgba(99, 99, 99, 0.47)",
     flex: 1,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,

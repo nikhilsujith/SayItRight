@@ -166,7 +166,7 @@ export const MyGroupsStackScreen = () => (
       component={UsersInGroup}
       options={({ route }) => ({
         title: route.params.groupName,
-        headerTitleStyle: {color: theme.secondary.backgroundColor},
+        headerTitleStyle: { color: theme.secondary.backgroundColor },
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,

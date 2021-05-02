@@ -11,9 +11,10 @@ import {
   Thumbnail,
 } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { exitGroup, fetchUsersInGroup } from "../../service/Group/GroupService";
+import { fetchUsersInGroup } from "../../service/Group/GroupService";
 import { AccordianPack, LoadingIndicator } from "../../components";
 import { defaultOrImage } from "../../util";
+import { getUserByPoolId } from "../../service/User/UserService";
 import { currentSession } from "../../util/AmplifyCurrentSession";
 
 const GroupHeader = ({ navigation, title }) => {
@@ -57,14 +58,17 @@ const NameCard = ({ press, image, name, meaning }) => {
     </TouchableOpacity>
   );
 };
+
 const UsersInGroup = ({ navigation, route }) => {
   const { id, groupName, groupDesc, groupImage } = route.params;
   const [users, setUsers] = useState("");
+  const fetchUser = getUserByPoolId(currentSession());
   const [groupNameState, setGroupNameState] = useState("My Groups");
-  const currentUser = currentSession();
+
 
   useEffect(() => {
     let mounted = true;
+
     fetchUsersInGroup(id).then((userData) => {
       if (mounted) {
         setUsers(userData);
@@ -85,7 +89,7 @@ const UsersInGroup = ({ navigation, route }) => {
                   image={object.profileImage}
                   name={object.fullName}
                   meaning={object.poolId}
-                  press={() => alert("pressed")}
+                  press={() =>navigation.navigate("UserProfile",{profileImage:object.profileImage,title:object.fullName,nameDescription:fetchUser._W.body.desc,nameMeaning:object.fullName,videoLink:fetchUser._W.body.videoFile,audioLink:fetchUser._W.body.audioFile})}
                 />
               );
             })
@@ -97,7 +101,9 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   };
 
-  const accordContent = [{ title: "Group Members", content: <UserList /> }];
+  const accordContent = [
+    { title: "Group Members", content: <UserList /> },
+];
   const image = defaultOrImage(groupImage);
   return (
     <ScrollView>
@@ -130,17 +136,7 @@ const UsersInGroup = ({ navigation, route }) => {
           marginBottom: "5%",
         }}
       >
-        <Button
-          color="black"
-          title="Exit Group"
-          onPress={async () => {
-            const response = await exitGroup(id, currentUser);
-            const { status } = response;
-            if (status == 200){
-              navigation.goBack();
-            }
-          }}
-        />
+        <Button color="black" title="Exit Group" onPress={() => alert('Create backend to exit group')}/>
       </View>
     </ScrollView>
   );

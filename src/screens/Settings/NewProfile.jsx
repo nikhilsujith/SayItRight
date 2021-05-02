@@ -109,9 +109,9 @@ const UserDetails = ({ navigation }) => {
    //console.log(await uploadS3())
    var audioS3Loc=await uploadS3();
 
-  //  console.log(currentSession())
-  //  console.log(imageUri)
-  //  console.log(audioS3Loc)
+   console.log(currentSession())
+   console.log(imageUri)
+   console.log(audioS3Loc)
 
     if(audioS3Loc!=null && audioS3Loc!='' && audioS3Loc!='error'){
         //console.log("in")
@@ -141,7 +141,7 @@ const UserDetails = ({ navigation }) => {
             });
            // const body = await response.json();
               const newUserStatus=await response.status
-              // console.log(newUserStatus);//201 created
+              console.log(newUserStatus);//201 created
 
         if (userName.length > 0 && nameDesc.length > 0 && newUserStatus==201) {
           imageUpload(imageUri, base64Image,currentSession()).then((result) => {
@@ -184,12 +184,12 @@ const UserDetails = ({ navigation }) => {
 
   const onAudioSelected = (uri) => {
     setAudioUri(uri);
-    // console.log(uri);
+    console.log(uri);
   };
 
   const onVideoSelected = (uri) => {
     setVideoUri(uri);
-    // console.log(uri);
+    console.log(uri);
   };
 
   return (
