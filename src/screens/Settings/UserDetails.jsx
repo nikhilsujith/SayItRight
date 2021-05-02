@@ -195,8 +195,7 @@ const UserDetails = ({ navigation }) => {
       const newUserStatus = await response.status;
       console.log(newUserStatus); //201 created
 
-
-      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201 && imageUri!=onlineImage) {
+      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 200 && imageUri!=onlineImage) {
         imageUpload(imageUri, base64Image, currentSession()).then((result) => {
           if (result.status === 200) {
             alert("Image uploaded successfully");
@@ -220,7 +219,7 @@ const UserDetails = ({ navigation }) => {
           }
         });
       }
-      if (newUserStatus == 201) {
+      if (newUserStatus === 200) {
         alert("Success");
         //await Updates.reloadAsync();
       }
