@@ -11,9 +11,10 @@ import {
   Thumbnail,
 } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { fetchUsersInGroup } from "../../service/Group/GroupService";
+import { exitGroup, fetchUsersInGroup } from "../../service/Group/GroupService";
 import { AccordianPack, LoadingIndicator } from "../../components";
 import { defaultOrImage } from "../../util";
+import { currentSession } from "../../util/AmplifyCurrentSession";
 
 const GroupHeader = ({ navigation, title }) => {
   return (
@@ -56,11 +57,11 @@ const NameCard = ({ press, image, name, meaning }) => {
     </TouchableOpacity>
   );
 };
-
 const UsersInGroup = ({ navigation, route }) => {
   const { id, groupName, groupDesc, groupImage } = route.params;
   const [users, setUsers] = useState("");
   const [groupNameState, setGroupNameState] = useState("My Groups");
+  const currentUser = currentSession();
 
   useEffect(() => {
     let mounted = true;
@@ -96,9 +97,7 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   };
 
-  const accordContent = [
-    { title: "Group Members", content: <UserList /> },
-];
+  const accordContent = [{ title: "Group Members", content: <UserList /> }];
   const image = defaultOrImage(groupImage);
   return (
     <ScrollView>
@@ -131,7 +130,17 @@ const UsersInGroup = ({ navigation, route }) => {
           marginBottom: "5%",
         }}
       >
-        <Button color="black" title="Exit Group" onPress={() => alert('Create backend to exit group')}/>
+        <Button
+          color="black"
+          title="Exit Group"
+          onPress={async () => {
+            const response = await exitGroup(id, currentUser);
+            const { status } = response;
+            if (status == 200){
+              navigation.goBack();
+            }
+          }}
+        />
       </View>
     </ScrollView>
   );

@@ -12,14 +12,25 @@ import { ScrollView } from "react-native-gesture-handler";
 import { GroupCard } from "../../../components";
 import { enrollGroup } from "../../../service/User/UserService";
 
-const joinAlert = (creatorName, id, currentUser) =>
+const joinAlert = (creatorName, id, currentUser, navigation) =>
   Alert.alert("Group Info", `Owner: ${creatorName}`, [
     {
       text: "Cancel",
       onPress: () => console.log("Cancel Pressed"),
       style: "cancel",
     },
-    { text: "Join", onPress: () => enrollGroup(id, currentUser) },
+    {
+      text: "Join",
+      onPress: async () => {
+       const response = await enrollGroup(id, currentUser)
+        if (response == 200) {
+          alert("You have successfully enrolled into the group!")
+        }
+        else{
+          alert("Something went wrong. Please try again later");
+        }
+      },
+    },
   ]);
 
 const AllGroupsCard = ({
@@ -34,7 +45,7 @@ const AllGroupsCard = ({
   return (
     <TouchableOpacity
       onLongPress={() => {
-        joinAlert(creatorName, id, currentUser);
+        joinAlert(creatorName, id, currentUser, navigation);
       }}
     >
       <GroupCard
@@ -49,23 +60,16 @@ const AllGroupsCard = ({
 
 const AllGroups = ({ navigation, allGroups, currentUser }) => {
   const renderItem = ({
-    item: {
-      id,
-      groupName,
-      groupDesc,
-      groupImage,
-      creatorName,
-      navigation,
-    },
+    item: { id, groupName, groupDesc, groupImage, creatorName },
   }) => (
     <AllGroupsCard
-      id={id}
-      cardTitle={groupName}
-      cardDesc={groupDesc}
-      cardImageLink={groupImage}
-      creatorName={creatorName}
-      currentUser={currentUser}
-      navigation={navigation}
+    id={id}
+    cardTitle={groupName}
+    cardDesc={groupDesc}
+    cardImageLink={groupImage}
+    creatorName={creatorName}
+    currentUser={currentUser}
+    navigation={navigation}
     />
   );
 

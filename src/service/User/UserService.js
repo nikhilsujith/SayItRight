@@ -46,7 +46,8 @@ export const enrollGroup = (groupId, poolId) => {
     // .then((data) => JSON.stringify(data))
     .then((data) =>  {
       if (data.status == 200){
-        alert("You have successfully enrolled into the group!");
+        return(data.status);
+        // alert("You have successfully enrolled into the group!");
       }
       else {
         alert("Oops, something went wrong, Please try again later");

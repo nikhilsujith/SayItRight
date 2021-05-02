@@ -261,7 +261,7 @@ const UserDetails = ({ navigation }) => {
     <Root>
       <ScrollView>
         <View style={styles.containCard}>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity onPress={pickImage} style={{ overflow: "hidden", borderRadius: 100, marginRight: 10, }}>
             <Image
               source={
                 imageUri
@@ -446,17 +446,21 @@ const styles = StyleSheet.create({
   imagePicker: {
     // height: 120,
     // width: 120,
-    height: imageSize,
-    width: imageSize,
+    // height: imageSize,
+    // width: imageSize,
+    // borderRadius: 100,
+    // borderWidth: 1,
+    // overflow: 'hidden',
+    height: 100,
+    width: 100,
     borderRadius: 100,
-    // marginTop: 30,
-    borderWidth: 1,
   },
   videoPlayer: {
     height: "100%",
     width: "100%",
     borderRadius: 15,
     overflow: "hidden",
+    resizeMode: "contain",
   },
   SaveArea: {
     alignContent: "center",
