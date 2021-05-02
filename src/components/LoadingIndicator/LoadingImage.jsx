@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
 
 const LoadingIndicator = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
         style={{
           flex: 1,
@@ -11,7 +11,14 @@ const LoadingIndicator = () => {
           justifyContent: "center",
         }}
       >
-        <Image style={styles.imagePicker} source={require('../../../assets/Pulse-1s-200px.gif')} />
+        <Image
+          style={{ width: 300, height: 200 }}
+          source={require("../../../assets/sir-transparent.png")}
+        />
+        <Image
+          style={{ width: 100, height: 100 }}
+          source={require("../../../assets/Pulse-1s-200px.gif")}
+        />
       </View>
     </View>
   );

@@ -43,9 +43,16 @@ export const enrollGroup = (groupId, poolId) => {
     return fetch(url,{
       method: 'POST'
     })
-    .then(alert("You have successfully enrolled into the group!"))
-      // .then((data) => data.json())
-      // .then((data) => console.log(data));
+    // .then((data) => JSON.stringify(data))
+    .then((data) =>  {
+      if (data.status == 200){
+        return(data.status);
+        // alert("You have successfully enrolled into the group!");
+      }
+      else {
+        alert("Oops, something went wrong, Please try again later");
+      }
+    });
   } catch (error) {
     alert("Fetch Group Error");
     console.log(error);

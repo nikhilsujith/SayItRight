@@ -1,7 +1,7 @@
 export default defaultOrImage = (image) => {
   const defaultImage = {
     uri:
-      "https://nik-dev-personal-bucket.s3.amazonaws.com/nikhilsujith-008.PNG",
+      "https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png",
   };
 
   if (image) {

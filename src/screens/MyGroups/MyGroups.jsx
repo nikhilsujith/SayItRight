@@ -45,6 +45,8 @@ const MyGroupsStackScreen = () => {
   );
 };
 
+
+
 export const MyGroupsScreen = ({ navigation }) => {
   const [enrolledGroups, setEnrolledGroups] = useState([]);
   const [createdGroups, setCreatedGroups] = useState([]);
@@ -61,27 +63,59 @@ export const MyGroupsScreen = ({ navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  console.log(refreshing)
+
+  const fetchData = () => {
+    useEffect(() => {
+      let mounted = true;
+      fetchEnrolledGroups(currentUser).then((group) => {
+        if (mounted) {
+          setEnrolledGroups(group);
+        }
+      });
+      fetchCreatedGroups(currentUser).then((group) => {
+        if (mounted) {
+          setCreatedGroups(group);
+        }
+      });
+      fetchAllGroups().then((group) => {
+        if (mounted) {
+          setAllGroupData(group);
+        }
+      });
+      return () => (mounted = false);
+    }, [refreshing]);
+  };
 
   useEffect(() => {
-    let mounted = true;
-    fetchEnrolledGroups(currentUser).then((group) => {
-      if (mounted) {
-        setEnrolledGroups(group);
-      }
+    const unsubscribe = navigation.addListener("focus", () => {
+      onRefresh();
     });
-    fetchCreatedGroups(currentUser).then((group) => {
-      if (mounted) {
-        setCreatedGroups(group);
-      }
-    });
-    fetchAllGroups().then((group) => {
-      if (mounted) {
-        setAllGroupData(group);
-      }
-    });
-    return () => (mounted = false);
-  }, [refreshing]);
+    return unsubscribe;
+  }, [navigation]);
+
+  fetchData();
+
+  // useEffect(() => {
+  //   let mounted = true;
+  //   fetchEnrolledGroups(currentUser).then((group) => {
+  //     if (mounted) {
+  //       setEnrolledGroups(group);
+  //     }
+  //   });
+  //   fetchCreatedGroups(currentUser).then((group) => {
+  //     if (mounted) {
+  //       setCreatedGroups(group);
+  //     }
+  //   });
+  //   fetchAllGroups().then((group) => {
+  //     if (mounted) {
+  //       setAllGroupData(group);
+  //     }
+  //   });
+  //   return () => (mounted = false);
+  // }, [refreshing]);
+
+ 
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -138,7 +172,7 @@ export const MyGroupsScreen = ({ navigation }) => {
               fontWeight: "normal",
             }}
           >
-            <AllGroups allGroups={allGroups} currentUser={currentUser} />
+            <AllGroups allGroups={allGroups} currentUser={currentUser} navigation={navigation}/>
           </Tab>
         </Tabs>
       </ScrollView>
@@ -181,4 +215,3 @@ const MyGroups = () => {
 };
 // export default Auth.user ? MyGroups : withAuthenticator(MyGroups);
 export default MyGroups;
-
