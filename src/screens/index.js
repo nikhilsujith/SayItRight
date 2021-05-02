@@ -8,6 +8,7 @@ export { default as AllGroups } from './MyGroups/AllGroups/AllGroups.jsx';
 
 // Users
 export { default as UsersInGroup } from './Users/UsersInGroup.jsx';
+export { default as UserInformation } from './Users/UserInformation.jsx';
 
 // Settings
 export { default as UserDetails } from './Settings/UserDetails.jsx';

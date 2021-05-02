@@ -16,30 +16,33 @@ import { AccordianPack, LoadingIndicator } from "../../components";
 import { defaultOrImage } from "../../util";
 import { currentSession } from "../../util/AmplifyCurrentSession";
 
-const GroupHeader = ({ navigation, title }) => {
-  return (
-    <Card style={styles.root}>
-      <CardItem style={styles.root}>
-        {/* <Left>
-          <Icon name="close" onPress={() => navigation.goBack()} />
-        </Left> */}
-        <Body
-          style={{ flex: 5, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text>{title}</Text>
-        </Body>
-        {/* <Right style={{ flex: 1 }}>
-          <Icon name="close" onPress={() => navigation.goBack()} />
-        </Right> */}
-      </CardItem>
-    </Card>
-  );
-};
+// const GroupHeader = ({ navigation, title }) => {
+//   return (
+//     <Card style={styles.root}>
+//       <CardItem style={styles.root}>
+//         {/* <Left>
+//           <Icon name="close" onPress={() => navigation.goBack()} />
+//         </Left> */}
+//         <Body
+//           style={{ flex: 5, alignItems: "center", justifyContent: "center" }}
+//         >
+//           <Text>{title}</Text>
+//         </Body>
+//         {/* <Right style={{ flex: 1 }}>
+//           <Icon name="close" onPress={() => navigation.goBack()} />
+//         </Right> */}
+//       </CardItem>
+//     </Card>
+//   );
+// };
 
-const NameCard = ({ press, image, name, meaning }) => {
+const NameCard = ({ press, image, name, meaning, navigation, poolId }) => {
   let link = defaultOrImage(image);
   return (
-    <TouchableOpacity onPress={press} style={{ padding: 10 }}>
+    <TouchableOpacity onPress={() => navigation.navigate('UserInformation', {
+      userName: name,
+      id: poolId
+    })} style={{ padding: 10 }}>
       <List>
         <ListItem thumbnail>
           <Left>
@@ -82,10 +85,12 @@ const UsersInGroup = ({ navigation, route }) => {
             users.map((object) => {
               return (
                 <NameCard
+                  poolId={object.poolId}
                   image={object.profileImage}
                   name={object.fullName}
-                  meaning={object.poolId}
-                  press={() => alert("pressed")}
+                  meaning={object.nameMeaning}
+                  navigation={navigation}
+                  // press={() => navigation.navigate('UserInformation')}
                 />
               );
             })

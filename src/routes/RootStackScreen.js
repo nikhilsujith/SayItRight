@@ -9,6 +9,7 @@ import {
   NewProfile,
   Recording,
   UsersInGroup,
+  UserInformation,
 } from "../screens";
 
 import { theme } from "../constants/theme";
@@ -176,6 +177,21 @@ export const MyGroupsStackScreen = () => (
         headerTintColor: theme.primary.color,
       })}
     />
+    <MyGroupsStack.Screen
+      name="UserInformation"
+      component={UserInformation}
+      options={({ route }) => ({
+        title: route.params.userName,
+        // headerTitleStyle: {color: theme.secondary.backgroundColor},
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      })}
+    />
   </MyGroupsStack.Navigator>
 );
 
@@ -272,8 +288,3 @@ export const MainStackScreen = () => (
 );
 
 export const AuthenticationScreen = () => <Authenticator></Authenticator>;
-
-//    <Tabs.Screen
-//          name="Authentication"
-//          component={AuthenticationScreen}
-//        />
