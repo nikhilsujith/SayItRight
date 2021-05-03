@@ -413,7 +413,7 @@ const UserDetails = ({ navigation }) => {
             margin: 10,
           }}
           onPress={handleSaveButton}
-          disabled={disableSave}
+         
         >
           <Entypo name="save" size={24} color="white" />
         </TouchableOpacity>
