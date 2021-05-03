@@ -78,7 +78,7 @@ const UserInformation = ({ navigation, route }) => {
         <View style={{ flex: 1, margin: 1 }}>
             <Item>
               <Input
-                placeholder="Name"
+                placeholder=""
                 value={userName}
                 onChangeText={(name) => setUserName(name)}
                 style={{ fontWeight: "bold" }}
