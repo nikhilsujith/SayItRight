@@ -75,15 +75,8 @@ const UserInformation = ({ navigation, route }) => {
             borderRadius: 100,
           }}
         />
-        <View style={{ flex: 1, margin: 1 }}>
-            <Item>
-              <Input
-                placeholder="Name"
-                value={userName}
-                onChangeText={(name) => setUserName(name)}
-                style={{ fontWeight: "bold" }}
-              />
-            </Item>
+        
+            
             <Item regular>
               <Textarea
                 style={{ margin: 1, overflow: "scroll" }}
@@ -94,7 +87,7 @@ const UserInformation = ({ navigation, route }) => {
               />
             </Item>
           </View>
-          </View>
+          
 
       <View
         style={{
