@@ -1,18 +1,66 @@
 import { Input, Item, Textarea } from "native-base";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
+import { getUser } from "../../service/User/UserService";
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
+import { getUserByPoolId } from "../../service/User/UserService";
 
-const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
-const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
+Amplify.configure(awsconfig);
+
+// const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
+// const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
 
 const UserInformation = ({ navigation, route }) => {
+  
+ 
+  // const {​​​​​​​​ id, groupName, groupDesc, groupImage,owned }​​​​​​​​ = route.params;
+  const [userName, setUserName] = useState("");
+  const [onlineVideo, setOnlineVideo] = useState("");
+  const [nameDesc, setNameDesc] = useState("");
+  const [nameMeaning, setNameMeaning] = useState("");
+  const [imageUri, setImageUri] = useState(null);
+  const [audioUri, setAudioUri] = useState(null);
+  const [audioS3Loc, setAudioS3Loc] = useState("");
+
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const { id } = route.params;
+  
+  
+  
+  
+  
+  useEffect(() => {
+    
+    console.log(id);
+    (async () => {
+      const fetchedPosts = await getUserByPoolId(id);
+      if (fetchedPosts.status != "500") {
+        console.log("in");
+        setAudioS3Loc(fetchedPosts.body.audioFile);
+        setNameDesc(fetchedPosts.body.desc);
+        setNameMeaning(fetchedPosts.body.nameMeaning);
+        setUserName(fetchedPosts.body.fullName);
+        setImageUri(fetchedPosts.body.profileImage);
+        // setVideoUri(fetchedPosts.body.videoFile);
+        // setOnlineImage(fetchedPosts.body.profileImage);
+        // setId(fetchedPosts.body.id);
+        // setMyGroups(fetchedPosts.body.myGroups);
+        // setEnrolledGroups(fetchedPosts.body.enrolledGroups);
+        // setCreatedOn(fetchedPosts.body.createdOn);
+        setOnlineVideo(fetchedPosts.body.videoFile);
+        //         console.log(userName);
+        //                 console.log(fetchedPosts.body.audioFile)
+      }
+    })();
+  }, []);
+
+  
 
 //   User Pool ID
-  console.log("USE THIS POOL ID TO MAKE REQUESTS TO THE SERVICE. Use the service to fetch /api/v1/user/{poolId}" + id)
+  // console.log("USE THIS POOL ID TO MAKE REQUESTS TO THE SERVICE. Use the service to fetch /api/v1/user/{poolId}" + id)
 
   return (
     <View style={{ flex: 1 }}>
@@ -28,12 +76,25 @@ const UserInformation = ({ navigation, route }) => {
           }}
         />
         <View style={{ flex: 1, margin: 1 }}>
-          <Text>
-            afdasd fasdf asdf asdf asdfa sdfa sdfas dfasd fasd fasdf asdf asdf
-            asdf asdf asdf
-          </Text>
-        </View>
-      </View>
+            <Item>
+              <Input
+                placeholder="Name"
+                value={userName}
+                onChangeText={(name) => setUserName(name)}
+                style={{ fontWeight: "bold" }}
+              />
+            </Item>
+            <Item regular>
+              <Textarea
+                style={{ margin: 1, overflow: "scroll" }}
+                rowSpan={3}
+                placeholder="Description"
+                value={nameDesc}
+                onChangeText={(desc) => setNameDesc(desc)}
+              />
+            </Item>
+          </View>
+          </View>
 
       <View
         style={{
