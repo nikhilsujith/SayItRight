@@ -108,7 +108,7 @@ export const imageUploadGroup = async (uri, image, groupId, poolId) => {
 export const exitGroup = async (groupId, poolId) => {
   try {
     return await fetch(
-      `https://say-it-right.herokuapp.com/api/v1/group/exitGroup?group=${groupId}&pool=${poolId}`,
+      'https://say-it-right.herokuapp.com/api/v1/group/exitGroup?group='+groupId+'&pool='+poolId,
       {
         method: "DELETE",
         headers: {
@@ -132,3 +132,64 @@ export const exitGroup = async (groupId, poolId) => {
     alert("Exit Group Service Error");
   }
 };
+
+// Remove Group
+export const removeGroup = async (groupId, poolId) => {
+  try {
+    return await fetch(
+      'https://say-it-right.herokuapp.com/api/v1/group/removeGroup?group='+groupId+'&pool='+poolId,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    // .then((response) => JSON.stringify(response))
+    .then((response) => data = response)
+    // .then((data) =>  {
+    //   if (data.status == 200){
+    //     alert("You have successfully exited the group");
+    //   }
+    //   else {
+    //     alert("Oops, something went wrong, Please try again later");
+    //   }
+    // })
+  } catch (error) {
+    console.log(error);
+    alert("Exit Group Service Error");
+  }
+};
+
+// Remove Group Member
+export const removeGroupMember = async (cPoolId, groupId, poolId) => {
+  try {
+  console.log('https://say-it-right.herokuapp.com/api/v1/group/removeUser?c_pool='+cPoolId+'&group='+groupId+'&pool='+poolId)
+    return await fetch(
+      'https://say-it-right.herokuapp.com/api/v1/group/removeUser?c_pool='+cPoolId+'&group='+groupId+'&pool='+poolId,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    // .then((response) => JSON.stringify(response))
+    .then((response) => data = response)
+    // .then((data) =>  {
+    //   if (data.status == 200){
+    //     alert("You have successfully exited the group");
+    //   }
+    //   else {
+    //     alert("Oops, something went wrong, Please try again later");
+    //   }
+    // })
+  } catch (error) {
+    console.log(error);
+    alert("Delete user error!");
+  }
+};
+
+

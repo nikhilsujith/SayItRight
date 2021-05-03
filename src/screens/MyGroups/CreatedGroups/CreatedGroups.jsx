@@ -22,9 +22,9 @@ const CreatedGroupsCard = ({
           groupName: cardTitle,
           groupDesc: cardDesc,
           groupImage: cardImageLink,
+          owned:true,
         });
       }}
-      onLongPress={() => handleDeleteGroup(id)}
     >
       <GroupCard
         key={id}
