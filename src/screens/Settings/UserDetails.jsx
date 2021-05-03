@@ -62,8 +62,6 @@ const UserDetails = ({ navigation }) => {
   const [status, setStatus] = React.useState({});
 
 
-  console.log(videoUri);
-
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
 
@@ -82,7 +80,6 @@ const UserDetails = ({ navigation }) => {
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
       if (fetchedPosts.status != "500") {
-        console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
@@ -95,10 +92,7 @@ const UserDetails = ({ navigation }) => {
         setEnrolledGroups(fetchedPosts.body.enrolledGroups);
         setCreatedOn(fetchedPosts.body.createdOn);
         setOnlineVideo(fetchedPosts.body.videoFile);
-        //         console.log(userName);
-        //                 console.log(fetchedPosts.body.audioFile)
       }
-      //setPosts(fetchedPosts);
     })();
 
     Dimensions.addEventListener("change", onChange);
@@ -172,8 +166,6 @@ const UserDetails = ({ navigation }) => {
   };
 
   const handleSaveButton = async () => {
-    console.log(":::::::::::HANDLE Update:::::::::");
-    //console.log(await uploadS3())
     if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
       setAudioS3Loc(await uploadS3());
     }
@@ -207,7 +199,6 @@ const UserDetails = ({ navigation }) => {
       });
       // const body = await response.json();
       const newUserStatus = await response.status;
-      console.log(newUserStatus); //201 created
 
       if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201) {
         imageUpload(imageUri, base64Image, currentSession()).then((result) => {
@@ -244,7 +235,6 @@ const UserDetails = ({ navigation }) => {
 
   const onAudioSelected = (uri) => {
     setAudioUri(uri);
-    console.log(uri);
   };
 
   const onVideoSelected = (uri) => {

@@ -13,8 +13,6 @@ Amplify.configure(awsconfig);
 // const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
 
 const UserInformation = ({ navigation, route }) => {
-  
- 
   // const {​​​​​​​​ id, groupName, groupDesc, groupImage,owned }​​​​​​​​ = route.params;
   const [userName, setUserName] = useState("");
   const [onlineVideo, setOnlineVideo] = useState("");
@@ -27,40 +25,20 @@ const UserInformation = ({ navigation, route }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const { id } = route.params;
-  
-  
-  
-  
-  
+
   useEffect(() => {
-    
-    console.log(id);
     (async () => {
       const fetchedPosts = await getUserByPoolId(id);
       if (fetchedPosts.status != "500") {
-        console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
         setUserName(fetchedPosts.body.fullName);
         setImageUri(fetchedPosts.body.profileImage);
-        // setVideoUri(fetchedPosts.body.videoFile);
-        // setOnlineImage(fetchedPosts.body.profileImage);
-        // setId(fetchedPosts.body.id);
-        // setMyGroups(fetchedPosts.body.myGroups);
-        // setEnrolledGroups(fetchedPosts.body.enrolledGroups);
-        // setCreatedOn(fetchedPosts.body.createdOn);
         setOnlineVideo(fetchedPosts.body.videoFile);
-        //         console.log(userName);
-        //                 console.log(fetchedPosts.body.audioFile)
       }
     })();
   }, []);
-
-  
-
-//   User Pool ID
-  // console.log("USE THIS POOL ID TO MAKE REQUESTS TO THE SERVICE. Use the service to fetch /api/v1/user/{poolId}" + id)
 
   return (
     <View style={{ flex: 1 }}>
@@ -75,19 +53,10 @@ const UserInformation = ({ navigation, route }) => {
             borderRadius: 100,
           }}
         />
-        
-            
-            <Item regular>
-              <Textarea
-                style={{ margin: 1, overflow: "scroll" }}
-                rowSpan={3}
-                placeholder="Description"
-                value={nameDesc}
-                onChangeText={(desc) => setNameDesc(desc)}
-              />
-            </Item>
-          </View>
-          
+        <View style={{margin: 10}}>
+          <Text>{nameDesc}</Text>
+        </View>
+      </View>
 
       <View
         style={{
@@ -124,7 +93,7 @@ const UserInformation = ({ navigation, route }) => {
           />
         )}
       </View>
-      <View style={{...styles.containCard}}>
+      <View style={{ ...styles.containCard }}>
         <Text>Audio Goes Here</Text>
       </View>
     </View>
