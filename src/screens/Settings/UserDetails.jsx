@@ -61,6 +61,9 @@ const UserDetails = ({ navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
+
+  console.log(videoUri);
+
   const disableSave =
     userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
 
