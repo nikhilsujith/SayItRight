@@ -3,7 +3,19 @@
 export const getUserByPoolId = async (id) => {
   //setTimeout(async() => {
   const response = await fetch(
-    "https://say-it-right.herokuapp.com/api/v1/user/" + id
+    'https://say-it-right.herokuapp.com/api/v1/user/' + id
+  );
+  const body = await response.json();
+  const status = await response.status;
+  return { status: status, body: body };
+  //}, 5000);
+};
+
+//user info
+export const getUser = async (id) => {
+  //setTimeout(async() => {
+  const response = await fetch(
+    'https://say-it-right.herokuapp.com/api/v1/user/{poolId}' + id
   );
   const body = await response.json();
   const status = await response.status;
@@ -19,7 +31,7 @@ export const fetchEnrolledGroups = (id) => {
     return fetch(url).then((data) => data.json());
     // .then(data => console.log(data))
   } catch (error) {
-    alert("Fetch Group Error");
+    alert('Fetch Group Error');
     console.log(error);
   }
 };
@@ -32,7 +44,7 @@ export const fetchCreatedGroups = (id) => {
     return fetch(url).then((data) => data.json());
     // .then(data => console.log(data))
   } catch (error) {
-    alert("Fetch Created Groups Error");
+    alert('Fetch Created Groups Error');
     console.log(error);
   }
 };
@@ -40,21 +52,22 @@ export const fetchCreatedGroups = (id) => {
 export const enrollGroup = (groupId, poolId) => {
   try {
     const url = `https://say-it-right.herokuapp.com/api/v1/group/enroll?group=${groupId}&&pool=${poolId}`;
-    return fetch(url,{
-      method: 'POST'
-    })
-    // .then((data) => JSON.stringify(data))
-    .then((data) =>  {
-      if (data.status == 200){
-        return(data.status);
-        // alert("You have successfully enrolled into the group!");
-      }
-      else {
-        alert("Oops, something went wrong, Please try again later");
-      }
-    });
+    return (
+      fetch(url, {
+        method: 'POST',
+      })
+        // .then((data) => JSON.stringify(data))
+        .then((data) => {
+          if (data.status == 200) {
+            return data.status;
+            // alert("You have successfully enrolled into the group!");
+          } else {
+            alert('Oops, something went wrong, Please try again later');
+          }
+        })
+    );
   } catch (error) {
-    alert("Fetch Group Error");
+    alert('Fetch Group Error');
     console.log(error);
   }
 };
