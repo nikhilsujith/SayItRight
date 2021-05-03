@@ -1,12 +1,12 @@
 import Amplify, { Auth } from "aws-amplify";
 import { sub } from "react-native-reanimated";
 
-export const currentSession = () => {
-  let pId = Auth.user.attributes.sub;
+export const currentSession = async () => {
+  let pId = await Auth.user.attributes.sub;
   return pId;
 };
 
-export const currentSessionEmail = () => {
-  let email = Auth.user.attributes.email;
+export const currentSessionEmail = async () => {
+  let email = await Auth.user.attributes.email;
   return email;
 };

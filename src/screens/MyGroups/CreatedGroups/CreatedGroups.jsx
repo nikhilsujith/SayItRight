@@ -2,9 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { TouchableOpacity, View, Text, FlatList } from "react-native";
 import { GroupCard } from "../../../components";
 import { deleteGroup } from "../../../service/Group/GroupService";
+import { currentSession } from "../../../util/AmplifyCurrentSession";
+
+const currentUser = currentSession();
 
 const handleDeleteGroup = (id) => {
-  deleteGroup(id);
+  deleteGroup(id, currentUser);
 };
 
 const CreatedGroupsCard = ({

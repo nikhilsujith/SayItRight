@@ -60,8 +60,6 @@ const CreateNewGroup = (props) => {
   };
 
   const handleCreateButton = (groupName, groupDesc, currentUser) => {
-    console.log(":::::::::::Create:::::::::::::::");
-
       createGroup(groupName, groupDesc,  currentUser).then((result) => {
         
         if (result.status === 200) {

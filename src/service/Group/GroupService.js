@@ -26,17 +26,16 @@ export async function fetchAllGroups() {
 }
 
 // Delete Group
-export async function deleteGroup(id) {
+export async function deleteGroup(id, currentUser) {
   const groupId = id;
-  // console.log(groupId);
+  const poolId = currentUser;
   try {
-    const url = `https://say-it-right.herokuapp.com/api/v1/group/delete/${groupId}`;
+    const url = `https://say-it-right.herokuapp.com/api/v1/group/removeGroup?group=${groupId}&&pool=${poolId}`;
     return (
       await fetch(url, {
         method: "DELETE",
       }).then((data) => data.json())
     ).then(alert("Group Successfully Deleted"));
-    // .then(data => //console.log(data))
   } catch (error) {
     alert("Delete Group Error");
     console.log(error);
