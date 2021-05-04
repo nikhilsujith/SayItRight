@@ -70,6 +70,10 @@ const UsersInGroup = ({ navigation, route }) => {
             <Body>
               <Text>{name}</Text>
             </Body>
+
+            {/*                 <TouchableOpacity onPress={()=>removeGroupMemberFunc(poolId)} > */}
+            {/*                 <Icon name='trash' /> */}
+            {/*                  </TouchableOpacity> */}
           </ListItem>
         </List>
       </TouchableOpacity>
@@ -150,6 +154,8 @@ const UsersInGroup = ({ navigation, route }) => {
               route.params.id,
               user_poolId
             );
+            //const { status } = response.status;
+            //alert(response.status)
             if (response.status == 200) {
               alert("User removed successfully!");
               navigation.goBack();
@@ -201,11 +207,6 @@ const UsersInGroup = ({ navigation, route }) => {
             onPress={removeGroupFunc}
           />
         ) : null}
-        <Button
-          color="black"
-          title="Edit Group"
-          onPress={() => alert("Function to edit group goes here")}
-        />
       </View>
     </ScrollView>
   );

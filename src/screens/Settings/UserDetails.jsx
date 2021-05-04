@@ -215,7 +215,7 @@ const UserDetails = ({ navigation }) => {
       if((imageUri!=onlineImage)){
         imageUpload(imageUri, base64Image, currentSession()).then((result) => {
           if (result.status === 200) {
-            alert("Image uploaded successfully");
+            // alert("Image uploaded successfully");
           } else {
             alert(
               "Oops! There was an error uploading your Image. Please try again later."
@@ -223,13 +223,11 @@ const UserDetails = ({ navigation }) => {
           }
         });
       }
-        uploadVideoAsync(
-          videoUri || videoSource,
-          base64Image,
-          currentSession()
-        ).then((result) => {
-          if (result.status === 200) {
-            alert("Video uploaded successfully");
+
+      if((videoUri!=onlineVideo && videoUri!=null)){
+        await uploadVideoAsync(videoUri || videoSource,base64Image,currentSession()).then((result) => {
+          if (result.status == 200) {
+            // alert("Video uploaded successfully");
           } else {
             alert(
               "Oops! There was an error uploading your Video. Please try again later."
@@ -237,8 +235,14 @@ const UserDetails = ({ navigation }) => {
           }
         });
       }
+      }
       if (newUserStatus === 200) {
+<<<<<<< HEAD
         alert("Success");
+=======
+        // alert("Success");
+        //await Updates.reloadAsync();
+>>>>>>> Deeksha2
       }
 
     } else {
@@ -390,7 +394,6 @@ const UserDetails = ({ navigation }) => {
               />
             ) : (
               <Image
-                // source={{ uri: imageUri }}
                 source={require("../../../assets/icon.png")}
                 style={{
                   alignSelf: "center",
