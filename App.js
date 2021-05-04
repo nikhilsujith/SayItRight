@@ -19,7 +19,7 @@ const AppContainer = (props) => {
       <StatusBar barStyle="light-content" />
       {
       props.newUser === true ? <NewProfileStackScreen /> 
-      : props.newUser === false ? <MainStackScreen /> 
+      : props.newUser === false ? <NewProfileStackScreen />  
       : <LoadingImage />
       }
     </NavigationContainer>
@@ -28,7 +28,7 @@ const AppContainer = (props) => {
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
-  const [newUser, setNewUser] = useState(null);
+  const [newUser, setNewUser] = useState(true);
 
   useEffect(() => {
     (async () => {
