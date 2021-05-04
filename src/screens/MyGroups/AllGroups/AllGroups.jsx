@@ -15,24 +15,22 @@ import { enrollGroup } from "../../../service/User/UserService";
 const joinAlert = (creatorName, id, currentUser, navigation) =>
   Alert.alert("Group Info", `Owner: ${creatorName}`, [
     {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel",
-    },
-    {
       text: "Join",
       onPress: async () => {
        const response = await enrollGroup(id, currentUser)
         if (response.status == 200) {
-          alert("You have successfully enrolled into the group!")
+            alert("You have successfully enrolled into the group!")
         }
         else{
-          alert(response.body);
+          alert(await response.text());
         }
       },
     },
+    {
+      text: "Cancel",
+      onPress: () => console.log("Cancel Pressed"),
+    }
   ]);
-
 const AllGroupsCard = ({
   navigation,
   cardTitle,

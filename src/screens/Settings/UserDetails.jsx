@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Platform, View, Image, Text, Button } from "react-native";
 import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons,Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
 import { Entypo } from "@expo/vector-icons";
@@ -38,7 +38,8 @@ import {
   Textarea,
   Icon,
 } from "native-base";
-import { Video } from "expo-av";
+import { Audio,Video } from "expo-av";
+
 
 const UserDetails = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -58,11 +59,18 @@ const UserDetails = ({ navigation }) => {
   const [audioUri, setAudioUri] = useState(null);
   const [audioS3Loc, setAudioS3Loc] = useState("");
   const [dimensions, setDimensions] = useState({ window, screen });
+
+  const [recording, setRecording] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioDuration, setAudioDuration] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState('');
+  const [audioFile, setAudioFile] = useState('');
+
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
-
   const disableSave =
-    userName === "" || nameDesc === "" || nameMeaning === "" || !imageUri;
+    userName === "" || nameDesc === "" || !imageUri;
 
   useEffect(() => {
     (async () => {
@@ -171,9 +179,9 @@ const UserDetails = ({ navigation }) => {
   const handleSaveButton = async () => {
     console.log(":::::::::::HANDLE Update:::::::::");
     //console.log(await uploadS3())
-    if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
+    if (audioUri != null && audioUri != "") {
       setAudioS3Loc(await uploadS3());
-    }
+   }
 
     if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
       //console.log("in")
@@ -193,7 +201,7 @@ const UserDetails = ({ navigation }) => {
         updatedOn: Date().toLocaleString(),
       };
 
-      const url = "https://say-it-right.herokuapp.com/api/v1/user/addUser";
+      const url = "https://say-it-right.herokuapp.com/api/v1/user/updateUser";
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -204,9 +212,10 @@ const UserDetails = ({ navigation }) => {
       });
       // const body = await response.json();
       const newUserStatus = await response.status;
-      console.log(newUserStatus); //201 created
+      console.log(newUserStatus.status); //200 success
 
-      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201) {
+      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus === 200 ) {
+      if((imageUri!=onlineImage)){
         imageUpload(imageUri, base64Image, currentSession()).then((result) => {
           if (result.status === 200) {
             alert("Image uploaded successfully");
@@ -216,6 +225,7 @@ const UserDetails = ({ navigation }) => {
             );
           }
         });
+      }
         uploadVideoAsync(
           videoUri || videoSource,
           base64Image,
@@ -230,7 +240,7 @@ const UserDetails = ({ navigation }) => {
           }
         });
       }
-      if (newUserStatus == 201) {
+      if (newUserStatus === 200) {
         alert("Success");
         //await Updates.reloadAsync();
       }
@@ -256,6 +266,70 @@ const UserDetails = ({ navigation }) => {
   const onCameraVideo = (uri) => {
     setVideoSource(uri);
   };
+
+  async function startRecording() {
+      setIsRecording(true)
+      try {
+        console.log('Requesting permissions..');
+        await Audio.requestPermissionsAsync();
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
+        console.log('Starting recording..');
+        const recording = new Audio.Recording();
+        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+        await recording.startAsync();
+        setRecording(recording);
+        console.log('Recording started');
+        setTimeout(() => stopRecording, 4000);
+      } catch (err) {
+        console.error('Failed to start recording', err);
+      }
+    }
+
+    async function stopRecording() {
+      setIsRecording(false)
+      console.log('Stopping recording..');
+      setRecording(undefined);
+      await recording.stopAndUnloadAsync();
+      const uri = recording.getURI();
+      setAudioUri(recording.getURI());
+      setAudioDuration(recording.durationMillis)
+  //    const { dir_sound } = await this.recording.createNewLoadedSoundAsync
+  //    setSound(dir_sound);
+      console.log('Recording stopped and stored at', uri);
+      setAudioUri(uri);
+    }
+
+    async function playSound() {
+    if(audioS3Loc!=''){
+        console.log('Loading Sound');
+        setIsPlaying(true)
+        console.log(audioS3Loc)
+        const file_path2=(audioUri==null?audioS3Loc:audioUri);
+        console.log(file_path2)
+        const { sound } = await Audio.Sound.createAsync(
+           { uri: file_path2 }
+        );
+        setSound(sound);
+        console.log('Playing Sound');
+        //setIsPlaying(true);
+        await sound.playAsync();
+
+            setTimeout(() => setIsPlaying(false), 4000);
+        //setTimeout(, 4000);
+        }
+     }
+
+     async function pauseSound() {
+             console.log('Pause Sound');
+             if(isPlaying){
+                await sound.stopAsync();
+                setSound('')
+                setIsPlaying(false)
+             }
+          }
 
   return (
     <Root>
@@ -351,9 +425,21 @@ const UserDetails = ({ navigation }) => {
           />
         </View>
         <View style={styles.containCard}>
-          <Text>Audio Goes Here</Text>
-        </View>
 
+        <TouchableOpacity
+           onPress={recording ? stopRecording : startRecording}>
+            {isRecording?
+            <Ionicons name="stop-circle-outline" size={60} color="red" />:
+            <Ionicons name="mic-circle-outline" size={60} color="black" />
+            }
+       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={isPlaying?pauseSound:playSound}>{isPlaying?
+        <Ionicons name="stop-circle-outline" size={60} color="red" />:
+        <Ionicons name="play-circle-outline" size={60} color="black" />
+        }
+      </TouchableOpacity>
+        </View>
         {/* Button */}
         <View
           style={[
@@ -470,6 +556,7 @@ const styles = StyleSheet.create({
   containCard: {
     flex: 1,
     flexDirection: "row",
+    justifyContent:"center",
     alignItems: "center",
     margin: 10,
     backgroundColor: "white",
