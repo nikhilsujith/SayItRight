@@ -10,11 +10,6 @@ import { MaterialIcons,Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 Amplify.configure(awsconfig);
-<<<<<<< HEAD
-=======
-// const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
-// const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
->>>>>>> Deeksha2
 
 const UserInformation = ({ navigation, route }) => {
   const [userName, setUserName] = useState("");

@@ -3,7 +3,7 @@ import { Platform, View, Image, Text, Button } from "react-native";
 import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { logout } from "../../util/CustomAmplifyAuth";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { getUserByPoolId } from "../../service/User/UserService";
 import { imageUpload } from "../../service/User/ImageUpload";
@@ -237,12 +237,8 @@ const UserDetails = ({ navigation }) => {
       }
       }
       if (newUserStatus === 200) {
-<<<<<<< HEAD
-        alert("Success");
-=======
         // alert("Success");
         //await Updates.reloadAsync();
->>>>>>> Deeksha2
       }
 
     } else {

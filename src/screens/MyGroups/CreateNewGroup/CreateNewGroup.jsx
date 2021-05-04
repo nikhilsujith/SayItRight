@@ -54,27 +54,12 @@ const CreateNewGroup = ({ navigation }) => {
     })();
 
     (async () => {
-<<<<<<< HEAD
-          const fetchedPosts = await getUserByPoolId(currentSession());
-          if (fetchedPosts.status != "500") {
-            setUserName(fetchedPosts.body.fullName);
-            setId(fetchedPosts.body.id);
-          }
-        })();
-
-=======
       const fetchedPosts = await getUserByPoolId(currentSession());
-      //var r=JSON.parse(fetchedPosts);
-      //console.log(fetchedPosts.body);
-      //console.log(fetchedPosts.status);
       if (fetchedPosts.status != "500") {
-        console.log("in");
         setUserName(fetchedPosts.body.fullName);
         setId(fetchedPosts.body.id);
       }
-      //setPosts(fetchedPosts);
     })();
->>>>>>> Deeksha2
   }, []);
 
   const pickImage = async () => {
@@ -94,48 +79,36 @@ const CreateNewGroup = ({ navigation }) => {
   };
 
   const handleCreateButton = async () => {
-    console.log(":::::::::::Create:::::::::::::::");
-    console.log(groupName);
-    console.log(groupDesc);
-    console.log(currentUser);
-    //   await createGroup(groupName, groupDesc, currentUser,userName,id).then((result) => {
-    //     console.log(result.json())
-    //     console.log(result.body)
-    //     console.log(result)
-    //     if (result.status === 200) {
-    //
-    //       alert("Group uploaded successfully");
-    //     } else {
-    //       alert(
-    //         "Oops! There was an error uploading your Group. Please try again later."
-    //       );
-    //     }
-    //   });
-    const res = await createGroup(
-      groupName,
-      groupDesc,
-      currentUser,
-      userName,
-      id
-    );
-    console.log(res.body);
-    //const res=fetchedPosts.json()
-    if (res.status == "200") {
-      await imageUploadGroup(imageUri, base64Image, res.body, currentUser).then(
-        (result) => {
+    if (groupName === "" || groupDesc === "" || userName === "") {
+      alert("Please enter all fields");
+    } else {
+      const res = await createGroup(
+        groupName,
+        groupDesc,
+        currentUser,
+        userName,
+        id
+      );
+      if (res.status == "200") {
+        await imageUploadGroup(
+          imageUri,
+          base64Image,
+          res.body,
+          currentUser
+        ).then((result) => {
           if (result.status === 200) {
             alert("Group created successfully");
           } else {
             alert("Oops! There was an error uploading your image.");
           }
-        }
-      );
-    } else if (res.status == "500") {
-      alert(
-        "Oops! There was an error uploading your Group. Please try again later."
-      );
+        });
+      } else if (res.status == "500") {
+        alert(
+          "Oops! There was an error uploading your Group. Please try again later."
+        );
+      }
+      navigation.pop();
     }
-    navigation.pop();
   };
 
   return (
@@ -145,14 +118,14 @@ const CreateNewGroup = ({ navigation }) => {
           <Image
             source={{ uri: imageUri }}
             style={{
-              ...styles.imagePicker
+              ...styles.imagePicker,
             }}
           />
         ) : (
           <Image
             resizeMode="contain"
             style={{
-              ...styles.imagePicker
+              ...styles.imagePicker,
             }}
             source={require("../../../../assets/icon.png")}
           />
@@ -177,12 +150,6 @@ const CreateNewGroup = ({ navigation }) => {
         />
       </View>
       <View style={styles.SaveArea}>
-        {/* <TouchableOpacity
-          style={{ ...styles.createButton,}}
-          onPress={handleCreateButton}
-        >
-          <MaterialIcons name="group-add" size={20} color="black" />
-        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.saveButton}
           onPress={handleCreateButton}
@@ -272,7 +239,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     marginTop: "5%",
   },
-  imagePicker:{
+  imagePicker: {
     height: 100,
     width: 100,
     borderRadius: 100,
@@ -280,7 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#dfdfdf",
     paddingTop: 30,
     margin: 10,
-  }
+  },
 });
 
 export default CreateNewGroup;
