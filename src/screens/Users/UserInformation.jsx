@@ -9,11 +9,7 @@ import { getUserByPoolId } from "../../service/User/UserService";
 
 Amplify.configure(awsconfig);
 
-// const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
-// const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
-
 const UserInformation = ({ navigation, route }) => {
-  // const {​​​​​​​​ id, groupName, groupDesc, groupImage,owned }​​​​​​​​ = route.params;
   const [userName, setUserName] = useState("");
   const [onlineVideo, setOnlineVideo] = useState("");
   const [nameDesc, setNameDesc] = useState("");
