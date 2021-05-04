@@ -199,7 +199,6 @@ const UserDetails = ({ navigation }) => {
         },
         body: JSON.stringify(content),
       });
-      // const body = await response.json();
       const newUserStatus = await response.status;
       console.log(newUserStatus); //201 created
 
@@ -229,8 +228,8 @@ const UserDetails = ({ navigation }) => {
       }
       if (newUserStatus == 201) {
         alert("Success");
-        //await Updates.reloadAsync();
       }
+
     } else {
       alert("Upload audio!");
     }
@@ -248,7 +247,6 @@ const UserDetails = ({ navigation }) => {
   const BUTTONS = ["Gallery", "Camera", "Cancel"];
   const DESTRUCTIVE_INDEX = null;
   const CANCEL_INDEX = 2;
-  const [btn, setBtn] = React.useState();
 
   const onCameraVideo = (uri) => {
     setVideoUri(uri);
