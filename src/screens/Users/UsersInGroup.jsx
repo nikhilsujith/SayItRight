@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, StyleSheet, Text, Image, Alert, Button } from "react-native";
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Text,
+  Image,
+  Alert,
+  Button,
+} from "react-native";
 import {
   Card,
   CardItem,
@@ -12,7 +20,12 @@ import {
   Icon,
 } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { exitGroup, fetchUsersInGroup, removeGroup, removeGroupMember } from "../../service/Group/GroupService";
+import {
+  exitGroup,
+  fetchUsersInGroup,
+  removeGroup,
+  removeGroupMember,
+} from "../../service/Group/GroupService";
 import { AccordianPack, LoadingIndicator } from "../../components";
 import { defaultOrImage } from "../../util";
 import { currentSession } from "../../util/AmplifyCurrentSession";
@@ -37,7 +50,7 @@ import { currentSession } from "../../util/AmplifyCurrentSession";
 // };
 
 const UsersInGroup = ({ navigation, route }) => {
-  const { id, groupName, groupDesc, groupImage,owned } = route.params;
+  const { id, groupName, groupDesc, groupImage, owned } = route.params;
   const [users, setUsers] = useState("");
   const [groupOwner, setGroupOwner] = useState(false);
   const [groupNameState, setGroupNameState] = useState("My Groups");
@@ -57,15 +70,19 @@ const UsersInGroup = ({ navigation, route }) => {
   const NameCard = ({ press, image, name, meaning, navigation, poolId }) => {
     let link = defaultOrImage(image);
     return (
-<TouchableOpacity onLongPress={() => {owned?
-                          removeGroupMemberFunc(poolId):null
-                        }} onPress={() => navigation.navigate('UserInformation', {
-                userName: name,
-                id: poolId
-              })}>
+      <TouchableOpacity
+        onLongPress={() => {
+          owned ? removeGroupMemberFunc(poolId) : null;
+        }}
+        onPress={() =>
+          navigation.navigate("UserInformation", {
+            userName: name,
+            id: poolId,
+          })
+        }
+      >
         <List style={{ padding: 10 }}>
           <ListItem thumbnail>
-
             <Left>
               <Thumbnail circular source={link} />
             </Left>
@@ -76,16 +93,14 @@ const UsersInGroup = ({ navigation, route }) => {
                 </Text> */}
             </Body>
 
-{/*                 <TouchableOpacity onPress={()=>removeGroupMemberFunc(poolId)} > */}
-{/*                 <Icon name='trash' /> */}
-{/*                  </TouchableOpacity> */}
+            {/*                 <TouchableOpacity onPress={()=>removeGroupMemberFunc(poolId)} > */}
+            {/*                 <Icon name='trash' /> */}
+            {/*                  </TouchableOpacity> */}
           </ListItem>
-
         </List>
-</TouchableOpacity>
+      </TouchableOpacity>
     );
   };
-
 
   const UserList = () => {
     return (
@@ -112,65 +127,70 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   };
 
-  const exitGroupFunc=()=>{
-  Alert.alert(
-        "Are you sure you want to exit the group?",
-        "",
-        [
-          { text: "OK", onPress: async () => {
-               const response = await exitGroup(id, currentUser);
-               const { status } = response;
-               if (status == 200){
-                 navigation.goBack();
-               }
-             }},
-           {
-             text: "Cancel"
-           }
-        ]
-      );
-  }
-
-  const removeGroupFunc=()=>{
-    Alert.alert(
-          "Are you sure you want to delete the group?",
-          "",
-          [
-            { text: "OK", onPress: async () => {
-                 const response = await removeGroup(id, currentUser);
-                 const { status } = response;
-                 if (status == 200){
-                   navigation.goBack();
-                 }
-               }},
-             {
-               text: "Cancel"
-             }
-          ]
-        );
-    }
-
-  function removeGroupMemberFunc(user_poolId){
-        //console.log(x)
-          Alert.alert(
-                "Are you sure you want to remove this user from the group?",
-                "",
-                [
-                  { text: "OK", onPress: async () => {
-                       const response = await removeGroupMember(currentSession(),route.params.id,user_poolId);
-                       //const { status } = response.status;
-                       //alert(response.status)
-                       if (response.status == 200){
-                         alert("User removed successfully!")
-                         navigation.goBack();
-                       }
-                     }},
-                   {
-                     text: "Cancel"
-                   }
-                ]
-              );
+  const exitGroupFunc = () => {
+    Alert.alert("Are you sure you want to exit the group?", "", [
+      {
+        text: "OK",
+        onPress: async () => {
+          const response = await exitGroup(id, currentUser);
+          const { status } = response;
+          if (status == 200) {
+            navigation.goBack();
           }
+        },
+      },
+      {
+        text: "Cancel",
+      },
+    ]);
+  };
+
+  const removeGroupFunc = () => {
+    Alert.alert("Are you sure you want to delete the group?", "", [
+      {
+        text: "OK",
+        onPress: async () => {
+          const response = await removeGroup(id, currentUser);
+          const { status } = response;
+          if (status == 200) {
+            navigation.goBack();
+          }
+        },
+      },
+      {
+        text: "Cancel",
+      },
+    ]);
+  };
+
+  function removeGroupMemberFunc(user_poolId) {
+    //console.log(x)
+    Alert.alert(
+      "Are you sure you want to remove this user from the group?",
+      "",
+      [
+        {
+          text: "OK",
+          onPress: async () => {
+            const response = await removeGroupMember(
+              currentSession(),
+              route.params.id,
+              user_poolId
+            );
+            //const { status } = response.status;
+            //alert(response.status)
+            if (response.status == 200) {
+              alert("User removed successfully!");
+              navigation.goBack();
+            }
+          },
+        },
+        {
+          text: "Cancel",
+        },
+      ]
+    );
+  }
 
   const accordContent = [{ title: "Group Members", content: <UserList /> }];
   const image = defaultOrImage(groupImage);
@@ -205,16 +225,16 @@ const UsersInGroup = ({ navigation, route }) => {
           marginBottom: "5%",
         }}
       >
-       { owned?null: <Button
-          color="black"
-          title="Exit Group"
-          onPress={exitGroupFunc}
-        />}
-{ owned?(<Button
-                  color="black"
-                  title="Delete Group"
-                  onPress={removeGroupFunc}
-                />):null}
+        {owned ? null : (
+          <Button color="black" title="Exit Group" onPress={exitGroupFunc} />
+        )}
+        {owned ? (
+          <Button
+            color="black"
+            title="Delete Group"
+            onPress={removeGroupFunc}
+          />
+        ) : null}
       </View>
     </ScrollView>
   );

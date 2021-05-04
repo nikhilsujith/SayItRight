@@ -1,39 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { Platform, View, Image, Text, SafeAreaView } from "react-native";
-import { StyleSheet, Dimensions, Button, ScrollView, resizeMode } from "react-native";
+import {
+  StyleSheet,
+  Dimensions,
+  Button,
+  ScrollView,
+  resizeMode,
+} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { imageUpload } from "../../service/User/ImageUpload";
 import { uploadVideoAsync } from "../../service/User/VideoUpload";
-import { currentSession,currentSessionEmail } from '../../util/AmplifyCurrentSession';
+import {
+  currentSession,
+  currentSessionEmail,
+} from "../../util/AmplifyCurrentSession";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 import { withAuthenticator } from "aws-amplify-react-native";
 import { FloatingActionButton, NameCard } from "../../components";
-import { RNS3 } from 'react-native-s3-upload';
-  const window = Dimensions.get('window');
-  const screen = Dimensions.get('screen');
-  import {
-    Container,
-    Content,
-    Root,
-    ActionSheet,
-    Form,
-    Item,
-    Input,
-    Textarea,
-    Icon,
-  } from "native-base";
-  import { Audio, Video } from "expo-av";
+import { RNS3 } from "react-native-s3-upload";
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
+import {
+  Container,
+  Content,
+  Root,
+  ActionSheet,
+  Form,
+  Item,
+  Input,
+  Textarea,
+  Icon,
+} from "native-base";
+import { Audio, Video } from "expo-av";
 
-  import * as Updates from 'expo-updates';
+import * as Updates from "expo-updates";
 
-const UserDetails = ({ navigation }) => {
+const NewProfile = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [userObject, setUserObject] = useState("");
   const [nameDesc, setNameDesc] = useState("");
@@ -50,16 +59,14 @@ const UserDetails = ({ navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-    const [recording, setRecording] = useState('');
-    const [isRecording, setIsRecording] = useState(false);
-    const [audioDuration, setAudioDuration] = useState('');
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [sound, setSound] = useState('');
-    const [audioFile, setAudioFile] = useState('');
+  const [recording, setRecording] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioDuration, setAudioDuration] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState("");
+  const [audioFile, setAudioFile] = useState("");
 
-  const disableSave =
-    userName === "" || nameDesc === "" || !imageUri;
-
+  const disableSave = userName === "" || nameDesc === "" || !imageUri;
 
   useEffect(() => {
     (async () => {
@@ -73,9 +80,9 @@ const UserDetails = ({ navigation }) => {
       }
     })();
 
-    Dimensions.addEventListener('change', onChange);
+    Dimensions.addEventListener("change", onChange);
     return () => {
-      Dimensions.removeEventListener('change', onChange);
+      Dimensions.removeEventListener("change", onChange);
     };
   }, []);
 
@@ -84,34 +91,33 @@ const UserDetails = ({ navigation }) => {
   };
 
   const options = {
-        keyPrefix: "audio/",
-        bucket: "amplify-sayitright-dev-141916-deployment",
-        region: "us-east-2",
-        accessKey: "AKIAYXRZLB7D4SBCJ7OY",
-        secretKey: "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",
-        successActionStatus: 201
-  }
+    keyPrefix: "audio/",
+    bucket: "amplify-sayitright-dev-141916-deployment",
+    region: "us-east-2",
+    accessKey: "AKIAYXRZLB7D4SBCJ7OY",
+    secretKey: "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",
+    successActionStatus: 201,
+  };
 
-  const uploadS3 = async() => {
+  const uploadS3 = async () => {
+    if (audioUri != null && audioUri != "") {
+      const file = {
+        // `uri` can also be a file system path (i.e. file://)
+        uri: audioUri,
+        name: currentSession() + "_audio.caf",
+        type: "audio/x-caf",
+      };
 
-    if(audioUri!=null && audioUri!=""){
-        const file = {
-          // `uri` can also be a file system path (i.e. file://)
-          uri: audioUri,
-          name: currentSession()+"_audio.caf",
-          type: "audio/x-caf"
-        }
-
-        try{
-          const res=await RNS3.put(file, options)
-          const loc =await res.body.postResponse.location;
-          //console.log(res.body);
-          return loc;
-          }catch(ex){
-            return "error";
-          }
+      try {
+        const res = await RNS3.put(file, options);
+        const loc = await res.body.postResponse.location;
+        //console.log(res.body);
+        return loc;
+      } catch (ex) {
+        return "error";
+      }
     }
-};
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -141,82 +147,80 @@ const UserDetails = ({ navigation }) => {
     }
   };
 
-   const handleSaveButton = async() => {
-   console.log(":::::::::::HANDLE SAVE:::::::::")
-   //console.log(await uploadS3())
-   var audioS3Loc=await uploadS3();
+  console.log(`Video URI: ${videoUri}`);
 
-   console.log(currentSession())
-   console.log(imageUri)
-   console.log(audioS3Loc)
+  const handleSaveButton = async () => {
+    console.log(":::::::::::HANDLE SAVE:::::::::");
+    var audioS3Loc = await uploadS3();
 
-    if(audioS3Loc!=null && audioS3Loc!='' && audioS3Loc!='error'){
-        //console.log("in")
-        const content={
-            "poolId":currentSession(),
-            "fullName":userName,
-            "profileImage":'',
-            "email":currentSessionEmail()==null?'':currentSessionEmail(),
-            "desc":nameDesc,
-            "nameMeaning":nameMeaning,
-            "audioFile":audioS3Loc==null?"":audioS3Loc,
-            "videoFile":'',
-            "myGroups":[],
-            "enrolledGroups":[],
-            "createdOn":Date().toLocaleString()
-            }
+    console.log(currentSession());
+    console.log(imageUri);
+    console.log(audioS3Loc);
 
-        const url="https://say-it-right.herokuapp.com/api/v1/user/addUser"
+    if (audioS3Loc != null && audioS3Loc != "" && audioS3Loc != "error") {
+      //console.log("in")
+      const content = {
+        poolId: currentSession(),
+        fullName: userName,
+        profileImage: "",
+        email: currentSessionEmail() == null ? "" : currentSessionEmail(),
+        desc: nameDesc,
+        nameMeaning: nameMeaning,
+        audioFile: audioS3Loc == null ? "" : audioS3Loc,
+        videoFile: videoUri,
+        myGroups: [],
+        enrolledGroups: [],
+        createdOn: Date().toLocaleString(),
+      };
 
-        const response = await fetch(url, {
-              method: 'POST',
-              headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'application/json',
-                      },
-              body: JSON.stringify(content),
-            });
-           // const body = await response.json();
-              const newUserStatus=await response.status
-              console.log(newUserStatus);//201 created
+      const url = "https://say-it-right.herokuapp.com/api/v1/user/addUser";
 
-        if (userName.length > 0 && nameDesc.length > 0 && newUserStatus==201) {
-          imageUpload(imageUri, base64Image,currentSession()).then((result) => {
-            if (result.status === 200) {
-              alert("Image uploaded successfully");
-            } else {
-              alert(
-                "Oops! There was an error uploading your Image. Please try again later."
-              );
-            }
-          });
-          uploadVideoAsync(videoUri || videoSource, base64Image,currentSession()).then((result) => {
-            if (result.status === 200) {
-              alert("Video uploaded successfully");
-            } else {
-              alert(
-                "Oops! There was an error uploading your Video. Please try again later."
-              );
-            }
-          });
-    //       uploadAuido(audioUri,currentSession()).then((result) => {
-    //         if (result.status === 200) {
-    //           alert("Audio uploaded successfully");
-    //         } else {
-    //           alert(
-    //             "Oops! There was an error uploading your Audio. Please try again later."
-    //           );
-    //         }
-    //       });
-        }
-        if(newUserStatus==201){
-            alert("Success");
-            await Updates.reloadAsync();
-        }
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(content),
+      });
+      // const body = await response.json();
+      const newUserStatus = await response.status;
+      console.log(newUserStatus); //201 created
+
+      if (userName.length > 0 && nameDesc.length > 0 && newUserStatus == 201) {
+        imageUpload(imageUri, base64Image, currentSession()).then((result) => {
+          if (result.status === 200) {
+            alert("Image uploaded successfully");
+          } else {
+            alert(
+              "Oops! There was an error uploading your Image. Please try again later."
+            );
+          }
+        });
+        uploadVideoAsync(
+          videoUri || videoSource,
+          base64Image,
+          currentSession()
+        ).then((result) => {
+          if (result.status === 200) {
+            alert("Video uploaded successfully");
+          } else {
+            alert(
+              "Oops! There was an error uploading your Video. Please try again later."
+            );
+          }
+        });
+      }
+      if (newUserStatus == 201) {
+        alert("Success");
+        await Updates.reloadAsync();
+      }
+    } else {
+      alert("Upload audio!");
     }
-    else{
-        alert("Upload audio!")
-    }
+  };
+  const onCameraVideo = (uri) => {
+    setVideoUri(uri);
   };
 
   const onAudioSelected = (uri) => {
@@ -234,73 +238,76 @@ const UserDetails = ({ navigation }) => {
   const CANCEL_INDEX = 2;
   const [btn, setBtn] = React.useState();
 
- async function startRecording() {
-      setIsRecording(true)
-      try {
-        console.log('Requesting permissions..');
-        await Audio.requestPermissionsAsync();
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-        });
-        console.log('Starting recording..');
-        const recording = new Audio.Recording();
-        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-        await recording.startAsync();
-        setRecording(recording);
-        console.log('Recording started');
-        setTimeout(() => stopRecording, 4000);
-      } catch (err) {
-        console.error('Failed to start recording', err);
-      }
+  async function startRecording() {
+    setIsRecording(true);
+    try {
+      console.log("Requesting permissions..");
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+      console.log("Starting recording..");
+      const recording = new Audio.Recording();
+      await recording.prepareToRecordAsync(
+        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      );
+      await recording.startAsync();
+      setRecording(recording);
+      console.log("Recording started");
+      setTimeout(() => stopRecording, 4000);
+    } catch (err) {
+      console.error("Failed to start recording", err);
     }
+  }
 
-    async function stopRecording() {
-      setIsRecording(false)
-      console.log('Stopping recording..');
-      setRecording(undefined);
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-  //    const { dir_sound } = await this.recording.createNewLoadedSoundAsync
-  //    setSound(dir_sound);
-      console.log('Recording stopped and stored at', uri);
-      setAudioUri(uri);
+  async function stopRecording() {
+    setIsRecording(false);
+    console.log("Stopping recording..");
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    //    const { dir_sound } = await this.recording.createNewLoadedSoundAsync
+    //    setSound(dir_sound);
+    console.log("Recording stopped and stored at", uri);
+    setAudioUri(uri);
+  }
+
+  async function playSound() {
+    if (audioUri.toString() != null) {
+      console.log("Loading Sound");
+      setIsPlaying(true);
+      console.log(audioUri);
+      const file_path2 = audioUri;
+      console.log(file_path2);
+      const { sound } = await Audio.Sound.createAsync({ uri: file_path2 });
+      setSound(sound);
+      console.log("Playing Sound");
+      //setIsPlaying(true);
+      await sound.playAsync();
+
+      setTimeout(() => setIsPlaying(false), 4000);
+      //setTimeout(, 4000);
     }
+  }
 
-    async function playSound() {
-    if(audioUri.toString()!=null){
-        console.log('Loading Sound');
-        setIsPlaying(true)
-        console.log(audioUri)
-        const file_path2=(audioUri);
-        console.log(file_path2)
-        const { sound } = await Audio.Sound.createAsync(
-           { uri: file_path2 }
-        );
-        setSound(sound);
-        console.log('Playing Sound');
-        //setIsPlaying(true);
-        await sound.playAsync();
-
-            setTimeout(() => setIsPlaying(false), 4000);
-        //setTimeout(, 4000);
-        }
-     }
-
-     async function pauseSound() {
-             console.log('Pause Sound');
-             if(isPlaying){
-                await sound.stopAsync();
-                setSound('')
-                setIsPlaying(false)
-             }
-          }
+  async function pauseSound() {
+    console.log("Pause Sound");
+    if (isPlaying) {
+      await sound.stopAsync();
+      setSound("");
+      setIsPlaying(false);
+    }
+  }
 
   return (
     <Root>
       <ScrollView>
         <View style={styles.containCard}>
-          <TouchableOpacity onPress={pickImage} style={{   borderRadius: 100, marginRight: 10, }}>
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{ borderRadius: 100, marginRight: 10 }}
+          >
             <Image
               source={
                 imageUri
@@ -342,21 +349,16 @@ const UserDetails = ({ navigation }) => {
               borderRadius: 15,
             }}
           >
-            {onlineVideo ? (
+            {videoUri ? (
               <Video
                 ref={video}
                 style={styles.videoPlayer}
-                source={
-                  videoUri
-                    ? { uri: videoUri }
-                    : require("../../../assets/icon.png")
-                }
+                source={{uri: videoUri}}
                 useNativeControls
                 onPlaybackStatusUpdate={(status) => setStatus(() => status)}
               />
             ) : (
               <Image
-                // source={{ uri: imageUri }}
                 source={require("../../../assets/icon.png")}
                 style={{
                   alignSelf: "center",
@@ -389,19 +391,22 @@ const UserDetails = ({ navigation }) => {
             }
           />
         </View>
-        <View style={[styles.containCard,{justifyContent:"center"}]}>
-            <TouchableOpacity
-               onPress={recording ? stopRecording : startRecording}>
-                {isRecording?
-                <Ionicons name="stop-circle-outline" size={60} color="red" />:
-                <Ionicons name="mic-circle-outline" size={60} color="black" />
-                }
-           </TouchableOpacity>
+        <View style={[styles.containCard, { justifyContent: "center" }]}>
           <TouchableOpacity
-            onPress={isPlaying?pauseSound:playSound}>{isPlaying?
-            <Ionicons name="stop-circle-outline" size={60} color="red" />:
-            <Ionicons name="play-circle-outline" size={60} color="black" />
-            }
+            onPress={recording ? stopRecording : startRecording}
+          >
+            {isRecording ? (
+              <Ionicons name="stop-circle-outline" size={60} color="red" />
+            ) : (
+              <Ionicons name="mic-circle-outline" size={60} color="black" />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={isPlaying ? pauseSound : playSound}>
+            {isPlaying ? (
+              <Ionicons name="stop-circle-outline" size={60} color="red" />
+            ) : (
+              <Ionicons name="play-circle-outline" size={60} color="black" />
+            )}
           </TouchableOpacity>
         </View>
 
@@ -461,18 +466,14 @@ const UserDetails = ({ navigation }) => {
             margin: 10,
           }}
           onPress={handleSaveButton}
-           disabled={disableSave}
+          disabled={disableSave}
         >
           <Entypo name="save" size={24} color="white" />
         </TouchableOpacity>
       </ScrollView>
-
     </Root>
   );
-        };
-
-
-
+};
 
 const { width } = Dimensions.get("screen");
 const styles = StyleSheet.create({
@@ -532,7 +533,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginRight: 100,
     top: 100,
-
   },
 
   Logout: {
@@ -615,4 +615,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Auth.user ? UserDetails : withAuthenticator(UserDetails);
+export default Auth.user ? NewProfile : withAuthenticator(NewProfile);

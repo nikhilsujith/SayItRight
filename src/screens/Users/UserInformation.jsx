@@ -1,14 +1,15 @@
 import { Input, Item, Textarea } from "native-base";
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { Video, AVPlaybackStatus } from "expo-av";
+import { Audio, Video, AVPlaybackStatus } from "expo-av";
 import { getUser } from "../../service/User/UserService";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 import { getUserByPoolId } from "../../service/User/UserService";
+import { MaterialIcons,Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 Amplify.configure(awsconfig);
-
 // const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
 // const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
 
@@ -21,37 +22,55 @@ const UserInformation = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState(null);
   const [audioUri, setAudioUri] = useState(null);
   const [audioS3Loc, setAudioS3Loc] = useState("");
-
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState('');
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const { id } = route.params;
 
   useEffect(() => {
-    console.log(id);
     (async () => {
       const fetchedPosts = await getUserByPoolId(id);
       if (fetchedPosts.status != "500") {
-        console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
         setUserName(fetchedPosts.body.fullName);
         setImageUri(fetchedPosts.body.profileImage);
-        // setVideoUri(fetchedPosts.body.videoFile);
-        // setOnlineImage(fetchedPosts.body.profileImage);
-        // setId(fetchedPosts.body.id);
-        // setMyGroups(fetchedPosts.body.myGroups);
-        // setEnrolledGroups(fetchedPosts.body.enrolledGroups);
-        // setCreatedOn(fetchedPosts.body.createdOn);
         setOnlineVideo(fetchedPosts.body.videoFile);
-        //         console.log(userName);
-        //                 console.log(fetchedPosts.body.audioFile)
       }
     })();
   }, []);
 
-  //   User Pool ID
-  // console.log("USE THIS POOL ID TO MAKE REQUESTS TO THE SERVICE. Use the service to fetch /api/v1/user/{poolId}" + id)
+ async function playSound() {
+     if(audioS3Loc!=''){
+         console.log('Loading Sound');
+         setIsPlaying(true)
+         //console.log(audioS3Loc)
+         const file_path2=(audioS3Loc);
+         //console.log(file_path2)
+         const { sound } = await Audio.Sound.createAsync(
+            { uri: file_path2 }
+         );
+         setSound(sound);
+         console.log('Playing Sound');
+         //setIsPlaying(true);
+         await sound.playAsync();
+
+         setTimeout(() => setIsPlaying(false), 4000);
+         //setTimeout(, 4000);
+   }
+ }
+
+     async function pauseSound() {
+             console.log('Pause Sound');
+             if(isPlaying){
+                await sound.stopAsync();
+                setSound('')
+                setIsPlaying(false)
+             }
+          }
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,14 +85,8 @@ const UserInformation = ({ navigation, route }) => {
             borderRadius: 100,
           }}
         />
-        <View style={{ flex: 1, margin: 1 }}>
-          <Textarea
-            style={{ margin: 1, overflow: "scroll" }}
-            rowSpan={3}
-            placeholder="Description"
-            value={nameDesc}
-            onChangeText={(desc) => setNameDesc(desc)}
-          />
+        <View style={{margin: 10}}>
+          <Text>{nameDesc}</Text>
         </View>
       </View>
 
@@ -112,9 +125,14 @@ const UserInformation = ({ navigation, route }) => {
           />
         )}
       </View>
-      <View style={{ ...styles.containCard }}>
-        <Text>Audio Goes Here</Text>
-      </View>
+      <View style={[styles.containCard,{justifyContent:"center"}]}>
+        <TouchableOpacity
+          onPress={isPlaying?pauseSound:playSound}>{isPlaying?
+          <Ionicons name="stop-circle-outline" size={60} color="red" />:
+          <Ionicons name="play-circle-outline" size={60} color="black" />
+          }
+        </TouchableOpacity>
+       </View>
     </View>
   );
 };

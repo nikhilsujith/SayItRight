@@ -1,5 +1,5 @@
-import Amplify, { Auth } from 'aws-amplify';
-import React, { Component, useState, useEffect } from 'react';
+import Amplify, { Auth } from "aws-amplify";
+import React, { Component, useState, useEffect } from "react";
 
 import {
   StyleSheet,
@@ -13,24 +13,27 @@ import {
   TouchableOpacity,
   style,
   TextInput,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
 // import {imageUploadGroup} from '../../../service/Group/CreateGroup';
-import { MaterialIcons } from '@expo/vector-icons'; 
-import { createGroup,imageUploadGroup } from '../../../service/Group/GroupService';
-import { currentSession } from '../../../util/AmplifyCurrentSession';
+import { MaterialIcons } from "@expo/vector-icons";
+import {
+  createGroup,
+  imageUploadGroup,
+} from "../../../service/Group/GroupService";
+import { currentSession } from "../../../util/AmplifyCurrentSession";
 import { getUserByPoolId } from "../../../service/User/UserService";
 // import {createGroup} from '../../../service/Group/CreateGroup';
 
-const window = Dimensions.get('window');
-const screen = Dimensions.get('screen');
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const CreateNewGroup = ({ navigation }) => {
   const [imageUri, setImageUri] = useState(null);
   const [dimensions, setDimensions] = useState({ window, screen });
   const [base64Image, setBase64Image] = useState(null);
-  const [groupName, setGroupName] = useState('');
-  const [groupDesc, setGroupDesc] = useState('');
+  const [groupName, setGroupName] = useState("");
+  const [groupDesc, setGroupDesc] = useState("");
   const [id, setId] = useState("");
   const [userName, setUserName] = useState("");
 
@@ -40,30 +43,28 @@ const CreateNewGroup = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         const {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
-
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
     })();
 
     (async () => {
-          const fetchedPosts = await getUserByPoolId(currentSession());
-          //var r=JSON.parse(fetchedPosts);
-          //console.log(fetchedPosts.body);
-          //console.log(fetchedPosts.status);
-          if (fetchedPosts.status != "500") {
-            console.log("in");
-            setUserName(fetchedPosts.body.fullName);
-            setId(fetchedPosts.body.id);
-          }
-          //setPosts(fetchedPosts);
-        })();
-
+      const fetchedPosts = await getUserByPoolId(currentSession());
+      //var r=JSON.parse(fetchedPosts);
+      //console.log(fetchedPosts.body);
+      //console.log(fetchedPosts.status);
+      if (fetchedPosts.status != "500") {
+        console.log("in");
+        setUserName(fetchedPosts.body.fullName);
+        setId(fetchedPosts.body.id);
+      }
+      //setPosts(fetchedPosts);
+    })();
   }, []);
 
   const pickImage = async () => {
@@ -82,39 +83,47 @@ const CreateNewGroup = ({ navigation }) => {
     }
   };
 
-  const handleCreateButton = async ()  => {
+  const handleCreateButton = async () => {
     console.log(":::::::::::Create:::::::::::::::");
-    console.log(groupName)
-    console.log(groupDesc)
-    console.log(currentUser)
-//   await createGroup(groupName, groupDesc, currentUser,userName,id).then((result) => {
-//     console.log(result.json())
-//     console.log(result.body)
-//     console.log(result)
-//     if (result.status === 200) {
-//
-//       alert("Group uploaded successfully");
-//     } else {
-//       alert(
-//         "Oops! There was an error uploading your Group. Please try again later."
-//       );
-//     }
-//   });
-  const res=await createGroup(groupName, groupDesc, currentUser,userName,id);
-  console.log(res.body)
-  //const res=fetchedPosts.json()
+    console.log(groupName);
+    console.log(groupDesc);
+    console.log(currentUser);
+    //   await createGroup(groupName, groupDesc, currentUser,userName,id).then((result) => {
+    //     console.log(result.json())
+    //     console.log(result.body)
+    //     console.log(result)
+    //     if (result.status === 200) {
+    //
+    //       alert("Group uploaded successfully");
+    //     } else {
+    //       alert(
+    //         "Oops! There was an error uploading your Group. Please try again later."
+    //       );
+    //     }
+    //   });
+    const res = await createGroup(
+      groupName,
+      groupDesc,
+      currentUser,
+      userName,
+      id
+    );
+    console.log(res.body);
+    //const res=fetchedPosts.json()
     if (res.status == "200") {
-    await imageUploadGroup(imageUri, base64Image,res.body,currentUser).then((result) => {
+      await imageUploadGroup(imageUri, base64Image, res.body, currentUser).then(
+        (result) => {
           if (result.status === 200) {
             alert("Group created successfully");
           } else {
-            alert(
-              "Oops! There was an error uploading your image."
-            );
+            alert("Oops! There was an error uploading your image.");
           }
-        });
+        }
+      );
     } else if (res.status == "500") {
-    alert("Oops! There was an error uploading your Group. Please try again later.");
+      alert(
+        "Oops! There was an error uploading your Group. Please try again later."
+      );
     }
     navigation.pop();
   };
@@ -122,32 +131,23 @@ const CreateNewGroup = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity onPress={pickImage}>
-      {imageUri ? (
-            <Image
-              source={{ uri: imageUri }}
-              style={{
-                height: 150,
-                width: 150,
-                paddingTop: 30,
-                borderRadius: 100,
-                marginLeft: 135,
-                marginTop: 30,
-              }}
-            />
-          ) : (
-            <Image
-              resizeMode="contain"
-              style={{
-                height: 150,
-                width: 150,
-                borderRadius: 10,
-                marginLeft: 135,
-                marginTop: 30,
-              }}
-              source={require("../../../../assets/icon.png")}
-            />
-          )}
-          </TouchableOpacity>
+        {imageUri ? (
+          <Image
+            source={{ uri: imageUri }}
+            style={{
+              ...styles.imagePicker
+            }}
+          />
+        ) : (
+          <Image
+            resizeMode="contain"
+            style={{
+              ...styles.imagePicker
+            }}
+            source={require("../../../../assets/icon.png")}
+          />
+        )}
+      </TouchableOpacity>
       <View style={[styles.textInputArea, style]}>
         <TextInput
           style={styles.inputStyle}
@@ -173,9 +173,12 @@ const CreateNewGroup = ({ navigation }) => {
         >
           <MaterialIcons name="group-add" size={20} color="black" />
         </TouchableOpacity> */}
-        <TouchableOpacity style={styles.saveButton} onPress={handleCreateButton}>
-        <Text style={styles.saveButtonText}>Create</Text>
-      </TouchableOpacity> 
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={handleCreateButton}
+        >
+          <Text style={styles.saveButtonText}>Create</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -184,24 +187,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: '#D9D5DC',
-    backgroundColor: 'transparent',
+    borderColor: "#D9D5DC",
+    backgroundColor: "transparent",
   },
   createGroupButton: {
-    marginTop: '3%',
-    alignSelf: 'center',
+    marginTop: "3%",
+    alignSelf: "center",
     paddingLeft: 16,
     paddingRight: 16,
   },
   headerBig1: {
     ...Platform.select({
       android: {
-        height: '15%',
+        height: "15%",
       },
     }),
   },
   scrollArea: {
-    backgroundColor: 'rgb(242,242,247)',
+    backgroundColor: "rgb(242,242,247)",
     flex: 1,
     marginLeft: 5,
     marginRight: 5,
@@ -214,8 +217,8 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 200,
-    alignSelf: 'center',
-    marginTop: '2%',
+    alignSelf: "center",
+    marginTop: "2%",
     // marginLeft: 82,
     // marginRight: 82,
   },
@@ -225,7 +228,6 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    
     top: 60,
     borderRadius: 10,
     // paddingHorizontal: 25,
@@ -242,24 +244,33 @@ const styles = StyleSheet.create({
     marginLeft: 9,
     marginRight: 9,
     // backgroundColor: 'black',
-    alignSelf: 'center',
-    width: '85%',
+    alignSelf: "center",
+    width: "85%",
     borderBottomWidth: 1,
-    borderColor: '#D9D5DC',
-    backgroundColor: 'transparent',
+    borderColor: "#D9D5DC",
+    backgroundColor: "transparent",
   },
   footer: {
     height: 73,
   },
   inputStyle: {
-    color: '#000',
+    color: "#000",
     fontSize: 16,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     flex: 1,
     // backgroundColor: 'red',
     paddingBottom: 8,
-    marginTop: '5%',
+    marginTop: "5%",
   },
+  imagePicker:{
+    height: 100,
+    width: 100,
+    borderRadius: 100,
+    resizeMode: "cover",
+    backgroundColor: "#dfdfdf",
+    paddingTop: 30,
+    margin: 10,
+  }
 });
 
 export default CreateNewGroup;
