@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Platform, View, Image, Text, Button } from "react-native";
 import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Foundation } from "@expo/vector-icons";
 import { logout } from "../../util/CustomAmplifyAuth";
 import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -79,7 +77,6 @@ const UserDetails = ({ navigation }) => {
     (async () => {
       const fetchedPosts = await getUserByPoolId(currentSession());
       if (fetchedPosts.status != "500") {
-        console.log("in");
         setAudioS3Loc(fetchedPosts.body.audioFile);
         setNameDesc(fetchedPosts.body.desc);
         setNameMeaning(fetchedPosts.body.nameMeaning);
@@ -261,7 +258,10 @@ const UserDetails = ({ navigation }) => {
     <Root>
       <ScrollView>
         <View style={styles.containCard}>
-          <TouchableOpacity onPress={pickImage} style={{ overflow: "hidden", borderRadius: 100, marginRight: 10, }}>
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{ overflow: "hidden", borderRadius: 100, marginRight: 10 }}
+          >
             <Image
               source={
                 imageUri
@@ -327,8 +327,11 @@ const UserDetails = ({ navigation }) => {
               />
             )}
           </View>
-          <Button
-            title="Edit Video"
+          <TouchableOpacity
+            style={{
+              flex: 1, 
+              alignSelf: 'center',
+            }}
             onPress={() =>
               ActionSheet.show(
                 {
@@ -348,7 +351,9 @@ const UserDetails = ({ navigation }) => {
                 }
               )
             }
-          />
+          >
+            <Text style={{color: 'black'}}>Edit Video</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.containCard}>
           <Text>Audio Goes Here</Text>
