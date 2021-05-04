@@ -1,18 +1,43 @@
 import { Input, Item, Textarea } from "native-base";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
+import { getUser } from "../../service/User/UserService";
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
+import { getUserByPoolId } from "../../service/User/UserService";
 
-const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
-const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
+Amplify.configure(awsconfig);
+// const imageUri ="https://nik-dev-personal-bucket.s3.amazonaws.com/say-it-right-icon.png";
+// const onlineVideo = "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4";
 
 const UserInformation = ({ navigation, route }) => {
+  // const {​​​​​​​​ id, groupName, groupDesc, groupImage,owned }​​​​​​​​ = route.params;
+  const [userName, setUserName] = useState("");
+  const [onlineVideo, setOnlineVideo] = useState("");
+  const [nameDesc, setNameDesc] = useState("");
+  const [nameMeaning, setNameMeaning] = useState("");
+  const [imageUri, setImageUri] = useState(null);
+  const [audioUri, setAudioUri] = useState(null);
+  const [audioS3Loc, setAudioS3Loc] = useState("");
+
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const { id } = route.params;
 
-//   User Pool ID
-  console.log("USE THIS POOL ID TO MAKE REQUESTS TO THE SERVICE. Use the service to fetch /api/v1/user/{poolId}" + id)
+  useEffect(() => {
+    (async () => {
+      const fetchedPosts = await getUserByPoolId(id);
+      if (fetchedPosts.status != "500") {
+        setAudioS3Loc(fetchedPosts.body.audioFile);
+        setNameDesc(fetchedPosts.body.desc);
+        setNameMeaning(fetchedPosts.body.nameMeaning);
+        setUserName(fetchedPosts.body.fullName);
+        setImageUri(fetchedPosts.body.profileImage);
+        setOnlineVideo(fetchedPosts.body.videoFile);
+      }
+    })();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -27,11 +52,8 @@ const UserInformation = ({ navigation, route }) => {
             borderRadius: 100,
           }}
         />
-        <View style={{ flex: 1, margin: 1 }}>
-          <Text>
-            afdasd fasdf asdf asdf asdfa sdfa sdfas dfasd fasd fasdf asdf asdf
-            asdf asdf asdf
-          </Text>
+        <View style={{margin: 10}}>
+          <Text>{nameDesc}</Text>
         </View>
       </View>
 
@@ -70,7 +92,7 @@ const UserInformation = ({ navigation, route }) => {
           />
         )}
       </View>
-      <View style={{...styles.containCard}}>
+      <View style={{ ...styles.containCard }}>
         <Text>Audio Goes Here</Text>
       </View>
     </View>

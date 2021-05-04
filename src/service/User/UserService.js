@@ -50,7 +50,7 @@ export const enrollGroup = (groupId, poolId) => {
         // alert("You have successfully enrolled into the group!");
       }
       else {
-        alert("Oops, something went wrong, Please try again later");
+        alert(alert);
       }
     });
   } catch (error) {
