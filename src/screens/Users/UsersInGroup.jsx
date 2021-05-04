@@ -169,6 +169,10 @@ const UsersInGroup = ({ navigation, route }) => {
     );
   }
 
+  const editGroup = () => {
+    alert("Edit Group")
+  }
+
   const accordContent = [{ title: "Group Members", content: <UserList /> }];
   const image = defaultOrImage(groupImage);
   return (
@@ -201,11 +205,18 @@ const UsersInGroup = ({ navigation, route }) => {
           <Button color="black" title="Exit Group" onPress={exitGroupFunc} />
         )}
         {owned ? (
+          <View>
+          <Button
+            color="black"
+            title="Edit Group"
+            onPress={editGroup}
+          />
           <Button
             color="black"
             title="Delete Group"
             onPress={removeGroupFunc}
           />
+          </View>
         ) : null}
       </View>
     </ScrollView>
