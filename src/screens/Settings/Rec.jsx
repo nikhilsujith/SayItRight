@@ -9,15 +9,21 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import { Entypo } from "@expo/vector-icons";
 import { Camera } from 'expo-camera';
 import { Video } from 'expo-av';
 // import uploadVideoAsync from '../service/UploadVideoService';
+
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
+import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-export default function Rec({ navigation }) {
+const Recording=({ navigation , route })=>{
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [isPreview, setIsPreview] = useState(false);
@@ -40,6 +46,8 @@ export default function Rec({ navigation }) {
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
+
+
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
@@ -52,6 +60,9 @@ export default function Rec({ navigation }) {
       }
     }
   };
+
+
+
   const recordVideo = async () => {
     if (cameraRef.current) {
       try {
@@ -60,6 +71,7 @@ export default function Rec({ navigation }) {
           setIsVideoRecording(true);
           const data = await videoRecordPromise;
           const source = data.uri;
+
           if (source) {
             setIsPreview(true);
             //console.log('video source', source);
@@ -143,15 +155,9 @@ export default function Rec({ navigation }) {
   }
 
   const handleSaveButton = () => {
-    // uploadVideoAsync(videoSource, base64Image).then((result) => {
-    //   if (result.status === 200) {
-    //     alert('Image uploaded successfully');
-    //   } else {
-    //     alert(
-    //       'Oops! There was an error uploading your details. Please try again later.'
-    //     );
-    //   }
-    // });
+    route.params.onCameraVideo(videoSource);
+    navigation.pop()
+
   };
 
   const Play = () => (
@@ -177,9 +183,21 @@ export default function Rec({ navigation }) {
           }
         />
       </View>
-      <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+          style={{
+
+            alignItems: "center",
+            borderWidth: 1,
+            backgroundColor: "black",
+            padding: 10,
+            borderRadius: 15,
+            margin: 10,
+          }}
+          onPress={handleSaveButton}
+
+        >
+          <Entypo name="save" size={24} color="white" />
+        </TouchableOpacity>
     </View>
   );
 
@@ -220,6 +238,8 @@ export default function Rec({ navigation }) {
   );
 }
 
+export default (Auth.user)?Recording:withAuthenticator(Recording);
+
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -231,7 +251,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 35,
+    top: Dimensions.get('window').height * 0.02,
     left: 15,
     height: closeButtonSize,
     width: closeButtonSize,
@@ -317,5 +337,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+
   },
 });
