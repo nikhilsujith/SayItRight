@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Container,
-  Header,
   Tab,
   Tabs,
-  ScrollableTab,
   View,
-  Text,
-  Fab,
   Icon,
-  Button,
-  Root,
+  DefaultTabBar
 } from "native-base";
 import { RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -94,29 +88,7 @@ export const MyGroupsScreen = ({ navigation }) => {
   }, [navigation]);
 
   fetchData();
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   fetchEnrolledGroups(currentUser).then((group) => {
-  //     if (mounted) {
-  //       setEnrolledGroups(group);
-  //     }
-  //   });
-  //   fetchCreatedGroups(currentUser).then((group) => {
-  //     if (mounted) {
-  //       setCreatedGroups(group);
-  //     }
-  //   });
-  //   fetchAllGroups().then((group) => {
-  //     if (mounted) {
-  //       setAllGroupData(group);
-  //     }
-  //   });
-  //   return () => (mounted = false);
-  // }, [refreshing]);
-
  
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
@@ -127,7 +99,7 @@ export const MyGroupsScreen = ({ navigation }) => {
       >
         <Tabs
           renderTabBar={() => (
-            <ScrollableTab
+            <DefaultTabBar
               style={{ backgroundColor: theme.primary.backgroundColor }}
             />
           )}
@@ -148,7 +120,7 @@ export const MyGroupsScreen = ({ navigation }) => {
             />
           </Tab>
           <Tab
-            heading="Owned"
+            heading="Created"
             tabStyle={{ backgroundColor: theme.primary.backgroundColor }}
             textStyle={{ color: theme.primary.color }}
             activeTabStyle={{ backgroundColor: theme.primary.backgroundColor }}

@@ -53,15 +53,10 @@ const CreateNewGroup = ({ navigation }) => {
 
     (async () => {
           const fetchedPosts = await getUserByPoolId(currentSession());
-          //var r=JSON.parse(fetchedPosts);
-          //console.log(fetchedPosts.body);
-          //console.log(fetchedPosts.status);
           if (fetchedPosts.status != "500") {
-            console.log("in");
             setUserName(fetchedPosts.body.fullName);
             setId(fetchedPosts.body.id);
           }
-          //setPosts(fetchedPosts);
         })();
 
   }, []);
