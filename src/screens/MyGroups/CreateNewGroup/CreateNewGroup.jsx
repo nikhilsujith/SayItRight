@@ -39,7 +39,6 @@ const CreateNewGroup = ({ navigation }) => {
 
   // Gives current cognito pool id
   const currentUser = currentSession();
-  console.log(currentUser);
 
   useEffect(() => {
     (async () => {
@@ -113,41 +112,45 @@ const CreateNewGroup = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={pickImage}>
-        {imageUri ? (
-          <Image
-            source={{ uri: imageUri }}
-            style={{
-              ...styles.imagePicker,
-            }}
-          />
-        ) : (
-          <Image
-            resizeMode="contain"
-            style={{
-              ...styles.imagePicker,
-            }}
-            source={require("../../../../assets/icon.png")}
-          />
-        )}
-      </TouchableOpacity>
-      <View style={[styles.textInputArea, style]}>
-        <TextInput
-          style={styles.inputStyle}
-          type="text"
-          placeholder="Group Name"
-          value={groupName}
-          onChangeText={(val) => setGroupName(val)}
-        />
+      <View style={{ ...styles.containCard }}>
+        <TouchableOpacity onPress={pickImage}>
+          {imageUri ? (
+            <Image
+              source={{ uri: imageUri }}
+              style={{
+                ...styles.imagePicker,
+              }}
+            />
+          ) : (
+            <Image
+              resizeMode="contain"
+              style={{
+                ...styles.imagePicker,
+              }}
+              source={require("../../../../assets/icon.png")}
+            />
+          )}
+        </TouchableOpacity>
       </View>
-      <View style={[styles.textInputArea, style]}>
-        <TextInput
-          style={styles.inputStyle}
-          type="text"
-          placeholder="Group Desc"
-          value={groupDesc}
-          onChangeText={(val) => setGroupDesc(val)}
-        />
+      <View>
+        <View style={{ ...styles.textInputArea }}>
+          <TextInput
+            style={styles.inputStyle}
+            type="text"
+            placeholder="Group Name"
+            value={groupName}
+            onChangeText={(val) => setGroupName(val)}
+          />
+        </View>
+        <View style={[styles.textInputArea, style]}>
+          <TextInput
+            style={styles.inputStyle}
+            type="text"
+            placeholder="Group Desc"
+            value={groupDesc}
+            onChangeText={(val) => setGroupDesc(val)}
+          />
+        </View>
       </View>
       <View style={styles.SaveArea}>
         <TouchableOpacity
@@ -240,13 +243,29 @@ const styles = StyleSheet.create({
     marginTop: "5%",
   },
   imagePicker: {
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
     borderRadius: 100,
     resizeMode: "cover",
     backgroundColor: "#dfdfdf",
     paddingTop: 30,
     margin: 10,
+    alignSelf: "center",
+  },
+  containCard: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 10,
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 5,
+    borderColor: "white",
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 1,
   },
 });
 
