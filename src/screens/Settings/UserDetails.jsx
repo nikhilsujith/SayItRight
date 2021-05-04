@@ -251,7 +251,7 @@ const UserDetails = ({ navigation }) => {
   const [btn, setBtn] = React.useState();
 
   const onCameraVideo = (uri) => {
-    setVideoSource(uri);
+    setVideoUri(uri);
   };
 
   return (
@@ -359,50 +359,12 @@ const UserDetails = ({ navigation }) => {
           <Text>Audio Goes Here</Text>
         </View>
 
-        {/* Button */}
         <View
           style={[
             styles.containCard,
             { alignSelf: "center", backgroundColor: "transparent" },
           ]}
         >
-          {/* Audio Button */}
-          {/* <TouchableOpacity
-            style={styles.editIcons}
-            onPress={() =>
-              navigation.push("SettingsAudioStack", {
-                onAudioSelected: onAudioSelected,
-              })
-            }
-          >
-            <MaterialIcons name="keyboard-voice" size={24} color="black" />
-          </TouchableOpacity> */}
-
-          {/* Video Button */}
-          {/* <TouchableOpacity
-            style={styles.editIcons}
-            onPress={() =>
-              ActionSheet.show(
-                {
-                  options: BUTTONS,
-                  cancelButtonIndex: CANCEL_INDEX,
-                  destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                  title: "Select Video Source",
-                },
-                (buttonIndex) => {
-                  if (buttonIndex == 0) {
-                    pickVideo();
-                  } else if (buttonIndex == 1) {
-                    navigation.push("SettingsRecordingStack", {
-                      onCameraVideo: onCameraVideo,
-                    });
-                  }
-                }
-              )
-            }
-          >
-            <Foundation name="video" size={24} color="black" />
-          </TouchableOpacity> */}
         </View>
         <TouchableOpacity
           style={{
@@ -434,28 +396,11 @@ const imageSize = 120;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
-  },
-  input: {
-    // borderColor: "black",
-    // backgroundColor: 'white',
-    // borderBottomWidth: 1,
-    // width: width / 1.3,
-    // paddingVertical: 10,
-    // paddingHorizontal: 0,
-    // marginTop: 30,
   },
   textFooter1: {
     marginTop: 10,
   },
   imagePicker: {
-    // height: 120,
-    // width: 120,
-    // height: imageSize,
-    // width: imageSize,
-    // borderRadius: 100,
-    // borderWidth: 1,
-    // overflow: 'hidden',
     height: 100,
     width: 100,
     borderRadius: 100,
@@ -497,10 +442,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  InputArea: {
-    // marginTop: 50,
-  },
-
   action: {
     height: 50,
   },

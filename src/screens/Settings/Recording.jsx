@@ -11,12 +11,6 @@ import {
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Video } from 'expo-av';
-// import uploadVideoAsync from '../service/UploadVideoService';
-
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
-Amplify.configure(awsconfig);
-import { withAuthenticator,Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react-native';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
@@ -73,7 +67,6 @@ const Recording=({ navigation , route })=>{
 
           if (source) {
             setIsPreview(true);
-            //console.log('video source', source);
             setVideoSource(source);
           }
         }
@@ -225,7 +218,7 @@ const Recording=({ navigation , route })=>{
   );
 }
 
-export default (Auth.user)?Recording:withAuthenticator(Recording);
+export default Recording;
 
 const styles = StyleSheet.create({
   container: {
@@ -239,7 +232,6 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: Dimensions.get('window').height * 0.02,
-    left: 15,
     height: closeButtonSize,
     width: closeButtonSize,
     borderRadius: Math.floor(closeButtonSize / 2),
@@ -321,8 +313,8 @@ const styles = StyleSheet.create({
     height: 200,
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
 });
