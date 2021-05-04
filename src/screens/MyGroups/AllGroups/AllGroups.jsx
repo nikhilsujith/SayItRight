@@ -23,11 +23,11 @@ const joinAlert = (creatorName, id, currentUser, navigation) =>
       text: "Join",
       onPress: async () => {
        const response = await enrollGroup(id, currentUser)
-        if (response == 200) {
+        if (response.status == 200) {
           alert("You have successfully enrolled into the group!")
         }
         else{
-          alert("Something went wrong. Please try again later");
+          alert(response.body);
         }
       },
     },

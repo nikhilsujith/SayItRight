@@ -17,6 +17,7 @@ const EnrolledGroupsCard = ({
           groupName: cardTitle,
           groupDesc: cardDesc,
           groupImage: cardImageLink,
+          owned:false,
         });
       }}
     >

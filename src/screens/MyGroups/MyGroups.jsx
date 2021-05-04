@@ -200,6 +200,7 @@ const MyGroups = () => {
       <RootStack.Screen
         name="CreateNewGroup"
         component={CreateNewGroup}
+        // options={{ headerShown: false }}
       />
       {/* <RootStack.Screen
         name="UsersInGroup"

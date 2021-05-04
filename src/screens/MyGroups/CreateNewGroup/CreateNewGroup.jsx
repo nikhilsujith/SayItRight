@@ -17,18 +17,26 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 // import {imageUploadGroup} from '../../../service/Group/CreateGroup';
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { createGroup } from '../../../service/Group/GroupService';
+import { createGroup,imageUploadGroup } from '../../../service/Group/GroupService';
 import { currentSession } from '../../../util/AmplifyCurrentSession';
+import { getUserByPoolId } from "../../../service/User/UserService";
 // import {createGroup} from '../../../service/Group/CreateGroup';
 
 const window = Dimensions.get('window');
-  const screen = Dimensions.get('screen');
+const screen = Dimensions.get('screen');
 
-const CreateNewGroup = (props) => {
+const CreateNewGroup = ({ navigation }) => {
   const [imageUri, setImageUri] = useState(null);
   const [dimensions, setDimensions] = useState({ window, screen });
+  const [base64Image, setBase64Image] = useState(null);
+  const [groupName, setGroupName] = useState('');
+  const [groupDesc, setGroupDesc] = useState('');
+  const [id, setId] = useState("");
+  const [userName, setUserName] = useState("");
+
   // Gives current cognito pool id
   const currentUser = currentSession();
+  console.log(currentUser);
 
   useEffect(() => {
     (async () => {
@@ -38,9 +46,24 @@ const CreateNewGroup = (props) => {
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
+
         }
       }
     })();
+
+    (async () => {
+          const fetchedPosts = await getUserByPoolId(currentSession());
+          //var r=JSON.parse(fetchedPosts);
+          //console.log(fetchedPosts.body);
+          //console.log(fetchedPosts.status);
+          if (fetchedPosts.status != "500") {
+            console.log("in");
+            setUserName(fetchedPosts.body.fullName);
+            setId(fetchedPosts.body.id);
+          }
+          //setPosts(fetchedPosts);
+        })();
+
   }, []);
 
   const pickImage = async () => {
@@ -59,26 +82,41 @@ const CreateNewGroup = (props) => {
     }
   };
 
-  const handleCreateButton = (groupName, groupDesc, currentUser) => {
-      createGroup(groupName, groupDesc,  currentUser).then((result) => {
-        
-        if (result.status === 200) {
-          alert("Group uploaded successfully");
-        } else {
-          alert(
-            "Oops! There was an error uploading your Group. Please try again later."
-          );
-        }
-      });
-    imageUploadGroup(imageUri, base64Image).then((result) => {
-      if (result.status === 200) {
-        alert("Details uploaded successfully");
-      } else {
-        alert(
-          "Oops! There was an error uploading your details. Please try again later."
-        );
-      }
-    });
+  const handleCreateButton = async ()  => {
+    console.log(":::::::::::Create:::::::::::::::");
+    console.log(groupName)
+    console.log(groupDesc)
+    console.log(currentUser)
+//   await createGroup(groupName, groupDesc, currentUser,userName,id).then((result) => {
+//     console.log(result.json())
+//     console.log(result.body)
+//     console.log(result)
+//     if (result.status === 200) {
+//
+//       alert("Group uploaded successfully");
+//     } else {
+//       alert(
+//         "Oops! There was an error uploading your Group. Please try again later."
+//       );
+//     }
+//   });
+  const res=await createGroup(groupName, groupDesc, currentUser,userName,id);
+  console.log(res.body)
+  //const res=fetchedPosts.json()
+    if (res.status == "200") {
+    await imageUploadGroup(imageUri, base64Image,res.body,currentUser).then((result) => {
+          if (result.status === 200) {
+            alert("Group created successfully");
+          } else {
+            alert(
+              "Oops! There was an error uploading your image."
+            );
+          }
+        });
+    } else if (res.status == "500") {
+    alert("Oops! There was an error uploading your Group. Please try again later.");
+    }
+    navigation.pop();
   };
 
   return (
@@ -115,29 +153,33 @@ const CreateNewGroup = (props) => {
           style={styles.inputStyle}
           type="text"
           placeholder="Group Name"
-          onChangeText={(groupName) => setGroupName(groupName)}
+          value={groupName}
+          onChangeText={(val) => setGroupName(val)}
         />
       </View>
       <View style={[styles.textInputArea, style]}>
         <TextInput
           style={styles.inputStyle}
           type="text"
-          placeholder="Group Name"
-          onChangeText={(groupDesc) => setGroupDesc(groupDesc)}
+          placeholder="Group Desc"
+          value={groupDesc}
+          onChangeText={(val) => setGroupDesc(val)}
         />
       </View>
       <View style={styles.SaveArea}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ ...styles.createButton,}}
           onPress={handleCreateButton}
         >
           <MaterialIcons name="group-add" size={20} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={styles.saveButton} onPress={handleCreateButton}>
+        <Text style={styles.saveButtonText}>Create</Text>
+      </TouchableOpacity> 
       </View>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -182,11 +224,11 @@ const styles = StyleSheet.create({
     marginRight: 150,
   },
 
-  createButton: {
-    position: "absolute",
+  saveButton: {
+    
     top: 60,
     borderRadius: 10,
-    paddingHorizontal: 30,
+    // paddingHorizontal: 25,
     paddingVertical: 5,
     borderColor: "black",
     alignItems: "center",
