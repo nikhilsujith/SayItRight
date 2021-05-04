@@ -226,12 +226,10 @@ const UserDetails = ({ navigation }) => {
           }
         });
       }
-        uploadVideoAsync(
-          videoUri || videoSource,
-          base64Image,
-          currentSession()
-        ).then((result) => {
-          if (result.status === 200) {
+
+      if((videoUri!=onlineVideo && videoUri!=null)){
+        await uploadVideoAsync(videoUri || videoSource,base64Image,currentSession()).then((result) => {
+          if (result.status == 200) {
             alert("Video uploaded successfully");
           } else {
             alert(
@@ -239,6 +237,7 @@ const UserDetails = ({ navigation }) => {
             );
           }
         });
+      }
       }
       if (newUserStatus === 200) {
         alert("Success");
