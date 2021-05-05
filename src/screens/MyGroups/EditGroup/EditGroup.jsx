@@ -159,14 +159,9 @@ const EditGroup = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <View style={styles.SaveArea}>
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleCreateButton}
-        >
-          <Text style={styles.saveButtonText}>Create</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.saveButton} onPress={handleCreateButton}>
+        <Text style={styles.saveButtonText}>Create</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -213,9 +208,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginRight: 150,
   },
-
   saveButton: {
-    top: 60,
     borderRadius: 10,
     // paddingHorizontal: 25,
     paddingVertical: 5,
@@ -223,7 +216,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginLeft: 160,
+    margin: 10
   },
   textInputArea: {
     // height: 60,
