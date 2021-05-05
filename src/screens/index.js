@@ -5,6 +5,7 @@ export { MyGroupsScreen as MyGroupsScreen } from './MyGroups/MyGroups.jsx';
 export { default as EnrolledGroups } from './MyGroups/EnrolledGroups/EnrolledGroups.jsx';
 export { default as CreatedGroups } from './MyGroups/CreatedGroups/CreatedGroups.jsx';
 export { default as AllGroups } from './MyGroups/AllGroups/AllGroups.jsx';
+export { default as EditGroup } from './MyGroups/EditGroup/EditGroup.jsx';
 
 // Users
 export { default as UsersInGroup } from './Users/UsersInGroup.jsx';

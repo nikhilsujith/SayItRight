@@ -10,6 +10,7 @@ import {
   Recording,
   UsersInGroup,
   UserInformation,
+  EditGroup,
 } from "../screens";
 
 import { theme } from "../constants/theme";
@@ -183,6 +184,20 @@ export const MyGroupsStackScreen = () => (
       options={({ route }) => ({
         title: route.params.userName,
         // headerTitleStyle: {color: theme.secondary.backgroundColor},
+        headerStyle: {
+          backgroundColor: theme.primary.backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: theme.primary.color,
+      })}
+    />
+    <MyGroupsStack.Screen
+      name="EditGroup"
+      component={EditGroup}
+      options={({ route }) => ({
+        title: 'Editj Group',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,

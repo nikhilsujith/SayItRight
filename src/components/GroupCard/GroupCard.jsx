@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Button } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { theme } from "../../constants/theme";
 import { defaultOrImage } from "../../util";
 
@@ -27,11 +26,6 @@ function GroupCard({ cardTitle, cardDesc, cardImageLink }) {
 const borderRadius = 15;
 
 const styles = StyleSheet.create({
-  // container: {
-  //   borderRadius: borderRadius,
-  //   marginTop: "1%",
-  //   marginBottom: "1%",
-  // },
   groupCardTextArea: {
     top: 0,
     left: 0,

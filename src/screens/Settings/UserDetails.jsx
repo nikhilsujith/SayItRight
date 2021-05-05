@@ -175,8 +175,6 @@ const UserDetails = ({ navigation }) => {
   };
 
   const handleSaveButton = async () => {
-    console.log(":::::::::::HANDLE Update:::::::::");
-    //console.log(await uploadS3())
     if (audioUri != null && audioUri != "") {
       setAudioS3Loc(await uploadS3());
    }

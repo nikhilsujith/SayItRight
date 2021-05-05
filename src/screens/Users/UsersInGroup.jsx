@@ -170,7 +170,12 @@ const UsersInGroup = ({ navigation, route }) => {
   }
 
   const editGroup = () => {
-    alert("Edit Group")
+    navigation.navigate("EditGroup",{
+      createdGroupDesc: groupDesc,
+      createdGroupId: id,
+      createdGroupImage: groupImage,
+      createdGroupName: groupName
+    })
   }
 
   const accordContent = [{ title: "Group Members", content: <UserList /> }];
