@@ -197,7 +197,7 @@ export const MyGroupsStackScreen = () => (
       name="EditGroup"
       component={EditGroup}
       options={({ route }) => ({
-        title: 'Editj Group',
+        title: 'Edit Group',
         headerStyle: {
           backgroundColor: theme.primary.backgroundColor,
           elevation: 0,
