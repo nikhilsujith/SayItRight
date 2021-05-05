@@ -235,7 +235,7 @@ const UserDetails = ({ navigation }) => {
       }
       }
       if (newUserStatus === 200) {
-        // alert("Success");
+         alert("Success");
         //await Updates.reloadAsync();
       }
 

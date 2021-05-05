@@ -23,20 +23,27 @@ import {
 } from "../../../service/Group/GroupService";
 import { currentSession } from "../../../util/AmplifyCurrentSession";
 import { getUserByPoolId } from "../../../service/User/UserService";
+import { getGroupById } from "../../../service/Group/GroupService";
 // import {createGroup} from '../../../service/Group/CreateGroup';
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const EditGroup = ({ navigation, route }) => {
-  const [imageUri, setImageUri] = useState(null);
-  const [dimensions, setDimensions] = useState({ window, screen });
-  const [base64Image, setBase64Image] = useState(null);
+  const [groupId, setGroupId] = useState("");
   const [groupName, setGroupName] = useState("");
   const [groupDesc, setGroupDesc] = useState("");
-  const [id, setId] = useState("");
+  const [imageUri, setImageUri] = useState(null);
+  const [onlineImageUri, setOnlineImageUri] = useState("");
+  const [dimensions, setDimensions] = useState({ window, screen });
+  const [base64Image, setBase64Image] = useState(null);
+  const [creatorID, setCreatorID] = useState("");
+  const [creatorName, setCreatorName] = useState("");
+  const [creatorPoolId, setCreatorPoolId] = useState("");
+  const [users, setUsers] = useState("");
+  const [createdOn, setCreatedOn] = useState("");
+  const [updatedOn, setUpdatedOn] = useState("");
   const [userName, setUserName] = useState("");
-  const [groupId, setGroupId] = useState("");
 
   // Gives current cognito pool id
   const currentUser = currentSession();
@@ -60,18 +67,30 @@ const EditGroup = ({ navigation, route }) => {
       }
     })();
 
-    (async () => {
-      const fetchedPosts = await getUserByPoolId(currentSession());
-      if (fetchedPosts.status != "500") {
-        setUserName(fetchedPosts.body.fullName);
-        setId(fetchedPosts.body.id);
-      }
-    })();
-
     setImageUri(createdGroupImage);
     setGroupName(createdGroupName);
     setGroupDesc(createdGroupDesc);
     setGroupId(createdGroupId);
+    setOnlineImageUri(createdGroupImage)
+
+//     (async () => {
+//       const fetchedPosts = await getGroupById(groupId);
+//       if (fetchedPosts.status != "500") {
+//         console.log("in");
+//         console.log(fetchedPosts.body)
+//         setGroupName(fetchedPosts.body.groupName);
+//         setGroupDesc(fetchedPosts.body.groupDesc);
+//         setOnlineImageUri(fetchedPosts.body.groupImage);
+//         setImageUri(fetchedPosts.body.groupImage);
+//         setCreatorID(fetchedPosts.body.creatorID);
+//         setCreatorName(fetchedPosts.body.creatorName);
+//         setCreatorPoolId(fetchedPosts.body.creatorPoolId);
+//         setUsers(fetchedPosts.body.users);
+//         setCreatedOn(fetchedPosts.body.createdOn);
+//         setUpdatedOn(fetchedPosts.body.updatedOn);
+//       }
+//     })();
+
   }, []);
 
   const pickImage = async () => {
@@ -88,33 +107,50 @@ const EditGroup = ({ navigation, route }) => {
     }
   };
 
-  const handleCreateButton = async () => {
-    const updateFlag = true;
-    const res = await createGroup(
-      groupName,
-      groupDesc,
-      currentUser,
-      userName,
-      id,
-      updateFlag,
-      groupId
-    );
-    if (res.status == "200") {
-      await imageUploadGroup(imageUri, base64Image, res.body, currentUser).then(
+  const handleUpdateButton = async () => {
+    console.log("----update group-----")
+    var error_flag=0
+    if(groupId!=""){
+    const content = {
+        id: groupId,
+        groupName:groupName,
+        groupDesc:groupDesc,
+        groupImage:onlineImageUri,
+      };
+
+  const url = "https://say-it-right.herokuapp.com/api/v1/group/updateGroup?poolId="+currentSession();
+  console.log(url)
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  var updateGroupStatus = await response.status;
+  console.log(updateGroupStatus); //200 success
+
+    if (updateGroupStatus == "200" && onlineImageUri!=imageUri && imageUri!=null) {
+      await imageUploadGroup(imageUri, base64Image, groupId, currentUser).then(
         (result) => {
-          if (result.status === 200) {
-            alert("Group created successfully");
-          } else {
+          if (result.status !== 200) {
+            error_flag=1;
             alert("Oops! There was an error uploading your image.");
           }
         }
       );
-    } else if (res.status == "500") {
-      alert(
-        "Oops! There was an error uploading your Group. Please try again later."
-      );
     }
-    navigation.pop();
+    if(updateGroupStatus == "200" && error_flag==0){
+        alert("success");
+        navigation.pop();
+    }
+    else{
+        alert("Something went wrong!")
+    }
+
+    }
+
   };
 
   return (
@@ -159,9 +195,14 @@ const EditGroup = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.saveButton} onPress={handleCreateButton}>
-        <Text style={styles.saveButtonText}>Create</Text>
-      </TouchableOpacity>
+      <View style={styles.SaveArea}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={handleUpdateButton}
+        >
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -208,7 +249,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginRight: 150,
   },
+
   saveButton: {
+    top: 60,
     borderRadius: 10,
     // paddingHorizontal: 25,
     paddingVertical: 5,
@@ -216,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    margin: 10
+    marginLeft: 160,
   },
   textInputArea: {
     // height: 60,
@@ -270,3 +313,4 @@ const styles = StyleSheet.create({
 });
 
 export default EditGroup;
+
