@@ -195,13 +195,8 @@ const EditGroup = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <View style={styles.SaveArea}>
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleUpdateButton}
-        >
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+      <View style={{flex: 1,marginTop: "5%",}}>
+        <Button color="black" title="Save" onPress={handleUpdateButton}/>
       </View>
     </ScrollView>
   );
