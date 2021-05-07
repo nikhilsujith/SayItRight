@@ -148,7 +148,11 @@ const Recording=({ navigation , route })=>{
 
   const handleSaveButton = () => {
     route.params.onCameraVideo(videoSource);
-    navigation.pop();
+    //navigation.pop();
+    navigation.goBack();
+    navigation.navigate("SettingsStack", {
+              cameraVideo: videoSource,
+            });
   };
 
   const Play = () => (
