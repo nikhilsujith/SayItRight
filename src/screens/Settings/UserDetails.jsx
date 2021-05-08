@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Platform, View, Image, Text, Button } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Platform, View, Image, Text, Button,RefreshControl } from "react-native";
 import { StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { logout } from "../../util/CustomAmplifyAuth";
@@ -39,7 +39,7 @@ import {
 import { Audio,Video } from "expo-av";
 
 
-const UserDetails = ({ navigation }) => {
+const UserDetails = ({ navigation,route }) => {
   const [id, setId] = useState("");
   const [myGroups, setMyGroups] = useState("");
   const [enrolledGroups, setEnrolledGroups] = useState("");
@@ -67,8 +67,20 @@ const UserDetails = ({ navigation }) => {
 
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+  const [refreshing, setRefreshing] = useState(false);
+  const [cameraSubmit, setCameraSubmit] = useState(false);
+
   const disableSave =
     userName === "" || nameDesc === "" || !imageUri;
+
+   const wait = (timeout) => {
+      return new Promise((resolve) => setTimeout(resolve, timeout));
+    };
+
+    const onRefresh = useCallback(() => {
+       setRefreshing(true);
+       wait(2000).then(() => setRefreshing(false));
+    }, []);
 
   useEffect(() => {
     (async () => {
@@ -82,33 +94,68 @@ const UserDetails = ({ navigation }) => {
       }
     })();
 
-    (async () => {
-      const fetchedPosts = await getUserByPoolId(currentSession());
-      if (fetchedPosts.status != "500") {
-        console.log("in");
-        setAudioS3Loc(fetchedPosts.body.audioFile);
-        setNameDesc(fetchedPosts.body.desc);
-        setNameMeaning(fetchedPosts.body.nameMeaning);
-        setUserName(fetchedPosts.body.fullName);
-        setImageUri(fetchedPosts.body.profileImage);
-        setVideoUri(fetchedPosts.body.videoFile);
-        setOnlineImage(fetchedPosts.body.profileImage);
-        setId(fetchedPosts.body.id);
-        setMyGroups(fetchedPosts.body.myGroups);
-        setEnrolledGroups(fetchedPosts.body.enrolledGroups);
-        setCreatedOn(fetchedPosts.body.createdOn);
-        setOnlineVideo(fetchedPosts.body.videoFile);
-        //         console.log(userName);
-        //                 console.log(fetchedPosts.body.audioFile)
-      }
-      //setPosts(fetchedPosts);
-    })();
-
     Dimensions.addEventListener("change", onChange);
     return () => {
       Dimensions.removeEventListener("change", onChange);
     };
   }, []);
+
+  const fetchData = () => {
+       useEffect(() => {
+      console.log("in1");
+        //let mounted = true;
+        if(cameraSubmit){
+           (async () => {
+              const fetchedPosts = await getUserByPoolId(currentSession());
+              if (fetchedPosts.status != "500") {
+                console.log("in");
+                setAudioS3Loc(fetchedPosts.body.audioFile);
+                setNameDesc(fetchedPosts.body.desc);
+                setNameMeaning(fetchedPosts.body.nameMeaning);
+                setUserName(fetchedPosts.body.fullName);
+                setImageUri(fetchedPosts.body.profileImage);
+                setOnlineImage(fetchedPosts.body.profileImage);
+                setId(fetchedPosts.body.id);
+                setMyGroups(fetchedPosts.body.myGroups);
+                setEnrolledGroups(fetchedPosts.body.enrolledGroups);
+                setCreatedOn(fetchedPosts.body.createdOn);
+                setOnlineVideo(fetchedPosts.body.videoFile);
+
+                  if(route.params){
+                    if(route.params.cameraVideo!=null){
+                        setVideoUri(route.params.cameraVideo)
+                        navigation.setParams({ cameraVideo: null })
+                    }
+                    else{
+                        setVideoUri(fetchedPosts.body.videoFile)
+                    }
+                  }
+                  else{
+                      setVideoUri(fetchedPosts.body.videoFile)
+                  }
+              }
+              //setPosts(fetchedPosts);
+              setCameraSubmit(false)
+            })();}
+        //return () => (mounted = true);
+       }, [refreshing]);
+    };
+
+
+        useEffect(() => {
+              console.log("in3");
+          const unsubscribe = navigation.addListener("focus", () => {
+          console.log('here')
+               setCameraSubmit(true)
+            onRefresh();
+
+          });
+
+          return unsubscribe;
+        }, [navigation]);
+
+  fetchData();
+
 
   const onChange = ({ window, screen }) => {
     setDimensions({ window, screen });
@@ -327,6 +374,12 @@ const UserDetails = ({ navigation }) => {
 
   return (
     <Root>
+    <ScrollView
+            contentContainerStyle={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
       <ScrollView>
         <View style={styles.containCard}>
           <TouchableOpacity
@@ -399,7 +452,7 @@ const UserDetails = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{
-              flex: 1, 
+              flex: 1,
               alignSelf: 'center',
             }}
             onPress={() =>
@@ -442,13 +495,13 @@ const UserDetails = ({ navigation }) => {
       </TouchableOpacity>
         </View>
         {/* Button */}
-        <View
-          style={[
-            styles.containCard,
-            { alignSelf: "center", backgroundColor: "transparent" },
-          ]}
-        >
-        </View>
+{/*         <View */}
+{/*           style={[ */}
+{/*             styles.containCard, */}
+{/*             { alignSelf: "center", backgroundColor: "transparent" }, */}
+{/*           ]} */}
+{/*         > */}
+{/*         </View> */}
         <TouchableOpacity
           style={{
             flex: 1,
@@ -469,6 +522,7 @@ const UserDetails = ({ navigation }) => {
         onPress={() => logout()}
         icon={<Icon name="exit" />}
       />
+       </ScrollView>
     </Root>
   );
 };

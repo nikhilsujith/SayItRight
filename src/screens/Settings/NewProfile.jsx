@@ -42,7 +42,7 @@ import { Audio, Video } from "expo-av";
 
 import * as Updates from "expo-updates";
 
-const NewProfile = ({ navigation }) => {
+const NewProfile = ({ navigation,route }) => {
   const [userName, setUserName] = useState("");
   const [userObject, setUserObject] = useState("");
   const [nameDesc, setNameDesc] = useState("");
@@ -197,7 +197,7 @@ const NewProfile = ({ navigation }) => {
             );
           }
         });
-        uploadVideoAsync(
+        await uploadVideoAsync(
           videoUri || videoSource,
           base64Image,
           currentSession()
@@ -219,7 +219,7 @@ const NewProfile = ({ navigation }) => {
       alert("Upload audio!");
     }
   };
-  const onCameraVideo = (uri) => {
+  const onNewCameraVideo = (uri) => {
     setVideoUri(uri);
   };
 
@@ -383,7 +383,7 @@ const NewProfile = ({ navigation }) => {
                     pickVideo();
                   } else if (buttonIndex == 1) {
                     navigation.push("SettingsRecordingStack", {
-                      onCameraVideo: onCameraVideo,
+                      onNewCameraVideo: onNewCameraVideo,
                     });
                   }
                 }
@@ -445,7 +445,7 @@ const NewProfile = ({ navigation }) => {
                     pickVideo();
                   } else if (buttonIndex == 1) {
                     navigation.push("SettingsRecordingStack", {
-                      onCameraVideo: onCameraVideo,
+                      onNewCameraVideo: onNewCameraVideo,
                     });
                   }
                 }

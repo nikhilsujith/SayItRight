@@ -147,8 +147,20 @@ const Recording=({ navigation , route })=>{
   }
 
   const handleSaveButton = () => {
-    route.params.onCameraVideo(videoSource);
-    navigation.pop();
+    try{ //setting patch if the recording request is from new profile it will got to try and if not it will go to catch since new state not found
+        console.log('newCamera')
+        route.params.onNewCameraVideo(videoSource);
+        navigation.pop();
+    }
+    catch{
+        console.log('updateCamera')
+        route.params.onCameraVideo(videoSource);
+        //navigation.pop();
+        navigation.goBack();
+        navigation.navigate("SettingsStack", {
+                  cameraVideo: videoSource,
+                });
+    }
   };
 
   const Play = () => (
@@ -251,14 +263,16 @@ const styles = StyleSheet.create({
   saveButton: {
     borderRadius: 10,
     paddingHorizontal: 20,
-    paddingVertical: 5,
-    marginLeft: 150,
-    marginRight: 150,
+//     paddingVertical: 5,
+//     marginLeft: 150,
+//     marginRight: 150,
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf:'center',
     marginTop: 10,
     borderWidth: 1,
+    width:150
   },
   saveButtonText: {
     color: 'black',
